@@ -1,0 +1,6 @@
+
+namespace NcOpaqueType {
+    class NcOpaqueType {
+
+    }
+}

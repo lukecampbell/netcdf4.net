@@ -1,0 +1,6 @@
+
+namespace NcGroupAtt {
+    class NcGroupAtt {
+
+    }
+}

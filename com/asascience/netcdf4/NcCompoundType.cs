@@ -1,0 +1,6 @@
+
+namespace NcCompoundType {
+    class NcCompoundType {
+
+    }
+}

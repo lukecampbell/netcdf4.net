@@ -1,0 +1,6 @@
+
+namespace NcEnumType {
+    class NcEnumType {
+
+    }
+}

@@ -1,0 +1,6 @@
+
+namespace NcString {
+    class NcString {
+
+    }
+}

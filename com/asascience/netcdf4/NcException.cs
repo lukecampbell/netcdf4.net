@@ -1,0 +1,6 @@
+
+namespace NcException {
+    class NcException {
+
+    }
+}

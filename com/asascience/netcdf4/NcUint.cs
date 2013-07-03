@@ -1,0 +1,6 @@
+
+namespace NcUint {
+    class NcUint {
+
+    }
+}

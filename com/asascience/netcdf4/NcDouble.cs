@@ -1,0 +1,6 @@
+
+namespace NcDouble {
+    class NcDouble {
+
+    }
+}

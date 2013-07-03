@@ -1,0 +1,6 @@
+
+namespace NcFile {
+    class NcFile {
+
+    }
+}

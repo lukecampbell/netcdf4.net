@@ -1,0 +1,6 @@
+
+namespace NcGroup {
+    class NcGroup {
+
+    }
+}

@@ -1,0 +1,6 @@
+
+namespace NcUshort {
+    class NcUshort {
+
+    }
+}

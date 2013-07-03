@@ -1,0 +1,6 @@
+
+namespace NcVarAtt {
+    class NcVarAtt {
+
+    }
+}

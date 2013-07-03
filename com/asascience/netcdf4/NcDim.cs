@@ -1,0 +1,6 @@
+
+namespace NcDim {
+    class NcDim {
+
+    }
+}

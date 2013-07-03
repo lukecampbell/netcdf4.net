@@ -1,0 +1,6 @@
+
+namespace NcVar {
+    class NcVar {
+
+    }
+}

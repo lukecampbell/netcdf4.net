@@ -1,0 +1,6 @@
+
+namespace NcInt {
+    class NcInt {
+
+    }
+}

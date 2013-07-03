@@ -1,0 +1,6 @@
+
+namespace NcFloat {
+    class NcFloat {
+
+    }
+}

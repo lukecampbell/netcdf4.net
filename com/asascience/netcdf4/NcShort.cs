@@ -1,0 +1,6 @@
+
+namespace NcShort {
+    class NcShort {
+
+    }
+}

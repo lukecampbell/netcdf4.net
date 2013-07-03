@@ -1,0 +1,6 @@
+
+namespace NcVlenType {
+    class NcVlenType {
+
+    }
+}

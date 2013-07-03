@@ -1,0 +1,6 @@
+
+namespace NcUbyte {
+    class NcUbyte {
+
+    }
+}

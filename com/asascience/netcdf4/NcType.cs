@@ -1,0 +1,6 @@
+
+namespace NcType {
+    class NcType {
+
+    }
+}
