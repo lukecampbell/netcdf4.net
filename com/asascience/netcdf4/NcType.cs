@@ -4,7 +4,7 @@
  */
 namespace netcdf4 {
     /* From netcdf.h:27 */
-    public enum nctype {
+    public enum NcTypeEnum {
         NC_NAT      = 0,
         NC_BYTE     = 1,
         NC_CHAR     = 2,
@@ -92,8 +92,8 @@ namespace netcdf4 {
             return 0;
         }
 
-        public nctype getTypeClass() {
-            return nctype.NC_NAT;
+        public NcTypeEnum getTypeClass() {
+            return NcTypeEnum.NC_NAT;
         }
 
         public string getTypeClassName() {
