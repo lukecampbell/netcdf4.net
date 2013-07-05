@@ -29,7 +29,7 @@ namespace netcdf4 {
 
 
     class NcGroup {
-        protected int myId;
+        protected Int32 myId;
         protected bool nullObject;
 
         public NcGroup() {
@@ -74,7 +74,7 @@ namespace netcdf4 {
             return null;
         }
 
-        public int GetId() {
+        public Int32 GetId() {
             return myId;
         }
     

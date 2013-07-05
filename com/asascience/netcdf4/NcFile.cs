@@ -35,8 +35,8 @@ namespace netcdf4 {
         public const int NC_PNETCDF       = 0x8000;
 
 
-        public NcFile(NcGroup rhs) {
-            throw new NotImplementedException("NcFile constructor not implemented");
+        public NcFile(NcGroup rhs) : base(rhs) {
+            
         }
 
         public NcFile() : base() {
@@ -51,17 +51,17 @@ namespace netcdf4 {
                     NcCheck.check(NetCDF.nc_open(filePath, NC_NOWRITE, ref myId));
                     break;
                 case FileMode.newFile:
-                    NcCheck.check(NetCDF.nc_open(filePath, NC_NETCDF4 | NC_NOCLOBBER, ref myId));
+                    NcCheck.check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_NOCLOBBER, ref myId));
                     break;
                 case FileMode.replace:
-                    NcCheck.check(NetCDF.nc_open(filePath, NC_NETCDF4 | NC_CLOBBER, ref myId));
+                    NcCheck.check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_CLOBBER, ref myId));
                     break;
             }
             nullObject = false;
         }
 
         public NcFile(string filePath, FileMode fMode, FileFormat fFormat) {
-            int format = 0;
+            Int32 format = 0;
             switch(fFormat) {
                 case FileFormat.classic:
                     format = 0;
@@ -92,9 +92,15 @@ namespace netcdf4 {
             }
             nullObject = false;
         }
-
-        ~NcFile() {
+        public void close() {
             NcCheck.check(NetCDF.nc_close(myId));
+            nullObject = true;
+            myId = 0;
+        }
+        ~NcFile() {
+            if(!nullObject) {
+                NcCheck.check(NetCDF.nc_close(myId));
+            }
         }
     }
 }
