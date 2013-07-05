@@ -34,16 +34,19 @@ namespace netcdf4 {
         // Constructor
         public NcType(NcGroup grp, string name) {
             nullObject = false;
-            groupId = grp.getId();
-            NcType typTmp = grp.getType(name, NcGroup.ParentsAndCurrent);
-            myId = typTmp.getId();
+            //TODO add getId
+            //groupId = grp.getId();
+            //TODO add getType
+            //NcType typTmp = grp.getType(name, NcGroup.ParentsAndCurrent);
+            //myId = typTmp.getId();
         }
 
         // Constructor for a non-global type
         public NcType(NcGroup grp, int id) {
             nullObject = false;
             myId = id;
-            groupId = grp.getId();
+            //TODO add getId
+            //groupId = grp.getId();
         }
 
         // Constructor for a global type
@@ -68,18 +71,21 @@ namespace netcdf4 {
         }
 
         public NcGroup getParentGroup() {
-            if(group_id) {
-                return new NcGroup(groupId);
+            if(groupId!=0) {
+                //TODO add constructor NcGroup
+                //return new NcGroup(groupId);
             }
             return new NcGroup();
         }
 
         public string getName() {
-            byte[] charName = new byte[NC_MAX_NAME+1];
-            long sizep = 0L;
+            //TODO fix this
+            //byte[] charName = new byte[NC_MAX_NAME+1];
+            //long sizep = 0L;
             string retval;
             // ncCheck(nc_inq_type(groupId, myId, charName, sizep));
-            retval = System.Text.Encoding.UTF8.GetString(charName);
+            //retval = System.Text.Encoding.UTF8.GetString(charName);
+            return null;
         }
 
         public long getSize() {
