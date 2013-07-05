@@ -5,6 +5,7 @@
  */
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace netcdf4 {
@@ -28,12 +29,15 @@ namespace netcdf4 {
 
 
     class NcGroup {
+        protected int myId;
+        protected bool nullObject;
+
         public NcGroup() {
             nullObject = true;
         }
 
         public NcGroup(int groupId) {
-
+            myId = groupId;
         }
         public NcGroup(NcGroup rhs) {
             nullObject = rhs.nullObject;
@@ -45,16 +49,24 @@ namespace netcdf4 {
         }
 
         public string GetName(bool fullName=false) {
-            if(isNull()) {
-                throw NcNullException("Attempt to invoke NcGroup.GetName on a Null group");
+            if(IsNull()) {
+                throw new exceptions.NcNullGrp("Attempt to invoke NcGroup.GetName on a Null group");
             }
 
             string groupName;
             if(fullName) {
-                long lenp;
+               Int32 lenp = new Int32();
+               NcCheck.check(NetCDF.nc_inq_grpname_len(myId, ref lenp));
+               StringBuilder name = new StringBuilder();
+               NcCheck.check(NetCDF.nc_inq_grpname_full(myId, ref lenp, name));
+               groupName = name.ToString();
             }
-            throw new NotImplementedException("GetName() not implemented");
-            return null;
+            else {
+				StringBuilder name = new StringBuilder ();
+                NcCheck.check(NetCDF.nc_inq_grpname(myId, name));
+                groupName = name.ToString();
+            }
+            return groupName;
         }
 
         public NcGroup GetParentGroup() {
@@ -63,7 +75,7 @@ namespace netcdf4 {
         }
 
         public int GetId() {
-            return groupId;
+            return myId;
         }
     
         public int getGroupCount(GroupLocation location=GroupLocation.ChildrenGrps) {
@@ -313,10 +325,6 @@ namespace netcdf4 {
             throw new NotImplementedException("GetCoordVar() not implemented");
         }
 
-
-        protected int groupId;
-        protected bool nullObject;
-        
 
     }
 }

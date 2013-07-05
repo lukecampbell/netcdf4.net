@@ -1,6 +1,7 @@
 using netcdf4.exceptions;
 namespace netcdf4 {
     class NcCheck {
+        public const int NC_NOERR = 0;
         public const int NC_EBADID =-33;
         public const int NC_ENFILE =-34;
         public const int NC_EEXIST =-35;
@@ -82,63 +83,63 @@ namespace netcdf4 {
             switch(retCode) {
                 case NC_NOERR           : return; /* No Error */
                   
-                case NC_EBADID          : throw NcBadId("Not a netcdf id");
-                case NC_ENFILE          : throw NcNFile("Too many netcdfs open");
-                case NC_EEXIST          : throw NcExist("netcdf file exists && NC_NOCLOBBER");
-                case NC_EINVAL          : throw NcInvalidArg("Invalid Argument");
-                case NC_EPERM           : throw NcInvalidWrite("Write to read only");
-                case NC_ENOTINDEFINE    : throw NcNotInDefineMode("Operation not allowed in data mode");
-                case NC_EINDEFINE       : throw NcInDefineMode("Operation not allowed in define mode");
-                case NC_EINVALCOORDS    : throw NcInvalidCoords("Index exceeds dimension bound");
-                case NC_EMAXDIMS        : throw NcMaxDims("NC_MAX_DIMS is exceeded");
-                case NC_ENAMEINUSE      : throw NcNameInUse("String match to name in use");
-                case NC_ENOTATT         : throw NcNotAtt("Attribute not found");
-                case NC_EMAXATTS        : throw NcMaxAtts("NC_MAX_ATTRS exceeded");
-                case NC_EBADTYPE        : throw NcBadType("Not a netcdf data type");
-                case NC_EBADDIM         : throw NcBadDim("Invalid dimension id or name");
-                case NC_EUNLIMPOS       : throw NcUnlimPos("NC_UNLIMITED is in the wrong index");
-                case NC_EMAXVARS        : throw NcMaxVars("NC_MAX_VARS is exceeded");
-                case NC_ENOTVAR         : throw NcNotVar("Variable is not found");
-                case NC_EGLOBAL         : throw NcGlobal("Action prohibited on NC_GLOBAL varid");
-                case NC_ENOTNC          : throw NcNotNCF("Not a netcdf file");
-                case NC_ESTS            : throw NcSts("In Fortran, string too short");
-                case NC_EMAXNAME        : throw NcMaxName("NC_MAX_NAME exceeded");
-                case NC_EUNLIMIT        : throw NcUnlimit("NC_UNLIMITED size already in use");
-                case NC_ENORECVARS      : throw NcNoRecVars("nc_rec op when there are no record vars");
-                case NC_ECHAR           : throw NcChar("Attempt to convert between text & numbers");
-                case NC_EEDGE           : throw NcEdge("Edge+start exceeds dimension bound");
-                case NC_ESTRIDE         : throw NcStride("Illegal stride");
-                case NC_EBADNAME        : throw NcBadName("Attribute or variable name contains illegal characters");
-                case NC_ERANGE          : throw NcRange("Math result not representable");
-                case NC_ENOMEM          : throw NcNoMem("Memory allocation (malloc) failure");
-                case NC_EVARSIZE        : throw NcVarSize("One or more variable sizes violate format constraints");
-                case NC_EDIMSIZE        : throw NcDimSize("Invalid dimension size");
-                case NC_ETRUNC          : throw NcTrunc("File likely truncated or possibly corrupted");
+                case NC_EBADID          : throw new NcBadId("Not a netcdf id");
+                case NC_ENFILE          : throw new NcNFile("Too many netcdfs open");
+                case NC_EEXIST          : throw new NcExist("netcdf file exists && NC_NOCLOBBER");
+                case NC_EINVAL          : throw new NcInvalidArg("Invalid Argument");
+                case NC_EPERM           : throw new NcInvalidWrite("Write to read only");
+                case NC_ENOTINDEFINE    : throw new NcNotInDefineMode("Operation not allowed in data mode");
+                case NC_EINDEFINE       : throw new NcInDefineMode("Operation not allowed in define mode");
+                case NC_EINVALCOORDS    : throw new NcInvalidCoords("Index exceeds dimension bound");
+                case NC_EMAXDIMS        : throw new NcMaxDims("NC_MAX_DIMS is exceeded");
+                case NC_ENAMEINUSE      : throw new NcNameInUse("String match to name in use");
+                case NC_ENOTATT         : throw new NcNotAtt("Attribute not found");
+                case NC_EMAXATTS        : throw new NcMaxAtts("NC_MAX_ATTRS exceeded");
+                case NC_EBADTYPE        : throw new NcBadType("Not a netcdf data type");
+                case NC_EBADDIM         : throw new NcBadDim("Invalid dimension id or name");
+                case NC_EUNLIMPOS       : throw new NcUnlimPos("NC_UNLIMITED is in the wrong index");
+                case NC_EMAXVARS        : throw new NcMaxVars("NC_MAX_VARS is exceeded");
+                case NC_ENOTVAR         : throw new NcNotVar("Variable is not found");
+                case NC_EGLOBAL         : throw new NcGlobal("Action prohibited on NC_GLOBAL varid");
+                case NC_ENOTNC          : throw new NcNotNCF("Not a netcdf file");
+                case NC_ESTS            : throw new NcSts("In Fortran, string too short");
+                case NC_EMAXNAME        : throw new NcMaxName("NC_MAX_NAME exceeded");
+                case NC_EUNLIMIT        : throw new NcUnlimit("NC_UNLIMITED size already in use");
+                case NC_ENORECVARS      : throw new NcNoRecVars("nc_rec op when there are no record vars");
+                case NC_ECHAR           : throw new exceptions.NcChar("Attempt to convert between text & numbers");
+                case NC_EEDGE           : throw new NcEdge("Edge+start exceeds dimension bound");
+                case NC_ESTRIDE         : throw new NcStride("Illegal stride");
+                case NC_EBADNAME        : throw new NcBadName("Attribute or variable name contains illegal characters");
+                case NC_ERANGE          : throw new NcRange("Math result not representable");
+                case NC_ENOMEM          : throw new NcNoMem("Memory allocation (malloc) failure");
+                case NC_EVARSIZE        : throw new NcVarSize("One or more variable sizes violate format constraints");
+                case NC_EDIMSIZE        : throw new NcDimSize("Invalid dimension size");
+                case NC_ETRUNC          : throw new NcTrunc("File likely truncated or possibly corrupted");
 
                   // The following are specific netCDF4 errors.
-                case NC_EHDFERR         : throw NcHdfErr("An error was reported by the HDF5 layer.");
-                case NC_ECANTREAD       : throw NcCantRead("Cannot Read");
-                case NC_ECANTWRITE      : throw NcCantWrite("Cannott write");
-                case NC_ECANTCREATE     : throw NcCantCreate("Cannot create");
-                case NC_EFILEMETA       : throw NcFileMeta("File  meta");
-                case NC_EDIMMETA        : throw NcDimMeta("dim meta");
-                case NC_EATTMETA        : throw NcAttMeta("att meta");
-                case NC_EVARMETA        : throw NcVarMeta("var meta");
-                case NC_ENOCOMPOUND     : throw NcNoCompound("No compound");
-                case NC_EATTEXISTS      : throw NcAttExists("Attribute exists");
-                case NC_ENOTNC4         : throw NcNotNc4("Attempting netcdf-4 operation on netcdf-3 file.");
-                case NC_ESTRICTNC3      : throw NcStrictNc3("Attempting netcdf-4 operation on strict nc3 netcdf-4 file.");
-                case NC_EBADGRPID       : throw NcBadGroupId("Bad group id.");
-                case NC_EBADTYPID       : throw NcBadTypeId("Bad type id.");                       // netcdf.h file inconsistent with documentation!!
-                case NC_EBADFIELD       : throw NcBadFieldId("Bad field id.");                     // netcdf.h file inconsistent with documentation!!
+                case NC_EHDFERR         : throw new NcHdfErr("An error was reported by the HDF5 layer.");
+                case NC_ECANTREAD       : throw new NcCantRead("Cannot Read");
+                case NC_ECANTWRITE      : throw new NcCantWrite("Cannott write");
+                case NC_ECANTCREATE     : throw new NcCantCreate("Cannot create");
+                case NC_EFILEMETA       : throw new NcFileMeta("File  meta");
+                case NC_EDIMMETA        : throw new NcDimMeta("dim meta");
+                case NC_EATTMETA        : throw new NcAttMeta("att meta");
+                case NC_EVARMETA        : throw new NcVarMeta("var meta");
+                case NC_ENOCOMPOUND     : throw new NcNoCompound("No compound");
+                case NC_EATTEXISTS      : throw new NcAttExists("Attribute exists");
+                case NC_ENOTNC4         : throw new NcNotNc4("Attempting netcdf-4 operation on netcdf-3 file.");
+                case NC_ESTRICTNC3      : throw new NcStrictNc3("Attempting netcdf-4 operation on strict nc3 netcdf-4 file.");
+                case NC_EBADGRPID       : throw new NcBadGroupId("Bad group id.");
+                case NC_EBADTYPID       : throw new NcBadTypeId("Bad type id.");                       // netcdf.h file inconsistent with documentation!!
+                case NC_EBADFIELD       : throw new NcBadFieldId("Bad field id.");                     // netcdf.h file inconsistent with documentation!!
                   //  case NC_EUNKNAME        : throw NcUnkownName("Cannot find the field id.");   // netcdf.h file inconsistent with documentation!!
 
-                case NC_ENOGRP          : throw NcEnoGrp("No netCDF group found");
-                case NC_ELATEDEF        : throw NcElateDef("Operation to set the deflation, chunking, endianness, fill, compression, or checksum of a NcVar object has been made after a call to getVar or putVar."
+                case NC_ENOGRP          : throw new NcEnoGrp("No netCDF group found");
+                case NC_ELATEDEF        : throw new NcElateDef("Operation to set the deflation, chunking, endianness, fill, compression, or checksum of a NcVar object has been made after a call to getVar or putVar."
                                        );
 
                 default:
-                  throw NcException("NcException","Unknown error");
+                  throw new NcException("NcException");
                 }
         }
 

@@ -25,7 +25,12 @@ namespace netcdf4.test {
         public bool Run() {
             bool passing = true;
             foreach(TestCase a in tests) {
-				passing &= a();
+                bool r = a();
+                if(r)
+                    Console.WriteLine("ok");
+                else
+                    Console.WriteLine("Fail");
+				passing &= r;
 			}
 			return passing;
         }

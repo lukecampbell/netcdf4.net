@@ -945,5 +945,19 @@ double[] op);
 double[] ip);
 
 
+    // Additions
+    // int nc_inq_grpname_len(int ncid, size_t *lenp);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+    public static extern Int32 nc_inq_grpname_len(Int32 ncid, ref Int32 lenp);
+
+    // int nc_inq_grpname_full(int ncid, size_t *lenp, char *full_name);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+    public static extern Int32 nc_inq_grpname_full(Int32 ncid,ref Int32 lenp, StringBuilder full_name);
+    
+    // int nc_inq_grpname(int ncid, char *name);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+    public static extern Int32 nc_inq_grpname(Int32 ncid, StringBuilder name);
+
+
 
 }
