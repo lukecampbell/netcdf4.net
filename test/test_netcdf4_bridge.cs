@@ -9,19 +9,19 @@ namespace netcdf4.test {
 		}
 
         public bool test_netcdf_bridge() {
-            Console.WriteLine("test_netcdf_bridge...");
+            Console.Write("test_netcdf_bridge...");
             string retval = NetCDF.nc_inq_libvers();
             if(retval != null) {
-                Console.WriteLine(retval);
+                Console.Write(retval);
                 return true;
             }
             return false;
         }
         public bool test_open() {
-            Console.WriteLine("test_open...");
+            Console.Write("test_open...");
             string filePath = "nc_test.nc";
             if(!System.IO.File.Exists(filePath)) {
-                Console.WriteLine("Test file: " + filePath + " was not found");
+                Console.Write("Test file: " + filePath + " was not found");
                 return false;
             }
             NcFile ncFile = new NcFile(filePath, FileMode.read);
