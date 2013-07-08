@@ -10,10 +10,12 @@ using netcdf4;
 
 namespace netcdf4.test {
     class TestNcGroup : UnitTest {
+        protected const string filePath = "nc_clobber.nc";
         public TestNcGroup() {
             AddTest(test_get_name, "test_get_name");
             AddTest(test_get_parent_group, "test_get_parent_group");
             AddTest(test_get_group_count, "test_get_group_count");
+            AddTest(test_get_group, "test_get_group");
         }
 
         public NcFile newFile(string filePath) {
@@ -25,7 +27,6 @@ namespace netcdf4.test {
 
 
         public bool test_get_name() {
-            string filePath = "nc_clobber.nc";
             string groupName;
             int id;
             CheckDelete(filePath);
@@ -48,7 +49,6 @@ namespace netcdf4.test {
         public bool test_get_parent_group() {
             NcGroup group;
             NcFile file;
-            string filePath = "nc_clobber.nc";
 
             group = new NcGroup();
             try {
@@ -72,7 +72,6 @@ namespace netcdf4.test {
         public bool test_get_group_count() {
             NcGroup group;
             NcFile file;
-            string filePath = "nc_clobber.nc";
             try {
                 file = newFile(filePath);
                 group = file;
@@ -91,6 +90,25 @@ namespace netcdf4.test {
                         Assert.Equals(k.Key, "child1");
                 }
 
+            } finally {
+                file.close();
+            }
+
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool test_get_group() {
+            NcGroup group;
+            NcFile file;
+
+            try {
+                file = newFile(filePath);
+                group = file;
+                file.AddGroup("group1");
+                file.AddGroup("group2");
+
+                group = file.GetGroup("group1");
+                Assert.Equals(group.GetName(), "group1");
             } finally {
                 file.close();
             }

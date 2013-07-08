@@ -177,8 +177,13 @@ namespace netcdf4 {
         }
 
         public NcGroup GetGroup(string name, GroupLocation location=GroupLocation.ChildrenGrps) {
-            throw new NotImplementedException("GetGroup() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcGroup> groups = GetGroups(location);
+            foreach(KeyValuePair<string, NcGroup> k in groups) {
+                if(k.Key.Equals(name))
+                    return k.Value;
+            }
+            return new NcGroup(); // Null 
         }
 
         public NcGroup AddGroup(string name) {
