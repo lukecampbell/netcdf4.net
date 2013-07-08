@@ -7,16 +7,24 @@ using System;
 using System.Collections.Generic;
 
 namespace netcdf4.test {
-    class UnitTest {
+    public class UnitTest {
         public delegate bool TestCase();
         private List<TestCase> tests;
+        private List<string> names;
 
         public UnitTest() {
             tests = new List<TestCase>();
+            names = new List<string>();
+
         }
 
-        protected void addTest(TestCase a) {
+        protected void AddTest(TestCase a, string name="") {
             tests.Add(a);
+            if(String.IsNullOrWhiteSpace(name)) {
+                names.Add("empty");
+            } else {
+                names.Add(name);
+            }
         }
 
         public virtual void SetUp() {
@@ -26,7 +34,17 @@ namespace netcdf4.test {
             bool passing = true;
             int i=0;
             foreach(TestCase a in tests) {
-                bool r = a();
+                bool r;
+                try {
+                    Console.Write(names[i]+"...");
+                    r = a();
+                } catch (AssertFailedException e) {
+                    Console.WriteLine("\tFail");
+                    Console.WriteLine(e.ToString());
+                    passing &= false;
+                    i++;
+                    continue;
+                }
                 if(r)
                     Console.WriteLine("\tOK");
                 else
@@ -38,6 +56,11 @@ namespace netcdf4.test {
 			return passing;
         }
 
+        public void CheckDelete(string filePath) {
+            if(System.IO.File.Exists(filePath)) {
+                System.IO.File.Delete(filePath);
+            }
+        }
     }
 }
 

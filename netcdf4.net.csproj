@@ -82,6 +82,8 @@
     <Compile Include="test\test_netcdf4_bridge.cs" />
     <Compile Include="test\unittest.cs" />
     <Compile Include="test\TestNcFile.cs" />
+    <Compile Include="test\TestNcGroup.cs" />
+    <Compile Include="test\Assert.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

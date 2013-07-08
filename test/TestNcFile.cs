@@ -1,20 +1,21 @@
+/*
+ * Author Luke Campbell <LCampbell@ASAScience.com>
+ * netcdf3.test.TestNcFile
+ */
 using System;
 using netcdf4;
 
 namespace netcdf4.test {
     class TestNcFile : UnitTest {
         public TestNcFile() {
-            addTest(test_open_create);
-            addTest(test_open_nocreate);
+            AddTest(test_open_create, "test_open_create");
+            AddTest(test_open_nocreate, "test_open_nocreate");
         }
 
         public bool test_open_create() {
-            Console.Write("test_open_create...");
             string filePath = "nc_clobber.nc";
             int id;
-            if(System.IO.File.Exists(filePath)) {
-                System.IO.File.Delete(filePath);
-            }
+            CheckDelete(filePath);
             NcFile file = new NcFile(filePath, FileMode.replace, FileFormat.nc4);
             id = file.GetId();
             file.close();
@@ -27,7 +28,6 @@ namespace netcdf4.test {
         }
 
         public bool test_open_nocreate() {
-            Console.Write("test_open_nocreate...");
             // Verify that the file does exist, if not skip
             string filePath = "nc_test.nc";
             if(!System.IO.File.Exists(filePath)) {

@@ -958,6 +958,10 @@ double[] ip);
     [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
     public static extern Int32 nc_inq_grpname(Int32 ncid, StringBuilder name);
 
+    //int nc_inq_grp_parent(int ncid, int *parent_ncid);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_grp_parent(Int32 ncid, ref Int32 parent_ncid);
 
 
 }
+

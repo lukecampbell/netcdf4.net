@@ -78,7 +78,7 @@ namespace netcdf4 {
         public const int NC_EDISKLESS = -129;
         public const int NC4_LAST_ERROR = -129;
 
-        public static void check(int retCode) {
+        public static void Check(int retCode) {
             
             switch(retCode) {
                 case NC_NOERR           : return; /* No Error */

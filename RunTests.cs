@@ -7,11 +7,12 @@ namespace netcdf4
     {
         public static void Main (string[] args)
         {
-            UnitTest test_netcdf4_bridge = new TestNetCDF4Bridge ();
+            //UnitTest test_netcdf4_bridge = new TestNetCDF4Bridge ();
             UnitTest test_file = new TestNcFile();
-            test_netcdf4_bridge.Run ();
+            UnitTest test_group = new TestNcGroup();
+            //test_netcdf4_bridge.Run ();
             test_file.Run();
-
+            test_group.Run();
         }
     }
 }

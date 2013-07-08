@@ -52,26 +52,32 @@ namespace netcdf4 {
             if(IsNull()) {
                 throw new exceptions.NcNullGrp("Attempt to invoke NcGroup.GetName on a Null group");
             }
-
             string groupName;
             if(fullName) {
                Int32 lenp = new Int32();
-               NcCheck.check(NetCDF.nc_inq_grpname_len(myId, ref lenp));
+               NcCheck.Check(NetCDF.nc_inq_grpname_len(myId, ref lenp));
                StringBuilder name = new StringBuilder();
-               NcCheck.check(NetCDF.nc_inq_grpname_full(myId, ref lenp, name));
+               NcCheck.Check(NetCDF.nc_inq_grpname_full(myId, ref lenp, name));
                groupName = name.ToString();
             }
             else {
 				StringBuilder name = new StringBuilder ();
-                NcCheck.check(NetCDF.nc_inq_grpname(myId, name));
+                NcCheck.Check(NetCDF.nc_inq_grpname(myId, name));
                 groupName = name.ToString();
             }
             return groupName;
         }
 
         public NcGroup GetParentGroup() {
-            throw new NotImplementedException("GetParentGroup() not implemented");
-            return null;
+            if(IsNull()) throw new exceptions.NcNullGrp("Attempt to invoke NcGroup.GetParentGroup on a Null group");
+            try {
+                int parentId=0;
+                NcCheck.Check(NetCDF.nc_inq_grp_parent(myId, ref parentId));
+                NcGroup ncGroupParent = new NcGroup(parentId);
+                return ncGroupParent;
+            } catch (exceptions.NcEnoGrp e) {
+                return new NcGroup();
+            }
         }
 
         public Int32 GetId() {
@@ -99,7 +105,7 @@ namespace netcdf4 {
             return null;
         }
 
-        public NcGroup addGroup(string name) {
+        public NcGroup AddGroup(string name) {
             throw new NotImplementedException("AddGroup() not implemented");
             return null;
         }
@@ -108,8 +114,10 @@ namespace netcdf4 {
             return nullObject;
         }
 
-        public bool isRootGroup() {
-			throw new NotImplementedException("IsRootGroup() not impNotImplementedExceptionlemented");
+        public bool IsRootGroup() {
+			if(GetName().Equals("/")) {
+                return true;
+            }
             return false;
         }
 

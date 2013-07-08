@@ -45,16 +45,16 @@ namespace netcdf4 {
         public NcFile(string filePath, FileMode fMode) {
             switch(fMode) {
                 case FileMode.write:
-                    NcCheck.check(NetCDF.nc_open(filePath, NC_WRITE, ref myId));
+                    NcCheck.Check(NetCDF.nc_open(filePath, NC_WRITE, ref myId));
                     break;
                 case FileMode.read:
-                    NcCheck.check(NetCDF.nc_open(filePath, NC_NOWRITE, ref myId));
+                    NcCheck.Check(NetCDF.nc_open(filePath, NC_NOWRITE, ref myId));
                     break;
                 case FileMode.newFile:
-                    NcCheck.check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_NOCLOBBER, ref myId));
+                    NcCheck.Check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_NOCLOBBER, ref myId));
                     break;
                 case FileMode.replace:
-                    NcCheck.check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_CLOBBER, ref myId));
+                    NcCheck.Check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_CLOBBER, ref myId));
                     break;
             }
             nullObject = false;
@@ -78,28 +78,28 @@ namespace netcdf4 {
             }
             switch(fMode) {
                 case FileMode.write:
-                    NcCheck.check(NcCheck.NC_EINVAL);
+                    NcCheck.Check(NcCheck.NC_EINVAL);
                     break;
                 case FileMode.read:
-                    NcCheck.check(NcCheck.NC_EINVAL);
+                    NcCheck.Check(NcCheck.NC_EINVAL);
                     break;
                 case FileMode.newFile:
-                    NcCheck.check(NetCDF.nc_create(filePath, format | NC_NOCLOBBER, ref myId));
+                    NcCheck.Check(NetCDF.nc_create(filePath, format | NC_NOCLOBBER, ref myId));
                     break;
                 case FileMode.replace:
-                    NcCheck.check(NetCDF.nc_create(filePath, format | NC_CLOBBER, ref myId));
+                    NcCheck.Check(NetCDF.nc_create(filePath, format | NC_CLOBBER, ref myId));
                     break;
             }
             nullObject = false;
         }
         public void close() {
-            NcCheck.check(NetCDF.nc_close(myId));
+            NcCheck.Check(NetCDF.nc_close(myId));
             nullObject = true;
             myId = 0;
         }
         ~NcFile() {
             if(!nullObject) {
-                NcCheck.check(NetCDF.nc_close(myId));
+                NcCheck.Check(NetCDF.nc_close(myId));
             }
         }
     }

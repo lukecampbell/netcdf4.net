@@ -4,7 +4,7 @@ using netcdf4;
 namespace netcdf4.test {
     class TestNetCDF4Bridge : UnitTest {
 		public TestNetCDF4Bridge() {
-			addTest(test_netcdf_bridge);
+			AddTest(test_netcdf_bridge);
 		}
 
         public bool test_netcdf_bridge() {
