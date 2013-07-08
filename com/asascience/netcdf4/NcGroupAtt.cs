@@ -4,7 +4,7 @@
  * com.asascience.netcdf4.NcGroupAtt
  */
 namespace netcdf4 {
-    class NcGroupAtt {
+    public class NcGroupAtt {
 
     }
 }

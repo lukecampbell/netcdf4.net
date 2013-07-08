@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace netcdf4 {
 
-    class NcAtt {
+    public class NcAtt {
         ~NcAtt() {
         }
 

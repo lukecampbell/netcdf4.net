@@ -1,5 +1,5 @@
 namespace netcdf4 { 
-    class NcCompound {
+    public class NcCompound {
     }
 }
 

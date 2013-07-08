@@ -4,7 +4,7 @@
  * com.asascience.netcdf4.NcOpaqueType
  */
 namespace netcdf4 {
-    class NcOpaqueType {
+    public class NcOpaqueType {
 
     }
 }

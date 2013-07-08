@@ -4,7 +4,7 @@
  * com.asascience.netcdf4.NcCompoundType
  */
 namespace netcdf4 {
-    class NcCompoundType {
+    public class NcCompoundType {
 
     }
 }

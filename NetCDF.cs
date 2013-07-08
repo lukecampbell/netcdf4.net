@@ -215,7 +215,7 @@ public class NetCDF
 	public static extern Int32 nc_inq_dim(Int32 ncid, Int32 dimid, StringBuilder name, ref Int32 lenp);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
 	// int  nc_inq_dimname(int ncid, int dimid, char *name);
-	public static extern Int32 nc_inq_dimname(Int32 ncid, Int32 dimid, string name);
+	public static extern Int32 nc_inq_dimname(Int32 ncid, Int32 dimid, StringBuilder name);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
 	// int  nc_inq_dimlen(int ncid, int dimid, size_t *lenp);
 	public static extern Int32 nc_inq_dimlen(Int32 ncid, Int32 dimid, ref Int32 lenp);
@@ -978,7 +978,9 @@ Int32[] ncids);
     [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
     public static extern Int32 nc_inq_type(Int32 ncid, NetCDF.nc_type xtype, StringBuilder name, ref Int32 size);
 
-    
+    //int nc_inq_unlimdims(int ncid, int *nunlimdimsp, int *unlimdimidsp);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_unlimdims(Int32 ncid, ref Int32 numlimdimsp, [In(), Out()] Int32[] unlimdimidsp);
 
 }
 

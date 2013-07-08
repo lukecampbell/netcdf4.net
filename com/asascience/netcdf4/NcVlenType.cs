@@ -4,7 +4,7 @@
  * com.asascience.netcdf4.NcVlenType
  */
 namespace netcdf4 {
-    class NcVlenType {
+    public class NcVlenType {
 
     }
 }

@@ -28,7 +28,7 @@ namespace netcdf4 {
     }
 
 
-    class NcGroup {
+    public class NcGroup {
         protected Int32 myId;
         protected bool nullObject;
 

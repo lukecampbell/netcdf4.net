@@ -4,7 +4,7 @@
  * com.asascience.netcdf4.NcVar
  */
 namespace netcdf4 {
-    class NcVar {
+    public class NcVar {
 
     }
 }

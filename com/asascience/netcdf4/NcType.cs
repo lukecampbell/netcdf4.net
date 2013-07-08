@@ -27,7 +27,7 @@ namespace netcdf4 {
         NC_ENUM     = 15,
         NC_COMPOUND = 16
     }
-    class NcType {
+    public class NcType {
 
         // Constructor generates a null object
         public NcType() {
