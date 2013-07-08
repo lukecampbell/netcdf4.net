@@ -9,7 +9,7 @@ namespace netcdf4.test {
 
         public bool test_netcdf_bridge() {
             Console.Write("test_netcdf_bridge...");
-            string retval = NetCDF.nc_inq_libvers();
+            string retval = NetCDF.libvers();
             if(retval != null) {
                 Console.Write(retval);
                 return true;

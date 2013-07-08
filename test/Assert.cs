@@ -38,5 +38,13 @@ namespace netcdf4.test {
             if(ret)
                 throw new AssertFailedException("value is not false");
         }
+        public static void NotNull(Object ret) {
+            if(ret == null) 
+                throw new AssertFailedException("value is null");
+        }
+        public static void Null(Object ret) {
+            if(ret == null)
+                throw new AssertFailedException("value is not null");
+        }
     }
 }

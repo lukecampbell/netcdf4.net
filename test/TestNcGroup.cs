@@ -30,7 +30,7 @@ namespace netcdf4.test {
             string groupName;
             int id;
             CheckDelete(filePath);
-            NcFile file;
+            NcFile file=null;
             NcGroup group;
             try {
                 file = newFile(filePath);
@@ -48,7 +48,7 @@ namespace netcdf4.test {
         }
         public bool test_get_parent_group() {
             NcGroup group;
-            NcFile file;
+            NcFile file=null;
 
             group = new NcGroup();
             try {
@@ -71,7 +71,7 @@ namespace netcdf4.test {
 
         public bool test_get_group_count() {
             NcGroup group;
-            NcFile file;
+            NcFile file=null;
             try {
                 file = newFile(filePath);
                 group = file;
@@ -99,7 +99,7 @@ namespace netcdf4.test {
         }
         public bool test_get_groups() {
             NcGroup group;
-            NcFile file;
+            NcFile file=null;
 
             NcGroup child1_1;
             NcGroup child1_2;

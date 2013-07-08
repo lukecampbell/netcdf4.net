@@ -1,18 +1,28 @@
+/*
+ * Author Luke Campbell <LCampbelL@ASAscience.com>
+ * netcdf4.test
+ */
 using System;
-using netcdf4.test;
+using System.Collections.Generic;
+using netcdf4;
 
-namespace netcdf4
+namespace netcdf4.test
 {
     class RunTests
     {
         public static void Main (string[] args)
         {
-            //UnitTest test_netcdf4_bridge = new TestNetCDF4Bridge ();
-            UnitTest test_file = new TestNcFile();
-            UnitTest test_group = new TestNcGroup();
-            //test_netcdf4_bridge.Run ();
-            test_file.Run();
-            test_group.Run();
+            List<UnitTest> tests = new List<UnitTest> { 
+                //new TestNetCDF4Bridge(),
+                new TestNcFile(),
+                new TestNcGroup(),
+                new TestNcAtt(),
+                new TestNcType()
+            };
+            
+            foreach(UnitTest test in tests) {
+                test.Run();
+            }
         }
     }
 }

@@ -145,18 +145,21 @@ public class NetCDF
 		///* max global or per variable attributes */
 		NC_MAX_VARS = 2000,
 		///* max variables per file */
-		NC_MAX_NAME = 128,
+		NC_MAX_NAME = 256,
 		///* max length of a name */
 		NC_MAX_VAR_DIMS = 10
 		///* max per variable dimensions */
 	}
-	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-
-	// LIBRARY-WIDE AND FILE OPERATIONS
-	//
 	// const char *nc_inq_libvers(void);
-	public static extern string nc_inq_libvers();
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+	public static extern IntPtr nc_inq_libvers();
+
+    public static string libvers() {
+        IntPtr p = nc_inq_libvers();
+        return Marshal.PtrToStringAnsi(p);
+    }
+	
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
 	// const char *nc_strerror(int ncerr1);
 	public static extern string nc_strerror(Int32 ncerr1);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -227,7 +230,7 @@ public class NetCDF
 	public static extern Int32 nc_inq_attid(Int32 ncid, Int32 varid, string name, ref NetCDF.nc_type xtypep, ref Int32 lenp);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
 	// int  nc_inq_atttype(int ncid, int varid, const char *name, nc_type *xtypep);
-	public static extern Int32 nc_inq_atttype(Int32 ncid, Int32 varid, string name, ref NetCDF.nc_type xtypep, ref Int32 lenp);
+	public static extern Int32 nc_inq_atttype(Int32 ncid, Int32 varid, string name, ref NetCDF.nc_type xtypep);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
 	// int  nc_inq_attlen(int ncid, int varid, const char *name, size_t *lenp);
 	public static extern Int32 nc_inq_attlen(Int32 ncid, Int32 varid, string name, ref Int32 lenp);
@@ -970,6 +973,12 @@ Int32[] ncids);
     //int nc_def_grp(int parent_ncid, const char *name, int *new_ncid);
     [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
     public static extern Int32 nc_def_grp(Int32 parent_ncid, string name, ref Int32 new_ncid);
+
+    //int nc_inq_type(int ncid, nc_type xtype, char *name, size_t *size);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_type(Int32 ncid, NetCDF.nc_type xtype, StringBuilder name, ref Int32 size);
+
+    
 
 }
 

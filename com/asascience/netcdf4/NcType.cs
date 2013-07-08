@@ -2,6 +2,9 @@
  * Author Luke Campbell <LCampbell@asascience.com>
  * com.asascience.netcdf4.NcType
  */
+using System;
+using System.Text;
+
 namespace netcdf4 {
     /* From netcdf.h:27 */
     public enum NcTypeEnum {
@@ -34,29 +37,27 @@ namespace netcdf4 {
         // Constructor
         public NcType(NcGroup grp, string name) {
             nullObject = false;
-            //TODO add getId
-            //groupId = grp.getId();
-            //TODO add getType
-            //NcType typTmp = grp.getType(name, NcGroup.ParentsAndCurrent);
-            //myId = typTmp.getId();
+            groupId = grp.GetId();
+            NcType typeTmp = grp.GetType(name, Location.ParentsAndCurrent);
+            myId = typeTmp.GetId();
         }
 
         // Constructor for a non-global type
         public NcType(NcGroup grp, int id) {
             nullObject = false;
             myId = id;
-            //TODO add getId
-            //groupId = grp.getId();
+            groupId = grp.GetId();
         }
 
         // Constructor for a global type
-        public NcType(int id) {
+        public NcType(Int32 id) {
             nullObject = false;
             myId = id;
             groupId = 0;
         }
 
 
+        // Copy constructor
         public NcType(NcType rhs) {
             nullObject = rhs.nullObject;
             myId = rhs.myId;
@@ -66,46 +67,66 @@ namespace netcdf4 {
         ~NcType() {
         }
 
-        public int getId() {
+        public Int32 GetId() {
             return myId;
         }
 
-        public NcGroup getParentGroup() {
+
+        public NcGroup GetParentGroup() {
             if(groupId!=0) {
-                //TODO add constructor NcGroup
-                //return new NcGroup(groupId);
+                return new NcGroup(groupId);
             }
-            return new NcGroup();
+            return new NcGroup(); // Null
         }
 
-        public string getName() {
-            //TODO fix this
-            //byte[] charName = new byte[NC_MAX_NAME+1];
-            //long sizep = 0L;
-            string retval;
-            // ncCheck(nc_inq_type(groupId, myId, charName, sizep));
-            //retval = System.Text.Encoding.UTF8.GetString(charName);
-            return null;
+        public string GetName() {
+            StringBuilder charName = new StringBuilder((int)NetCDF.netCDF_limits.NC_MAX_NAME);
+            Int32 sizep = 0;
+            NcCheck.Check(NetCDF.nc_inq_type(groupId, (NetCDF.nc_type)myId,charName, ref sizep));
+            return charName.ToString();
         }
 
-        public long getSize() {
-            return 0;
+        public Int32 GetSize() {
+            StringBuilder charName = new StringBuilder((int)NetCDF.netCDF_limits.NC_MAX_NAME);
+            Int32 sizep = 0;
+            NcCheck.Check(NetCDF.nc_inq_type(groupId, (NetCDF.nc_type)myId, charName, ref sizep));
+            return sizep;
         }
 
-        public NcTypeEnum getTypeClass() {
-            return NcTypeEnum.NC_NAT;
+        public NcTypeEnum GetTypeClass() {
+            // TODO: Add support for user defined types
+            return (NcTypeEnum)myId;
         }
 
-        public string getTypeClassName() {
-            return null;
+        public string GetTypeClassName() {
+            switch(myId) {
+              case (int)NcTypeEnum.NC_BYTE    : return "NC_BYTE";
+              case (int)NcTypeEnum.NC_UBYTE   : return "NC_UBYTE";
+              case (int)NcTypeEnum.NC_CHAR    : return "NC_CHAR";
+              case (int)NcTypeEnum.NC_SHORT   : return "NC_SHORT";
+              case (int)NcTypeEnum.NC_USHORT  : return "NC_USHORT";
+              case (int)NcTypeEnum.NC_INT     : return "NC_INT";
+              case (int)NcTypeEnum.NC_UINT    : return "NC_UINT";  
+              case (int)NcTypeEnum.NC_INT64   : return "NC_INT64"; 
+              case (int)NcTypeEnum.NC_UINT64  : return "NC_UINT64";
+              case (int)NcTypeEnum.NC_FLOAT   : return "NC_FLOAT";
+              case (int)NcTypeEnum.NC_DOUBLE  : return "NC_DOUBLE";
+              case (int)NcTypeEnum.NC_STRING  : return "NC_STRING";
+              case (int)NcTypeEnum.NC_VLEN    : return "NC_VLEN";
+              case (int)NcTypeEnum.NC_OPAQUE  : return "NC_OPAQUE";
+              case (int)NcTypeEnum.NC_ENUM    : return "NC_ENUM";
+              case (int)NcTypeEnum.NC_COMPOUND: return "NC_COMPOUND";
+            }
+            // I wouldn't say it's an exception but it's definitely not normal.
+            return "Unknown Type";
         }
 
-        public bool isNull() {
+        public bool IsNull() {
             return nullObject; 
         }
 
         protected bool nullObject;
-        protected int myId;
-        protected int groupId;
+        protected Int32 myId;
+        protected Int32 groupId;
     }
 }
