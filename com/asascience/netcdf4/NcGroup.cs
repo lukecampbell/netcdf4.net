@@ -83,16 +83,92 @@ namespace netcdf4 {
         public Int32 GetId() {
             return myId;
         }
+        protected void CheckNull() {
+            if(IsNull()) {
+                throw new exceptions.NcNullGrp("Attempt to invoke NcGroup.GetId on a Null group");
+            }
+        }
     
-        public int getGroupCount(GroupLocation location=GroupLocation.ChildrenGrps) {
-            throw new NotImplementedException("GetGroupCount() not implemented");
-            return 0;
+        public int GetGroupCount(GroupLocation location=GroupLocation.ChildrenGrps) {
+            CheckNull();
+            int ngroups=0;
+            // record this group
+            if(location == GroupLocation.ParentsAndCurrentGrps || location == GroupLocation.AllGrps) {
+                ngroups++;
+            }
 
+            // search in parent groups
+            if(location == GroupLocation.ChildrenGrps || location == GroupLocation.AllChildrenGrps 
+                                                            || location == GroupLocation.AllGrps)  {
+                int numgrps=0;
+                int[] ncids=null;
+                NcCheck.Check(NetCDF.nc_inq_grps(myId, ref numgrps, ncids));
+                ngroups += numgrps;
+            }
+            // search is parent groups
+            if(location == GroupLocation.ParentGrps || location == GroupLocation.ParentsAndCurrentGrps 
+                                                            || location == GroupLocation.AllGrps) {
+                Dictionary<string,NcGroup> groups = GetGroups(GroupLocation.ParentGrps);
+                ngroups += groups.Count;
+            }
+
+            // get the number of all children that are childreof children
+            if(location == GroupLocation.ChildrenOfChildrenGrps || location == GroupLocation.AllChildrenGrps
+                                                            || location == GroupLocation.AllGrps) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ChildrenOfChildrenGrps);
+                ngroups += groups.Count;
+            }
+            return ngroups;
         }
 
         public Dictionary<string, NcGroup> GetGroups(GroupLocation location=GroupLocation.ChildrenGrps) {
-            throw new NotImplementedException("GetGroups() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcGroup> ncGroups = new Dictionary<string, NcGroup>();
+
+            // Record this group
+            if(location == GroupLocation.ParentsAndCurrentGrps || location == GroupLocation.AllGrps) {
+                ncGroups.Add(GetName(), this);
+            }
+
+            // the child groups of the current group
+            if(location == GroupLocation.ChildrenGrps || location == GroupLocation.AllChildrenGrps 
+                                                            || location == GroupLocation.AllGrps ) {
+                int groupCount = GetGroupCount();
+                int[] ncids = new int[groupCount];
+                int numgrps=0;
+
+                NcCheck.Check(NetCDF.nc_inq_grps(GetId(), ref numgrps, ncids));
+                for(int i=0; i<groupCount; i++) {
+                    NcGroup tmpGroup = new NcGroup(ncids[i]);
+                    ncGroups.Add(tmpGroup.GetName(), tmpGroup);
+                }
+            }
+            // search in parent groups.
+            if(location == GroupLocation.ParentGrps || location == GroupLocation.ParentsAndCurrentGrps
+                                                            || location == GroupLocation.AllGrps) {
+                NcGroup tmpGroup = this;
+                if(!tmpGroup.IsRootGroup()) {
+                    while(true) {
+                        NcGroup parentGroup = tmpGroup.GetParentGroup();
+                        if(parentGroup.IsNull())
+                            break;
+                        ncGroups.Add(parentGroup.GetName(), parentGroup);
+                        tmpGroup = parentGroup;
+                    }
+                }
+            }
+
+            // search in child groups of the children
+            if(location == GroupLocation.ChildrenOfChildrenGrps || location == GroupLocation.AllChildrenGrps
+                                                            || location == GroupLocation.AllGrps) { 
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    foreach(KeyValuePair<string, NcGroup> kchild in k.Value.GetGroups(GroupLocation.AllChildrenGrps)) {
+                        ncGroups.Add(kchild.Key, kchild.Value);
+                    }
+                }
+            }
+            return ncGroups;
         }
 
         public HashSet<NcGroup> GetGroups(string name, GroupLocation location=GroupLocation.ChildrenGrps) {
@@ -106,8 +182,10 @@ namespace netcdf4 {
         }
 
         public NcGroup AddGroup(string name) {
-            throw new NotImplementedException("AddGroup() not implemented");
-            return null;
+            CheckNull();
+            int new_ncid=0;
+            NcCheck.Check(NetCDF.nc_def_grp(myId, name, ref new_ncid));
+            return new NcGroup(new_ncid);
         }
 
         public bool IsNull() {

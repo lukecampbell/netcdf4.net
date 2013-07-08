@@ -962,6 +962,14 @@ double[] ip);
     [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
     public static extern Int32 nc_inq_grp_parent(Int32 ncid, ref Int32 parent_ncid);
 
+    //int nc_inq_grps(int ncid, int *numgrps, int *ncids);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_grps(Int32 ncid, ref Int32 numgrps, [In(), Out()]
+Int32[] ncids);
+
+    //int nc_def_grp(int parent_ncid, const char *name, int *new_ncid);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_def_grp(Int32 parent_ncid, string name, ref Int32 new_ncid);
 
 }
 
