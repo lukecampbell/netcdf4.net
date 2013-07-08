@@ -15,7 +15,7 @@ namespace netcdf4.test {
             AddTest(test_get_name, "test_get_name");
             AddTest(test_get_parent_group, "test_get_parent_group");
             AddTest(test_get_group_count, "test_get_group_count");
-            AddTest(test_get_group, "test_get_group");
+            AddTest(test_get_groups, "test_get_groups");
         }
 
         public NcFile newFile(string filePath) {
@@ -97,18 +97,30 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             return true;
         }
-        public bool test_get_group() {
+        public bool test_get_groups() {
             NcGroup group;
             NcFile file;
+
+            NcGroup child1_1;
+            NcGroup child1_2;
 
             try {
                 file = newFile(filePath);
                 group = file;
-                file.AddGroup("group1");
+                /* -- Check differentiability for GetGroup -- */
+                child1_1 = file.AddGroup("group1");
                 file.AddGroup("group2");
 
                 group = file.GetGroup("group1");
                 Assert.Equals(group.GetName(), "group1");
+                /* -- Check that sets work for GetGroups -- */
+                child1_2 = child1_1.AddGroup("group1"); // Second one named group1
+                HashSet<NcGroup> groups = file.GetGroups("group1");
+                foreach(NcGroup g in groups) {
+                    if(g.GetId() != child1_1.GetId() && g.GetId() != child1_2.GetId()) {
+                        throw new AssertFailedException("Incorrect group in set");
+                    }
+                }
             } finally {
                 file.close();
             }

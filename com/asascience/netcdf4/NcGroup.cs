@@ -172,8 +172,13 @@ namespace netcdf4 {
         }
 
         public HashSet<NcGroup> GetGroups(string name, GroupLocation location=GroupLocation.ChildrenGrps) {
-            throw new NotImplementedException("GetGroups() not implemented");
-            return null;
+            CheckNull();
+            HashSet<NcGroup> retval = new HashSet<NcGroup>();
+            foreach(KeyValuePair<string, NcGroup> k in GetGroups(location)) {
+                if(name.Equals(k.Key))
+                    retval.Add(k.Value);
+            }
+            return retval;
         }
 
         public NcGroup GetGroup(string name, GroupLocation location=GroupLocation.ChildrenGrps) {
