@@ -19,10 +19,7 @@ namespace netcdf4.test {
         }
 
         public NcFile newFile(string filePath) {
-            NcFile file;
-            CheckDelete(filePath);
-            file = new NcFile(filePath, FileMode.replace, FileFormat.nc4);
-            return file;
+            return TestHelper.NewFile(filePath);
         }
 
 

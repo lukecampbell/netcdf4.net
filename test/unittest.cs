@@ -57,9 +57,7 @@ namespace netcdf4.test {
         }
 
         public void CheckDelete(string filePath) {
-            if(System.IO.File.Exists(filePath)) {
-                System.IO.File.Delete(filePath);
-            }
+            TestHelper.CheckDelete(filePath);
         }
     }
 }

@@ -327,8 +327,33 @@ namespace netcdf4 {
         /* TODO: Fill in the rest of the PutAtts */
 
         public int GetDimCount(Location location=Location.Current) {
-            throw new NotImplementedException("GetDimCount() not implemented");
-            return 0;
+            CheckNull();
+            int ndims =0;
+            // Search current group
+            if(location == Location.Current || location == Location.ParentsAndCurrent 
+                                                            || location == Location.ChildrenAndCurrent 
+                                                            || location == Location.All) {
+                int ndimsp=0;
+                NcCheck.Check(NetCDF.nc_inq_ndims(myId, ref ndimsp));
+                ndims += ndimsp;
+            }
+            // Search in parent group
+            if(location == Location.Parents || location == Location.ParentsAndCurrent 
+                                                            || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    ndims += k.Value.GetDimCount();
+                }
+            }
+
+            if(location == Location.Children || location == Location.ChildrenAndCurrent 
+                                                            || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    ndims += k.Value.GetDimCount();
+                }
+            }
+            return ndims;
         }
 
         public Dictionary<string, NcDim> GetDims(Location location=Location.Current) {
@@ -346,14 +371,20 @@ namespace netcdf4 {
             return null;
         }
 
-        public NcDim AddDim(string name, long dimSize) {
-            throw new NotImplementedException("AddDim() not implemented");
-            return null;
+        // Adds a dimension of limited size
+        public NcDim AddDim(string name, Int32 dimSize) {
+            CheckNull();
+            Int32 dimId=0;
+            NcCheck.Check(NetCDF.nc_def_dim(myId, name, dimSize, ref dimId));
+            return new NcDim(this, dimId);
         }
 
+        // Adds a dimension of unlimited size
         public NcDim AddDim(string name) {
-            throw new NotImplementedException("AddDim() not implemented");
-            return null;
+            CheckNull();
+            Int32 dimId = 0;
+            NcCheck.Check(NetCDF.nc_def_dim(myId, name, NetCDF.NC_UNLIMITED, ref dimId));
+            return new NcDim(this, dimId);
         }
 
         public int GetTypeCount(Location location=Location.Current) {

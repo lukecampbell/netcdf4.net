@@ -13,11 +13,12 @@ namespace netcdf4.test
         public static void Main (string[] args)
         {
             List<UnitTest> tests = new List<UnitTest> { 
-                //new TestNetCDF4Bridge(),
+                new TestNetCDF4Bridge(),
                 new TestNcFile(),
                 new TestNcGroup(),
                 new TestNcAtt(),
-                new TestNcType()
+                new TestNcType(),
+                new TestNcDim()
             };
             
             foreach(UnitTest test in tests) {
