@@ -350,10 +350,11 @@ int[] dimidsp, ref Int32 nattsp);
 	// int  nc_inq_varndims(int ncid, int varid, int *ndimsp);
 	public static extern Int32 nc_inq_varndims(Int32 ncid, Int32 varid, ref Int32 ndimsp);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-	// int  nc_inq_vardimid(int ncid, int varid, int *dimidsp);
-	public static extern Int32 nc_inq_vardimid(Int32 ncid, Int32 varid, 	[Out()]
-int[] dimidsp, ref Int32 nattsp);
-	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+	
+    // int  nc_inq_vardimid(int ncid, int varid, int *dimidsp);
+	public static extern Int32 nc_inq_vardimid(Int32 ncid, Int32 varid,	[Out()] Int32[] dimidsp);
+	
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
 	// int  nc_inq_varnatts(int ncid, int varid, int *nattsp);
 	public static extern Int32 nc_inq_varnatts(Int32 ncid, Int32 varid, ref Int32 nattsp);
 	[DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -981,6 +982,39 @@ Int32[] ncids);
     //int nc_inq_unlimdims(int ncid, int *nunlimdimsp, int *unlimdimidsp);
     [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
     public static extern Int32 nc_inq_unlimdims(Int32 ncid, ref Int32 numlimdimsp, [In(), Out()] Int32[] unlimdimidsp);
+
+    //int nc_def_var_chunking(int ncid, int varid, int storage, const size_t *chunksizesp);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_def_var_chunking(Int32 ncid, Int32 varId, Int32 storage, [In(), Out()] Int32[] chunkSizeP);
+
+    //int nc_def_var_deflate(int ncid, int varid, int shuffle, int deflate, int deflate_level);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_def_var_deflate(Int32 ncid, Int32 varid, Int32 shuffle, Int32 deflate, Int32 deflate_level);
+
+    //int nc_inq_var_chunking(int ncid, int varid, int *storagep, size_t *chunksizesp);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_var_chunking(Int32 ncid, Int32 varid, ref Int32 storagep, [In(), Out()] Int32[] chunksizesp);
+    
+    //int nc_inq_var_deflate(int ncid, int varid, int *shufflep, int *deflatep, int *deflate_levelp);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_var_deflate(int ncid, int varid, ref Int32 shufflep, ref Int32 deflatep, ref Int32 deflate_levelp);
+    
+    //int nc_def_var_endian(int ncid, int varid, int endian);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_def_var_endian(Int32 ncid, Int32 varid, Int32 endian);
+    
+    //int nc_inq_var_endian(int ncid, int varid, int *endianp);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_var_endian(Int32 ncid, Int32 varid, ref Int32 endian);
+
+    //int nc_def_var_fletcher32(int ncid, int varid, int fletcher32);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_def_var_fletcher32(Int32 ncid, Int32 varId, Int32 fletcher32);
+
+    //int nc_inq_var_fletcher32(int ncid, int varid, int *fletcher32p);
+    [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+    public static extern Int32 nc_inq_var_fletcher32(Int32 ncid, Int32 varid, ref Int32 fletcher32p); 
+    
 
 }
 

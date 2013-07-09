@@ -23,29 +23,38 @@ namespace netcdf4 {
         NC_FLETCHER32 = 1
     }
     public class NcVar {
+        // Null Constructor
         public NcVar() {
-            throw new NotImplementedException("NcVar not implemented");
+            nullObject = true;
         }
 
         public NcVar(NcGroup grp, Int32 varId) {
-            throw new NotImplementedException("NcVar not implemented");
+            nullObject = false;
+            myId = varId;
+            groupId = grp.GetId();
         }
 
         public NcVar(NcVar rhs) {
-            throw new NotImplementedException("NcVar not implemented");
+            nullObject = rhs.nullObject;
+            myId = rhs.myId;
+            groupId = rhs.groupId;
         }
 
         public string GetName() {
-            throw new NotImplementedException("GetName() not implemented");
-            return null;
+            CheckNull();
+            StringBuilder sb = new StringBuilder((int)NetCDF.netCDF_limits.NC_MAX_NAME);
+            NcCheck.Check(NetCDF.nc_inq_varname(groupId, myId, sb));
+            return sb.ToString();
         }
 
         public NcGroup GetParentGroup() {
-            throw new NotImplementedException("GetParentGroup() not implemented");
-            return null;
+            CheckNull();
+            return new NcGroup(groupId);
         }
 
         public NcType GetType() {
+            if(nullObject)
+                return new NcType(); // Return null-type
             throw new NotImplementedException("GetType() not implemented");
             return null;
         }
@@ -55,31 +64,55 @@ namespace netcdf4 {
         }
 
         public Int32 GetId() {
-            throw new NotImplementedException("GetId() not implemented");
+            CheckNull();
+            return myId;
         }
 
         public bool IsNull() {
             return nullObject;
         }
 
+        protected void CheckNull() {
+            if(nullObject) {
+                throw new exceptions.NcNullVar("Attempt to invoke NcGroup.GetId on a Null group");
+            }
+        }
+
         public Int32 GetDimCount() {
-            throw new NotImplementedException("GetDimCount() not implemented");
-            return 0;
+            CheckNull();
+            Int32 dimCount=0;
+            NcCheck.Check(NetCDF.nc_inq_varndims(groupId, myId, ref dimCount));
+            return dimCount;
         }
 
         public NcDim GetDim(Int32 i) {
-            throw new NotImplementedException("GetDim() not implemented");
-            return null;
+            CheckNull();
+            List<NcDim> ncDims = GetDims();
+            if(i >= ncDims.Count || i < 0) 
+                throw new exceptions.NcException("Index out of range");
+            return ncDims[i];
         }
         
         public List<NcDim> GetDims() {
-            throw new NotImplementedException("GetDims() not implemented");
-            return null;
+            CheckNull();
+            Int32 dimCount = GetDimCount();
+
+            List<NcDim> ncDims = new List<NcDim>(dimCount);
+            Int32[] dimids = new Int32[dimCount];
+            NcGroup parent = GetParentGroup();
+            NcCheck.Check(NetCDF.nc_inq_vardimid(groupId, myId, dimids));
+
+            for(int i=0;i<dimCount;i++) {
+                ncDims.Add(new NcDim(parent, dimids[i]));
+            }
+            return ncDims;
         }
         
         public Int32 GetAttCount() {
-            throw new NotImplementedException("GetAttCount() not implemented");
-            return 0;
+            CheckNull();
+            Int32 attCount=0;
+            NcCheck.Check(NetCDF.nc_inq_varnatts(groupId, myId, ref attCount));
+            return attCount;
         }
 
         public NcVarAtt GetAtt(string name) {
@@ -182,12 +215,16 @@ namespace netcdf4 {
             return null;
         }
 
-        public void SetChunking(ChunkMode chunkMode, List<Int32> chunkSizes) {
-            throw new NotImplementedException("SetChunking() not implemented");
+        public void SetChunking(ChunkMode chunkMode, Int32[] chunkSizes) {
+            CheckNull();
+            NcCheck.Check(NetCDF.nc_def_var_chunking(groupId, myId, (Int32) chunkMode, chunkSizes));
         }
 
-        public void GetChunkingParameters(ChunkMode chunkMode, List<Int32> chunkSizes) {
-            throw new NotImplementedException("GetChunkingParameters() not implemented");
+        public void GetChunkingParameters(ref ChunkMode chunkMode, ref Int32[] chunkSizes) {
+            Int32 chunkModeInt = 0;
+            chunkSizes = new Int32[GetDimCount()];
+            NcCheck.Check(NetCDF.nc_inq_var_chunking(groupId, myId, ref chunkModeInt, chunkSizes));
+            chunkMode = (ChunkMode) chunkModeInt;
         }
 
         /* Sets the compression parameters
@@ -195,25 +232,46 @@ namespace netcdf4 {
           param enableDeflateFilter Set to true to turn on deflate filter.
           param deflateLevel        The deflate level, must be 0 and 9.
         */
-        public void SetCompression(bool enableShuffleFilter, bool enableDeflateFilter, ref Int32 deflateLevel) {
-            throw new NotImplementedException("SetCompression() not implemented");
+        public void SetCompression(bool enableShuffleFilter, bool enableDeflateFilter, Int32 deflateLevel) {
+            CheckNull();
+            if(enableDeflateFilter && (deflateLevel < 0 || deflateLevel > 9))
+                throw new exceptions.NcException("The deflateLevel must be set between 0 and 9");
+            NcCheck.Check(NetCDF.nc_def_var_deflate(groupId, myId, enableShuffleFilter ? 1 : 0,enableDeflateFilter ? 1 : 0, deflateLevel));
+
         }
 
         public void GetCompressionParameters(ref bool shuffleFilterEnabled, ref bool deflateFilterEnabled, ref Int32 deflateLevel) {
-            throw new NotImplementedException("GetCompressionParameters() not implemented");
+            CheckNull();
+            Int32 enableShuffleFilterInt=0;
+            Int32 enableDeflateFilterInt=0;
+            NcCheck.Check(NetCDF.nc_inq_var_deflate(groupId, myId, ref enableShuffleFilterInt, ref enableDeflateFilterInt, ref deflateLevel));
+            shuffleFilterEnabled = Convert.ToBoolean(enableShuffleFilterInt);
+            deflateFilterEnabled = Convert.ToBoolean(enableDeflateFilterInt);
+            
         }
 
         public void SetEndianness(EndianMode endianMode) {
-            throw new NotImplementedException("SetEndinanness() not implemented");
+            CheckNull();
+            NcCheck.Check(NetCDF.nc_def_var_endian(groupId, myId, (int)endianMode));
         }
 
         public EndianMode GetEndianness() {
-            throw new NotImplementedException("GetEndianness() not implemented");
-            return 0;
+            CheckNull();
+            Int32 modep=0;
+            NcCheck.Check(NetCDF.nc_inq_var_endian(groupId, myId, ref modep));
+            return (EndianMode)modep;
         }
 
         public void SetChecksum(ChecksumMode checksumMode) {
-            throw new NotImplementedException("SetChecksum() not implemented");
+            CheckNull();
+            NcCheck.Check(NetCDF.nc_def_var_fletcher32(groupId, myId, (int) checksumMode));
+        }
+
+        public ChecksumMode GetChecksum() {
+            CheckNull();
+            Int32 checkp=0;
+            NcCheck.Check(NetCDF.nc_inq_var_fletcher32(groupId, myId, ref checkp));
+            return (ChecksumMode) checkp;
         }
 
         public void GetVar(StringBuilder dataValues, bool strictChecking=true) {
@@ -287,7 +345,7 @@ namespace netcdf4 {
             throw new NotImplementedException("GetVar() not implemented");
         }
 
-        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, StringBuider dataValues, bool strictChecking=true) {
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, StringBuilder dataValues, bool strictChecking=true) {
             throw new NotImplementedException("GetVar() not implemented");
         }
 
@@ -406,7 +464,7 @@ namespace netcdf4 {
             throw new NotImplementedException("PutVar() not implemented");
         }
 
-        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, StringBuider dataValues) {
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, StringBuilder dataValues) {
             throw new NotImplementedException("PutVar() not implemented");
         }
 
