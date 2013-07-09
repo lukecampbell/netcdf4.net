@@ -34,6 +34,11 @@ namespace netcdf4 {
             nullObject = true;
         }
 
+        // Compares global types
+        public virtual bool Equals(NcType other) {
+            return myId == other.myId;
+        }
+        
         // Constructor
         public NcType(NcGroup grp, string name) {
             nullObject = false;
@@ -55,7 +60,6 @@ namespace netcdf4 {
             myId = id;
             groupId = 0;
         }
-
 
         // Copy constructor
         public NcType(NcType rhs) {

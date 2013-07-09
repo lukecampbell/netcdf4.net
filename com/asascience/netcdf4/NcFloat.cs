@@ -4,7 +4,18 @@
  * com.asascience.netcdf4.NcFloat
  */
 namespace netcdf4 {
-    class NcFloat {
+    public class NcFloat : NcType {
+        private static NcFloat instance;
+        public static NcFloat Instance {
+            get {
+                if(instance==null)
+                    instance = new NcFloat();
+                return instance;
+            }
+        }
+
+        public NcFloat() : base((int)NcTypeEnum.NC_FLOAT) {
+        }
 
     }
 }

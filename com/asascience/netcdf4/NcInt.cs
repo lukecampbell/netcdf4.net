@@ -4,7 +4,18 @@
  * com.asascience.netcdf4.NcInt
  */
 namespace netcdf4 {
-    class NcInt {
+    public class NcInt : NcType {
+        private static NcInt instance;
+        public static NcInt Instance {
+            get {
+                if(instance == null)
+                    instance = new NcInt();
+                return instance;
+            }
+        }
+
+        public NcInt() : base((int)NcTypeEnum.NC_INT) {
+        }
 
     }
 }

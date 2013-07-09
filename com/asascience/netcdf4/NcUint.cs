@@ -2,17 +2,16 @@
  * Author Luke Campbell <LCampbell@asascience.com>
  */
 namespace netcdf4 {
-    class NcUint : NcType{
-        public NcUint() {
-        }
-        private static NcUint ncuint_instance=null;
-        public static NcUint NC_UINT {
-            get { 
-                if(ncuint_instance == null) {
-                    ncuint_instance = new NcUint();
-                }
-                return ncuint_instance;
+    public class NcUint : NcType{
+        private static NcUint instance;
+        public static NcUint Instance {
+            get {
+                if(instance==null)
+                    instance = new NcUint();
+                return instance;
             }
+        }
+        public NcUint() : base((int)NcTypeEnum.NC_UINT) {
         }
     }
 }
