@@ -1020,6 +1020,9 @@ namespace netcdf4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_enum(Int32 ncid, Int32 xtype, StringBuilder name, ref Int32 base_nc_typep, ref Int32 base_sizep, ref Int32 num_membersp);
 
+        //int nc_inq_typeids(int ncid, int *ntypes, int *typeids);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_inq_typeids(Int32 ncid, ref Int32 ntypes, [In(), Out()] Int32[] typeids);
 
     }
 }

@@ -7,11 +7,12 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace netcdf4 {
     public enum GroupLocation {
         ChildrenGrps, 
-        ParentGrps,
+        ParentsGrps,
         ChildrenOfChildrenGrps,
         AllChildrenGrps,
         ParentsAndCurrentGrps,
@@ -106,9 +107,9 @@ namespace netcdf4 {
                 ngroups += numgrps;
             }
             // search is parent groups
-            if(location == GroupLocation.ParentGrps || location == GroupLocation.ParentsAndCurrentGrps 
+            if(location == GroupLocation.ParentsGrps || location == GroupLocation.ParentsAndCurrentGrps 
                                                             || location == GroupLocation.AllGrps) {
-                Dictionary<string,NcGroup> groups = GetGroups(GroupLocation.ParentGrps);
+                Dictionary<string,NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
                 ngroups += groups.Count;
             }
 
@@ -144,7 +145,7 @@ namespace netcdf4 {
                 }
             }
             // search in parent groups.
-            if(location == GroupLocation.ParentGrps || location == GroupLocation.ParentsAndCurrentGrps
+            if(location == GroupLocation.ParentsGrps || location == GroupLocation.ParentsAndCurrentGrps
                                                             || location == GroupLocation.AllGrps) {
                 NcGroup tmpGroup = this;
                 if(!tmpGroup.IsRootGroup()) {
@@ -340,7 +341,7 @@ namespace netcdf4 {
             // Search in parent group
             if(location == Location.Parents || location == Location.ParentsAndCurrent 
                                                             || location == Location.All) {
-                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentGrps);
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
                     ndims += k.Value.GetDimCount();
                 }
@@ -388,38 +389,171 @@ namespace netcdf4 {
         }
 
         public int GetTypeCount(Location location=Location.Current) {
-            throw new NotImplementedException("GetTypeCount() not implemented");
-            return 0;
+            CheckNull();
+            Int32 ntypes=0;
+            // search in current group
+            if(location == Location.Current || location == Location.ParentsAndCurrent 
+                                                        || location == Location.ChildrenAndCurrent
+                                                        || location == Location.All) {
+                Int32 ntypesp=0;
+                Int32[] typeidsp = null;
+                NcCheck.Check(NetCDF.nc_inq_typeids(myId, ref ntypesp, typeidsp));
+                ntypes += ntypesp;
+            }
+
+            // search in parent groups.
+            if(location == Location.Parents || location == Location.ParentsAndCurrent 
+                                                        || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    ntypes += k.Value.GetTypeCount();
+                }
+            }
+
+            // search in child groups
+            if(location == Location.Children || location == Location.ChildrenAndCurrent
+                                                        || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    ntypes += k.Value.GetTypeCount();
+                }
+            }
+            return ntypes;
         }
 
         public int GetTypeCount(NcTypeEnum enumType, Location location=Location.Current) {
-            throw new NotImplementedException("GetTypeCount() not implemented");
-            return 0;
+            CheckNull();
+            Int32 ntypes=0;
+            // search in current group
+            if(location == Location.Current || location == Location.ParentsAndCurrent 
+                                                        || location == Location.ChildrenAndCurrent
+                                                        || location == Location.All) {
+                Int32 ntypesp=0;
+                Int32[] typeidsp = null;
+                NcCheck.Check(NetCDF.nc_inq_typeids(myId, ref ntypesp, typeidsp));
+                typeidsp = new Int32[ntypesp];
+                NcCheck.Check(NetCDF.nc_inq_typeids(myId, ref ntypesp, typeidsp));
+
+                foreach(Int32 i in typeidsp) {
+                    NcType typeTmp = new NcType(this,i);
+                    if(typeTmp.GetTypeClass() == enumType)
+                        ntypes++;
+                }
+            }
+
+            // search in parent groups
+            if(location == Location.Parents || location == Location.ParentsAndCurrent 
+                                                        || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    ntypes += k.Value.GetTypeCount(enumType);
+                }
+            }
+
+            // search in children groups
+            if(location == Location.Children || location == Location.ChildrenAndCurrent
+                                                        || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    ntypes += k.Value.GetTypeCount(enumType);
+                }
+            }
+            return ntypes;
         }
 
         public Dictionary<string, NcType> GetTypes(Location location=Location.Current) {
-            throw new NotImplementedException("GetTypes() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcType> ncTypes = new Dictionary<string, NcType>();
+
+            // search in current group
+            if(location == Location.Current || location == Location.ParentsAndCurrent 
+                                                        || location == Location.ChildrenAndCurrent
+                                                        || location == Location.All) {
+                Int32 typeCount = GetTypeCount();
+                Int32[] typeIds = new Int32[typeCount];
+                NcCheck.Check(NetCDF.nc_inq_typeids(myId, ref typeCount, typeIds));
+
+                foreach(Int32 i in typeIds) {
+                    NcType tmpType = new NcType(this, i);
+                    ncTypes.Add(tmpType.GetName(), tmpType);
+                }
+            }
+
+            // search in parent groups
+            if(location == Location.Parents || location == Location.ParentsAndCurrent 
+                                                        || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    Dictionary<string, NcType> tmpTypes = k.Value.GetTypes();
+                    ncTypes.Union(tmpTypes);
+                }
+            }
+
+            // search in child groups
+            if(location == Location.Children || location == Location.ChildrenAndCurrent
+                                                        || location == Location.All) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    Dictionary<string, NcType> tmpTypes = k.Value.GetTypes();
+                    ncTypes.Union(tmpTypes);
+                }
+            }
+            return ncTypes;
         }
 
         public HashSet<NcType> GetTypes(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetTypes() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcType> types = GetTypes(location);
+            HashSet<NcType> ncTypes = new HashSet<NcType>();
+            foreach(KeyValuePair<string, NcType> k in types) {
+                if(k.Key == name)
+                    ncTypes.Add(k.Value);
+            }
+            return ncTypes;
         }
 
         public HashSet<NcType> GetTypes(NcTypeEnum enumType, Location location=Location.Current) {
-            throw new NotImplementedException("GetTypes() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcType> types = GetTypes(location);
+            HashSet<NcType> ncTypes = new HashSet<NcType>();
+            foreach(KeyValuePair<string, NcType> k in types) {
+                if(k.Value.GetTypeClass() == enumType)
+                    ncTypes.Add(k.Value);
+            }
+            return ncTypes;
         }
 
         public HashSet<NcType> GetTypes(string name, NcTypeEnum enumType, Location location=Location.Current) {
-            throw new NotImplementedException("GetTypes() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcType> types = GetTypes(location);
+            HashSet<NcType> ncTypes = new HashSet<NcType>();
+            foreach(KeyValuePair<string, NcType> k in types) {
+                if(k.Value.GetTypeClass() == enumType && k.Key == name)
+                    ncTypes.Add(k.Value);
+            }
+            return ncTypes;
         }
 
         public NcType GetType(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetType() not implemented");
-            return null;
+            CheckNull();
+            if(name == "byte") return NcByte.Instance;
+            if(name == "ubyte") return NcUbyte.Instance;
+            if(name == "char") return NcChar.Instance;
+            if(name == "short") return NcShort.Instance;
+            if(name == "ushort") return NcUshort.Instance;
+            if(name == "int") return NcInt.Instance;
+            if(name == "uint") return NcUint.Instance;
+            if(name == "int64") return NcInt64.Instance;
+            if(name == "uint64") return NcUint64.Instance;
+            if(name == "float") return NcFloat.Instance;
+            if(name == "double") return NcDouble.Instance;
+            if(name == "string") return NcString.Instance;
+            Dictionary<string, NcType> types = GetTypes(location);
+            foreach(KeyValuePair<string, NcType> k in types) {
+                if(k.Key == name)
+                    return k.Value;
+            }
+            return new NcType(); // null
         }
 
         /*

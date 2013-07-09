@@ -55,12 +55,51 @@ namespace netcdf4 {
         public NcType GetType() {
             if(nullObject)
                 return new NcType(); // Return null-type
-            throw new NotImplementedException("GetType() not implemented");
+            NetCDF.nc_type xtypep=0;
+            Int32 xtype=0;
+
+            NcCheck.Check(NetCDF.nc_inq_vartype(groupId, myId, ref xtypep));
+            xtype = (int) xtypep;
+            switch(xtype) {
+                case (int)NcTypeEnum.NC_BYTE:
+                    return NcByte.Instance;
+                case (int)NcTypeEnum.NC_UBYTE:
+                    return NcUbyte.Instance;
+                case (int)NcTypeEnum.NC_CHAR:
+                    return NcChar.Instance;
+                case (int)NcTypeEnum.NC_SHORT:
+                    return NcShort.Instance;
+                case (int)NcTypeEnum.NC_USHORT:
+                    return NcUshort.Instance;
+                case (int)NcTypeEnum.NC_INT:
+                    return NcInt.Instance;
+                case (int)NcTypeEnum.NC_UINT:
+                    return NcUint.Instance;
+                case (int)NcTypeEnum.NC_INT64:
+                    return NcInt64.Instance;
+                case (int)NcTypeEnum.NC_UINT64:
+                    return NcUint64.Instance;
+                case (int)NcTypeEnum.NC_FLOAT:
+                    return NcFloat.Instance;
+                case(int)NcTypeEnum.NC_DOUBLE:
+                    return NcDouble.Instance;
+                default:
+                    break;
+            }
+            NcGroup group = new NcGroup(groupId);
+            Dictionary<string, NcType> types = group.GetTypes(Location.ParentsAndCurrent);
+            foreach(KeyValuePair<string, NcType> k in types) {
+                if(k.Value.GetId() == xtype)
+                    return k.Value;
+            }
+            // Should never get to here
+            throw new exceptions.NcException("Type could not be identified");
             return null;
         }
 
         public void Rename(string newName) {
-            throw new NotImplementedException("Rename() not implemented");
+            CheckNull();
+            NcCheck.Check(NetCDF.nc_rename_var(groupId, myId, newName));
         }
 
         public Int32 GetId() {
@@ -287,7 +326,12 @@ namespace netcdf4 {
         }
 
         public void GetVar(Int32[] dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) {
+                return;
+            }
+            
+
         }
 
         public void GetVar(float[] dataValues, bool strictChecking=true) {
