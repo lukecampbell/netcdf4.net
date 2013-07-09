@@ -62,7 +62,7 @@ namespace netcdf4 {
                groupName = name.ToString();
             }
             else {
-				StringBuilder name = new StringBuilder ();
+                StringBuilder name = new StringBuilder ();
                 NcCheck.Check(NetCDF.nc_inq_grpname(myId, name));
                 groupName = name.ToString();
             }
@@ -204,7 +204,7 @@ namespace netcdf4 {
         }
 
         public bool IsRootGroup() {
-			if(GetName().Equals("/")) {
+            if(GetName().Equals("/")) {
                 return true;
             }
             return false;
