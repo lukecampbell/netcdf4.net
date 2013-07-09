@@ -4,6 +4,7 @@
  * com.asascience.netcdf4.NcVar
  */
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace netcdf4 {
@@ -239,7 +240,219 @@ namespace netcdf4 {
             throw new NotImplementedException("GetVar() not implemented");
         }
 
+        public void GetVar(Int32[] index, StringBuilder dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
 
+        public void GetVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] index, Int16[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] index, Int32[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] index, float[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        public void GetVar(Int32[] index, double[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, StringBuilder dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, byte[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int16[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, float[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, double[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, StringBuider dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, byte[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int16[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, float[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, double[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, StringBuilder dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, byte[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, Int16[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, Int32[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, float[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+        
+        public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, double[] dataValues, bool strictChecking=true) {
+            throw new NotImplementedException("GetVar() not implemented");
+        }
+
+        public void PutVar(string dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(byte[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int16[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(float[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(double[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] index, string dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] index, byte[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] index, Int16[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] index, Int32[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] index, float[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        public void PutVar(Int32[] index, double[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, string dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, byte[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int16[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, float[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, double[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, StringBuider dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, byte[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int16[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, float[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, double[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, string dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, byte[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, Int16[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, Int32[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, float[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
+        
+        public void PutVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, double[] dataValues) {
+            throw new NotImplementedException("PutVar() not implemented");
+        }
         private bool nullObject;
         private Int32 myId;
         private Int32 groupId;
