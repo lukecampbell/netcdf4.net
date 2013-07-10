@@ -320,22 +320,23 @@ namespace netcdf4 {
                 spaceRequired += dim.GetSize();
             }
             if( len < spaceRequired )
-                throw new exceptions.NcBufferOverflow("Strict Checking: Not enough space available to store variable");
+                throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
         }
 
-        public void GetVar(StringBuilder dataValues, bool strictChecking=true) {
-            CheckNull();
-            if(strictChecking) {
-                BufferCheck(dataValues.Capacity);
-            }
-            NcCheck.Check(NetCDF.nc_get_var_text(groupId, myId, dataValues));
+        private void DimCheck(int len) {
+            int dimCount = GetDimCount();
+            if(len != dimCount)
+                throw new exceptions.NcBufferOverflow("Index array must be the same length as the number of dimensions");
         }
 
         public void GetVar(byte[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) 
                 BufferCheck(dataValues.Length);
-            NcCheck.Check(NetCDF.nc_get_var_schar(groupId, myId, dataValues));
+            if(NcChar.Instance.Equals(GetType()))
+                NcCheck.Check(NetCDF.nc_get_var_text(groupId, myId, dataValues));
+            else
+                NcCheck.Check(NetCDF.nc_get_var_schar(groupId, myId, dataValues));
         }
 
         public void GetVar(Int16[] dataValues, bool strictChecking=true) {
@@ -364,18 +365,19 @@ namespace netcdf4 {
 
         public void GetVar(double[] dataValues, bool strictChecking=true) {
             CheckNull();
-            if(strictChecking) {
+            if(strictChecking) 
                 BufferCheck(dataValues.Length);
-            }
             NcCheck.Check(NetCDF.nc_get_var_double(groupId, myId, dataValues));
         }
 
-        public void GetVar(Int32[] index, StringBuilder dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
-        }
-
         public void GetVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) {
+                DimCheck(index.Length);
+                if(dataValues.Length < 1) 
+                    throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
+            }
+            NcCheck.Check(NetCDF.nc_get_var1_schar(groupId, myId, index, dataValues));
         }
 
         public void GetVar(Int32[] index, Int16[] dataValues, bool strictChecking=true) {
@@ -465,36 +467,46 @@ namespace netcdf4 {
             throw new NotImplementedException("GetVar() not implemented");
         }
 
-        public void PutVar(string dataValues) {
-            NcCheck.Check(NetCDF.nc_put_var_text(groupId, myId, dataValues));
+        public void PutVar(byte[] dataValues, bool strictChecking=true) {
+            if(strictChecking)
+                BufferCheck(dataValues.Length);
+            if(NcChar.Instance.Equals(GetType()))
+                NcCheck.Check(NetCDF.nc_put_var_text(groupId,myId,dataValues));
+            else
+                NcCheck.Check(NetCDF.nc_put_var_schar(groupId, myId, dataValues));
         }
 
-        public void PutVar(byte[] dataValues) {
-            NcCheck.Check(NetCDF.nc_put_var_schar(groupId, myId, dataValues));
-        }
-
-        public void PutVar(Int16[] dataValues) {
+        public void PutVar(Int16[] dataValues, bool strictChecking=true) {
+            if(strictChecking)
+                BufferCheck(dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_var_short(groupId, myId, dataValues));
         }
 
-        public void PutVar(Int32[] dataValues) {
+        public void PutVar(Int32[] dataValues, bool strictChecking=true) {
+            if(strictChecking)
+                BufferCheck(dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_var_int(groupId, myId, dataValues));
         }
 
-        public void PutVar(float[] dataValues) {
+        public void PutVar(float[] dataValues, bool strictChecking=true) {
+            if(strictChecking)
+                BufferCheck(dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_var_float(groupId, myId, dataValues));
         }
 
-        public void PutVar(double[] dataValues) {
+        public void PutVar(double[] dataValues, bool strictChecking=true) {
+            if(strictChecking)
+                BufferCheck(dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_var_double(groupId, myId, dataValues));
         }
 
-        public void PutVar(Int32[] index, string dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
-        }
-
-        public void PutVar(Int32[] index, byte[] dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
+        public void PutVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
+            if(strictChecking){
+                DimCheck(index.Length);
+                if(dataValues.Length < 1)
+                    throw new exceptions.NcBufferOverflow("Value buffer must have at least 1 value");
+            }
+            NcCheck.Check(NetCDF.nc_put_var1_schar(groupId, myId, index, dataValues));
         }
 
         public void PutVar(Int32[] index, Int16[] dataValues) {

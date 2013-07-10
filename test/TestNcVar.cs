@@ -22,6 +22,7 @@ namespace netcdf4.test {
             AddTest(TestInt32Var, "TestInt32Var");
             AddTest(TestFloatVar, "TestFloatVar");
             AddTest(TestDoubleVar, "TestDoubleVar");
+            AddTest(TestStringIndexVar, "TestStringIndexVar");
         }
 
         public bool TestVarPutGet() {
@@ -93,6 +94,9 @@ namespace netcdf4.test {
                 var1.GetVar(readBuffer);
                 for(int i=0;i<20;i++)
                     Assert.Equals(readBuffer[i], buffer[i]);
+                var1.PutVar(new Int32[]{5}, new byte[]{30});
+                var1.GetVar(new Int32[]{5}, readBuffer);
+                Assert.Equals(readBuffer[0], (byte)30);
             } finally {
                 file.close();
             }
@@ -183,14 +187,15 @@ namespace netcdf4.test {
             NcFile file = null;
             NcDim dim1  = null;
             NcVar var1  = null;
+            ASCIIEncoding encoder = new ASCIIEncoding();
 
-            string buffer = "Hi there";
-            StringBuilder inputBuffer = new StringBuilder(20);
+            string buffer = String.Format("{0,20}", "hi there"); // need exactly 20 chars
+            byte[] readBuffer = new byte[20];
             try {
-                FileSetup(ref file, ref dim1, ref var1, "char");
-                var1.PutVar(buffer);
-                var1.GetVar(inputBuffer);
-                Assert.Equals(inputBuffer.ToString(), buffer);
+                FileSetup(ref file, ref dim1, ref var1, NcChar.Instance);
+                var1.PutVar(encoder.GetBytes(buffer));
+                var1.GetVar(readBuffer);
+                Assert.Equals(encoder.GetString(readBuffer), buffer);
             } finally {
                 file.close();
             }
