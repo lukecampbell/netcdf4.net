@@ -22,7 +22,6 @@ namespace netcdf4.test {
             AddTest(TestInt32Var, "TestInt32Var");
             AddTest(TestFloatVar, "TestFloatVar");
             AddTest(TestDoubleVar, "TestDoubleVar");
-            AddTest(TestStringIndexVar, "TestStringIndexVar");
         }
 
         public bool TestVarPutGet() {
@@ -90,13 +89,26 @@ namespace netcdf4.test {
             for(int i=0;i<20;i++) buffer[i] = (byte)i;
             try {
                 FileSetup(ref file, ref dim1, ref var1, NcShort.Instance);
+                // Test the basic get/put
                 var1.PutVar(buffer);
                 var1.GetVar(readBuffer);
                 for(int i=0;i<20;i++)
                     Assert.Equals(readBuffer[i], buffer[i]);
+                // test get and put scalars
                 var1.PutVar(new Int32[]{5}, new byte[]{30});
                 var1.GetVar(new Int32[]{5}, readBuffer);
                 Assert.Equals(readBuffer[0], (byte)30);
+
+                // test get and put 1d arrays
+                var1.PutVar(new Int32[] { 2 }, new Int32[] { 4 }, new byte[] { 20, 20, 20, 20 });
+                var1.GetVar(new Int32[] { 2 }, new Int32[] { 4 }, readBuffer);
+                Assert.Equals(readBuffer[0], (byte)20);
+                Assert.Equals(readBuffer[3], (byte)20);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[0], (byte)0);
+                Assert.Equals(readBuffer[2], (byte)20);
+                Assert.Equals(readBuffer[5], (byte)20);
+                Assert.Equals(readBuffer[6], (byte)6);
             } finally {
                 file.close();
             }
@@ -113,10 +125,25 @@ namespace netcdf4.test {
             for(int i=0;i<20;i++) buffer[i] = (Int16)i;
             try {
                 FileSetup(ref file, ref dim1, ref var1, NcShort.Instance);
+                // Test the basic get/put
                 var1.PutVar(buffer);
                 var1.GetVar(readBuffer);
                 for(int i=0;i<20;i++)
                     Assert.Equals(readBuffer[i], buffer[i]);
+                // test get and put scalars
+                var1.PutVar(new Int32[]{5}, new Int16[]{30});
+                var1.GetVar(new Int32[]{5}, readBuffer);
+                Assert.Equals(readBuffer[0], (Int16)30);
+                // test get and put 1d arrays
+                var1.PutVar(new Int32[] { 2 }, new Int32[] { 4 }, new Int16[] { 20, 20, 20, 20 });
+                var1.GetVar(new Int32[] { 2 }, new Int32[] { 4 }, readBuffer);
+                Assert.Equals(readBuffer[0], (Int16)20);
+                Assert.Equals(readBuffer[3], (Int16)20);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[0], (Int16)0);
+                Assert.Equals(readBuffer[2], (Int16)20);
+                Assert.Equals(readBuffer[5], (Int16)20);
+                Assert.Equals(readBuffer[6], (Int16)6);
             } finally {
                 file.close();
             }
@@ -133,10 +160,25 @@ namespace netcdf4.test {
             for(int i=0;i<20;i++) buffer[i] = i;
             try {
                 FileSetup(ref file, ref dim1, ref var1, NcInt.Instance);
+                // Test the basic get/put
                 var1.PutVar(buffer);
                 var1.GetVar(readBuffer);
                 for(int i=0;i<20;i++)
                     Assert.Equals(readBuffer[i], buffer[i]);
+                // test get and put scalars
+                var1.PutVar(new Int32[]{5}, new Int32[]{30});
+                var1.GetVar(new Int32[]{5}, readBuffer);
+                Assert.Equals(readBuffer[0], 30);
+                // test get and put 1d arrays
+                var1.PutVar(new Int32[] { 2 }, new Int32[] { 4 }, new Int32[] { 20, 20, 20, 20 });
+                var1.GetVar(new Int32[] { 2 }, new Int32[] { 4 }, readBuffer);
+                Assert.Equals(readBuffer[0], (Int32)20);
+                Assert.Equals(readBuffer[3], (Int32)20);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[0], (Int32)0);
+                Assert.Equals(readBuffer[2], (Int32)20);
+                Assert.Equals(readBuffer[5], (Int32)20);
+                Assert.Equals(readBuffer[6], (Int32)6);
             } finally {
                 file.close();
             }
@@ -152,10 +194,25 @@ namespace netcdf4.test {
             for(int i=0;i<20;i++) buffer[i] = (float)i;
             try {
                 FileSetup(ref file, ref dim1, ref var1, NcFloat.Instance);
+                // Test the basic get/put
                 var1.PutVar(buffer);
                 var1.GetVar(readBuffer);
                 for(int i=0;i<20;i++)
                     Assert.Equals(readBuffer[i], buffer[i]);
+                // test get and put scalars
+                var1.PutVar(new Int32[]{5}, new float[]{30.0f});
+                var1.GetVar(new Int32[]{5}, readBuffer);
+                Assert.Equals(readBuffer[0], 30.0f);
+                // test get and put 1d arrays
+                var1.PutVar(new Int32[] { 2 }, new Int32[] { 4 }, new float[] { 20f, 20f, 20f, 20f });
+                var1.GetVar(new Int32[] { 2 }, new Int32[] { 4 }, readBuffer);
+                Assert.Equals(readBuffer[0], (float)20f);
+                Assert.Equals(readBuffer[3], (float)20f);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[0], (float)0f);
+                Assert.Equals(readBuffer[2], (float)20f);
+                Assert.Equals(readBuffer[5], (float)20f);
+                Assert.Equals(readBuffer[6], (float)6f);
             } finally {
                 file.close();
             }
@@ -172,10 +229,25 @@ namespace netcdf4.test {
             for(int i=0;i<20;i++) buffer[i] = (double)i;
             try {
                 FileSetup(ref file, ref dim1, ref var1, NcDouble.Instance);
+                // Test the basic get/put
                 var1.PutVar(buffer);
                 var1.GetVar(readBuffer);
                 for(int i=0;i<20;i++)
                     Assert.Equals(readBuffer[i], buffer[i]);
+                // test get and put scalars
+                var1.PutVar(new Int32[]{5}, new double[]{30.0});
+                var1.GetVar(new Int32[]{5}, readBuffer);
+                Assert.Equals(readBuffer[0], 30.0);
+                // test get and put 1d arrays
+                var1.PutVar(new Int32[] { 2 }, new Int32[] { 4 }, new double[] { 20.0, 20.0, 20.0, 20.0 });
+                var1.GetVar(new Int32[] { 2 }, new Int32[] { 4 }, readBuffer);
+                Assert.Equals(readBuffer[0], (double)20.0);
+                Assert.Equals(readBuffer[3], (double)20.0);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[0], (double)0.0);
+                Assert.Equals(readBuffer[2], (double)20.0);
+                Assert.Equals(readBuffer[5], (double)20.0);
+                Assert.Equals(readBuffer[6], (double)6.0);
             } finally {
                 file.close();
             }
@@ -202,6 +274,7 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             return true;
         }
+
 
     }
 }
