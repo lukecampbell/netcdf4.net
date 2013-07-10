@@ -36,23 +36,23 @@ namespace netcdf4.test {
             foreach(TestCase a in tests) {
                 bool r;
                 try {
-                    Console.Write(names[i]+"...");
                     r = a();
                 } catch (AssertFailedException e) {
-                    Console.WriteLine("\tFail");
+                    Console.WriteLine(String.Format("{0,-30} {1:-30}", names[i], "FAIL"));
                     Console.WriteLine(e.ToString());
                     passing &= false;
                     i++;
                     continue;
                 }
                 if(r)
-                    Console.WriteLine("\tOK");
+                    Console.WriteLine(String.Format("{0,-30} {1:-30}", names[i], "OK"));
                 else
-                    Console.WriteLine("\tFail");
+                    Console.WriteLine(String.Format("{0,-30} {1:-30}", names[i], "FAIL"));
 				passing &= r;
                 i++;
 			}
-            Console.WriteLine("\nRan " + i + " Tests: " + (passing ? "SUCESS" : "FAIL"));
+            Console.WriteLine(String.Format(" - {0,-27} {1:-30}", GetType().Name, passing ? "SUCCESS" : "FAIL"));
+            Console.WriteLine("");
 			return passing;
         }
 

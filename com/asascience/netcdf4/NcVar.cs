@@ -313,6 +313,16 @@ namespace netcdf4 {
             return (ChecksumMode) checkp;
         }
 
+        private void BufferCheck(int len) {
+            Int32 spaceRequired = 0;
+            List<NcDim> dims = GetDims();
+            foreach(NcDim dim in dims) {
+                spaceRequired += dim.GetSize();
+            }
+            if( len < spaceRequired )
+                throw new exceptions.NcBufferOverflow("Strict Checking: Not enough space available to store variable");
+        }
+
         public void GetVar(StringBuilder dataValues, bool strictChecking=true) {
             throw new NotImplementedException("GetVar() not implemented");
         }
@@ -328,13 +338,7 @@ namespace netcdf4 {
         public void GetVar(Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
-                Int32 spaceRequired = 0;
-                List<NcDim> dims = GetDims();
-                foreach(NcDim dim in dims) {
-                    spaceRequired += dim.GetSize();
-                }
-                if( dataValues.Length < spaceRequired )
-                    throw new exceptions.NcBufferOverflow("Strict Checking: Not enough space available to store variable");
+                BufferCheck(dataValues.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var_int(groupId, myId, dataValues));
 
