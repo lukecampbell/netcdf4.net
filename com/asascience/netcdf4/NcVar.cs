@@ -324,15 +324,26 @@ namespace netcdf4 {
         }
 
         public void GetVar(StringBuilder dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) {
+                BufferCheck(dataValues.Capacity);
+            }
+            NcCheck.Check(NetCDF.nc_get_var_text(groupId, myId, dataValues));
         }
 
         public void GetVar(byte[] dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) 
+                BufferCheck(dataValues.Length);
+            NcCheck.Check(NetCDF.nc_get_var_schar(groupId, myId, dataValues));
         }
 
         public void GetVar(Int16[] dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) {
+                BufferCheck(dataValues.Length);
+            }
+            NcCheck.Check(NetCDF.nc_get_var_short(groupId, myId, dataValues));
         }
 
         public void GetVar(Int32[] dataValues, bool strictChecking=true) {
@@ -341,15 +352,22 @@ namespace netcdf4 {
                 BufferCheck(dataValues.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var_int(groupId, myId, dataValues));
-
         }
 
         public void GetVar(float[] dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) {
+                BufferCheck(dataValues.Length);
+            }
+            NcCheck.Check(NetCDF.nc_get_var_float(groupId, myId, dataValues));
         }
 
         public void GetVar(double[] dataValues, bool strictChecking=true) {
-            throw new NotImplementedException("GetVar() not implemented");
+            CheckNull();
+            if(strictChecking) {
+                BufferCheck(dataValues.Length);
+            }
+            NcCheck.Check(NetCDF.nc_get_var_double(groupId, myId, dataValues));
         }
 
         public void GetVar(Int32[] index, StringBuilder dataValues, bool strictChecking=true) {
@@ -448,15 +466,15 @@ namespace netcdf4 {
         }
 
         public void PutVar(string dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
+            NcCheck.Check(NetCDF.nc_put_var_text(groupId, myId, dataValues));
         }
 
         public void PutVar(byte[] dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
+            NcCheck.Check(NetCDF.nc_put_var_schar(groupId, myId, dataValues));
         }
 
         public void PutVar(Int16[] dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
+            NcCheck.Check(NetCDF.nc_put_var_short(groupId, myId, dataValues));
         }
 
         public void PutVar(Int32[] dataValues) {
@@ -464,11 +482,11 @@ namespace netcdf4 {
         }
 
         public void PutVar(float[] dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
+            NcCheck.Check(NetCDF.nc_put_var_float(groupId, myId, dataValues));
         }
 
         public void PutVar(double[] dataValues) {
-            throw new NotImplementedException("PutVar() not implemented");
+            NcCheck.Check(NetCDF.nc_put_var_double(groupId, myId, dataValues));
         }
 
         public void PutVar(Int32[] index, string dataValues) {
@@ -568,6 +586,7 @@ namespace netcdf4 {
         private bool nullObject;
         private Int32 myId;
         private Int32 groupId;
+        private ASCIIEncoding encoding = new ASCIIEncoding();
 
     }
 }

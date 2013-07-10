@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Text;
 using netcdf4;
 using netcdf4.exceptions;
 
@@ -15,6 +16,12 @@ namespace netcdf4.test {
             // Add tests
             AddTest(TestVarPutGet, "TestVarPutGet");
             AddTest(TestStrictChecking, "TestStrictChecking");
+            AddTest(TestStringVar, "TestStringVar");
+            AddTest(TestByteVar, "TestByteVar");
+            AddTest(TestInt16Var, "TestInt16Var");
+            AddTest(TestInt32Var, "TestInt32Var");
+            AddTest(TestFloatVar, "TestFloatVar");
+            AddTest(TestDoubleVar, "TestDoubleVar");
         }
 
         public bool TestVarPutGet() {
@@ -35,10 +42,15 @@ namespace netcdf4.test {
             return true;
         }
 
-        private void FileSetup(ref NcFile file, ref NcDim dim1, ref NcVar var1) {
+        private void FileSetup(ref NcFile file, ref NcDim dim1, ref NcVar var1, string type="int") {
             file = TestHelper.NewFile(filePath);
             dim1 = file.AddDim("time", 20);
-            var1 = file.AddVar("temp","int","time");
+            var1 = file.AddVar("temp",type,"time");
+        }
+        private void FileSetup(ref NcFile file, ref NcDim dim1, ref NcVar var1, NcType type) {
+            file = TestHelper.NewFile(filePath);
+            dim1 = file.AddDim("time", 20);
+            var1 = file.AddVar("temp", type, dim1);
         }
 
         public bool TestStrictChecking() {
@@ -66,6 +78,126 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             return true;
         }
+        
+        
+        public bool TestByteVar() {
+            NcFile file = null;
+            NcDim dim1  = null;
+            NcVar var1  = null;
+            byte[] buffer = new byte[20];
+            byte[] readBuffer = new byte[20];
+            for(int i=0;i<20;i++) buffer[i] = (byte)i;
+            try {
+                FileSetup(ref file, ref dim1, ref var1, NcShort.Instance);
+                var1.PutVar(buffer);
+                var1.GetVar(readBuffer);
+                for(int i=0;i<20;i++)
+                    Assert.Equals(readBuffer[i], buffer[i]);
+            } finally {
+                file.close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+        
+        public bool TestInt16Var() {
+            NcFile file = null;
+            NcDim dim1  = null;
+            NcVar var1  = null;
+            Int16[] buffer = new Int16[20];
+            Int16[] readBuffer = new Int16[20];
+            for(int i=0;i<20;i++) buffer[i] = (Int16)i;
+            try {
+                FileSetup(ref file, ref dim1, ref var1, NcShort.Instance);
+                var1.PutVar(buffer);
+                var1.GetVar(readBuffer);
+                for(int i=0;i<20;i++)
+                    Assert.Equals(readBuffer[i], buffer[i]);
+            } finally {
+                file.close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+
+        public bool TestInt32Var() {
+            NcFile file = null;
+            NcDim dim1  = null;
+            NcVar var1  = null;
+            Int32[] buffer = new Int32[20];
+            Int32[] readBuffer = new Int32[20];
+            for(int i=0;i<20;i++) buffer[i] = i;
+            try {
+                FileSetup(ref file, ref dim1, ref var1, NcInt.Instance);
+                var1.PutVar(buffer);
+                var1.GetVar(readBuffer);
+                for(int i=0;i<20;i++)
+                    Assert.Equals(readBuffer[i], buffer[i]);
+            } finally {
+                file.close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool TestFloatVar() {
+            NcFile file = null;
+            NcDim dim1  = null;
+            NcVar var1  = null;
+            float[] buffer = new float[20];
+            float[] readBuffer = new float[20];
+            for(int i=0;i<20;i++) buffer[i] = (float)i;
+            try {
+                FileSetup(ref file, ref dim1, ref var1, NcFloat.Instance);
+                var1.PutVar(buffer);
+                var1.GetVar(readBuffer);
+                for(int i=0;i<20;i++)
+                    Assert.Equals(readBuffer[i], buffer[i]);
+            } finally {
+                file.close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+        
+        public bool TestDoubleVar() {
+            NcFile file = null;
+            NcDim dim1  = null;
+            NcVar var1  = null;
+            double[] buffer = new double[20];
+            double[] readBuffer = new double[20];
+            for(int i=0;i<20;i++) buffer[i] = (double)i;
+            try {
+                FileSetup(ref file, ref dim1, ref var1, NcDouble.Instance);
+                var1.PutVar(buffer);
+                var1.GetVar(readBuffer);
+                for(int i=0;i<20;i++)
+                    Assert.Equals(readBuffer[i], buffer[i]);
+            } finally {
+                file.close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+        
+        public bool TestStringVar() {
+            NcFile file = null;
+            NcDim dim1  = null;
+            NcVar var1  = null;
+
+            string buffer = "Hi there";
+            StringBuilder inputBuffer = new StringBuilder(20);
+            try {
+                FileSetup(ref file, ref dim1, ref var1, "char");
+                var1.PutVar(buffer);
+                var1.GetVar(inputBuffer);
+                Assert.Equals(inputBuffer.ToString(), buffer);
+            } finally {
+                file.close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+
     }
 }
 
