@@ -109,6 +109,18 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[2], (byte)20);
                 Assert.Equals(readBuffer[5], (byte)20);
                 Assert.Equals(readBuffer[6], (byte)6);
+
+                // test striding
+                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new byte[] { 40, 40, 40});
+                var1.GetVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, readBuffer);
+                Assert.Equals(readBuffer[0], (byte)40);
+                Assert.Equals(readBuffer[2], (byte)40);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[10], (byte)40);
+                Assert.Equals(readBuffer[12], (byte)40);
+                Assert.Equals(readBuffer[14], (byte)40);
+                Assert.Equals(readBuffer[15], (byte)15);
+
             } finally {
                 file.close();
             }
@@ -144,6 +156,17 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[2], (Int16)20);
                 Assert.Equals(readBuffer[5], (Int16)20);
                 Assert.Equals(readBuffer[6], (Int16)6);
+                
+                // test striding
+                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new Int16[] { 40, 40, 40});
+                var1.GetVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, readBuffer);
+                Assert.Equals(readBuffer[0], (Int16)40);
+                Assert.Equals(readBuffer[2], (Int16)40);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[10], (Int16)40);
+                Assert.Equals(readBuffer[12], (Int16)40);
+                Assert.Equals(readBuffer[14], (Int16)40);
+                Assert.Equals(readBuffer[15], (Int16)15);
             } finally {
                 file.close();
             }
@@ -179,6 +202,17 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[2], (Int32)20);
                 Assert.Equals(readBuffer[5], (Int32)20);
                 Assert.Equals(readBuffer[6], (Int32)6);
+                
+                // test striding
+                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new Int32[] { 40, 40, 40});
+                var1.GetVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, readBuffer);
+                Assert.Equals(readBuffer[0], (Int32)40);
+                Assert.Equals(readBuffer[2], (Int32)40);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[10], (Int32)40);
+                Assert.Equals(readBuffer[12], (Int32)40);
+                Assert.Equals(readBuffer[14], (Int32)40);
+                Assert.Equals(readBuffer[15], (Int32)15);
             } finally {
                 file.close();
             }
@@ -213,6 +247,16 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[2], (float)20f);
                 Assert.Equals(readBuffer[5], (float)20f);
                 Assert.Equals(readBuffer[6], (float)6f);
+                // test striding
+                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new float[] { 40, 40, 40});
+                var1.GetVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, readBuffer);
+                Assert.Equals(readBuffer[0], (float)40);
+                Assert.Equals(readBuffer[2], (float)40);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[10], (float)40);
+                Assert.Equals(readBuffer[12], (float)40);
+                Assert.Equals(readBuffer[14], (float)40);
+                Assert.Equals(readBuffer[15], (float)15);
             } finally {
                 file.close();
             }
@@ -248,6 +292,16 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[2], (double)20.0);
                 Assert.Equals(readBuffer[5], (double)20.0);
                 Assert.Equals(readBuffer[6], (double)6.0);
+                // test striding
+                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new double[] { 40, 40, 40});
+                var1.GetVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, readBuffer);
+                Assert.Equals(readBuffer[0], (double)40);
+                Assert.Equals(readBuffer[2], (double)40);
+                var1.GetVar(readBuffer);
+                Assert.Equals(readBuffer[10], (double)40);
+                Assert.Equals(readBuffer[12], (double)40);
+                Assert.Equals(readBuffer[14], (double)40);
+                Assert.Equals(readBuffer[15], (double)15);
             } finally {
                 file.close();
             }
