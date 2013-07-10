@@ -18,7 +18,8 @@ namespace netcdf4.test
                 new TestNcGroup(),
                 new TestNcAtt(),
                 new TestNcType(),
-                new TestNcDim()
+                new TestNcDim(),
+                new TestNcVar()
             };
             
             foreach(UnitTest test in tests) {

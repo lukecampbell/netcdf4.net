@@ -88,6 +88,7 @@
     <Compile Include="test\TestNcType.cs" />
     <Compile Include="test\TestNcDim.cs" />
     <Compile Include="test\TestHelper.cs" />
+    <Compile Include="test\TestNcVar.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

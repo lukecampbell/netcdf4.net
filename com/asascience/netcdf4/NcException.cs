@@ -554,5 +554,15 @@ namespace netcdf4.exceptions {
         protected NcElateDef(System.Runtime.Serialization.SerializationInfo info,System.Runtime.Serialization.StreamingContext context) {
         }
     }
+    class NcBufferOverflow : NcException {
+        public NcBufferOverflow() : base() {
+        }
+        public NcBufferOverflow(string message) : base(message) {
+        }
+        public NcBufferOverflow(string message, System.Exception inner) : base(message, inner) { 
+        }
+        protected NcBufferOverflow(System.Runtime.Serialization.SerializationInfo info,System.Runtime.Serialization.StreamingContext context) {
+        }
+    }
 }
 

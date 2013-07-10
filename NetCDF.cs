@@ -1024,6 +1024,11 @@ namespace netcdf4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_typeids(Int32 ncid, ref Int32 ntypes, [In(), Out()] Int32[] typeids);
 
+        //int nc_inq_dimids(int ncid, int *ndims, int *dimids, int include_parents);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_inq_dimids(Int32 ncid, ref Int32 ndims, [In(), Out()] Int32[] dimids, Int32 include_parents);
+
+        
     }
 }
 

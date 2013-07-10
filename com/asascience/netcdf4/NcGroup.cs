@@ -372,24 +372,20 @@ namespace netcdf4 {
             CheckNull();
             int ndims =0;
             // Search current group
-            if(location == Location.Current || location == Location.ParentsAndCurrent 
-                                                            || location == Location.ChildrenAndCurrent 
-                                                            || location == Location.All) {
+            if(LocationIsCurrentGroup(location)) {
                 int ndimsp=0;
                 NcCheck.Check(NetCDF.nc_inq_ndims(myId, ref ndimsp));
                 ndims += ndimsp;
             }
             // Search in parent group
-            if(location == Location.Parents || location == Location.ParentsAndCurrent 
-                                                            || location == Location.All) {
+            if(LocationIsParentGroup(location)) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
                     ndims += k.Value.GetDimCount();
                 }
             }
 
-            if(location == Location.Children || location == Location.ChildrenAndCurrent 
-                                                            || location == Location.All) {
+            if(LocationIsChildGroup(location)) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
                     ndims += k.Value.GetDimCount();
@@ -398,19 +394,76 @@ namespace netcdf4 {
             return ndims;
         }
 
-        public Dictionary<string, NcDim> GetDims(Location location=Location.Current) {
-            throw new NotImplementedException("GetDims() not implemented");
-            return null;
+        private bool LocationIsCurrentGroup(Location location) {
+            return (location == Location.Current || location == Location.ParentsAndCurrent 
+                                                            || location == Location.ChildrenAndCurrent 
+                                                            || location == Location.All);
         }
 
+        private bool LocationIsParentGroup(Location location) {
+            return (location == Location.Parents || location == Location.ParentsAndCurrent 
+                                                            || location == Location.All);
+        }
+
+        private bool LocationIsChildGroup(Location location) {
+            return (location == Location.Children || location == Location.ChildrenAndCurrent 
+                                                            || location == Location.All);
+        }
+
+        // Get the dictionary (map) of NcDim objects
+        public Dictionary<string, NcDim> GetDims(Location location=Location.Current) {
+            CheckNull();
+            Dictionary<string, NcDim> ncDims = new Dictionary<string, NcDim>();
+
+            // search current group
+            if(LocationIsCurrentGroup(location)) {
+                Int32 dimCount = GetDimCount();
+                Int32[] dimIds = new Int32[dimCount];
+                NcCheck.Check(NetCDF.nc_inq_dimids(myId, ref dimCount, dimIds, 0));
+                for(int i=0;i<dimCount;i++) {
+                    NcDim tmpDim = new NcDim(this, dimIds[i]);
+                    ncDims.Add(tmpDim.GetName(), tmpDim);
+                }
+            }
+
+            if(LocationIsParentGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    Dictionary<string, NcDim> dimTmp = k.Value.GetDims();
+                    ncDims.Union(dimTmp);
+                }
+            }
+
+            if(LocationIsChildGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> k in groups) {
+                    Dictionary<string, NcDim> dimTmp = k.Value.GetDims();
+                    ncDims.Union(dimTmp);
+                }
+            }
+            return ncDims;
+        }
+
+        // Get all NcDim objects with a given name
         public HashSet<NcDim> GetDims(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetDims() not implemented");
-            return null;
+            CheckNull();
+            HashSet<NcDim> dimSet = new HashSet<NcDim>();
+            Dictionary<string, NcDim> ncDims = GetDims(location);
+            foreach(KeyValuePair<string, NcDim> k in ncDims) {
+                if(k.Key == name)
+                    dimSet.Add(k.Value);
+            }
+            return dimSet;
         }
 
         public NcDim GetDim(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetDim() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcDim> ncDims = GetDims(location);
+            foreach(KeyValuePair<string, NcDim> k in ncDims) {
+                if(k.Key == name)
+                    return k.Value;
+            }
+            return new NcDim(); // null dim
         }
 
         // Adds a dimension of limited size

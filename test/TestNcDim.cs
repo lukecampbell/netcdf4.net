@@ -1,6 +1,6 @@
 /*
  * Author Luke Campbell <LCampbell@ASAScience.com>
- * netcdf3.test.TestNcType
+ * netcdf3.test.TestNcDim
  */
 
 using System;
