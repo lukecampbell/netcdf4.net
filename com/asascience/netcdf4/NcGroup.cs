@@ -147,15 +147,10 @@ namespace netcdf4 {
             // search in parent groups.
             if(location == GroupLocation.ParentsGrps || location == GroupLocation.ParentsAndCurrentGrps
                                                             || location == GroupLocation.AllGrps) {
-                NcGroup tmpGroup = this;
-                if(!tmpGroup.IsRootGroup()) {
-                    while(true) {
-                        NcGroup parentGroup = tmpGroup.GetParentGroup();
-                        if(parentGroup.IsNull())
-                            break;
-                        ncGroups.Add(parentGroup.GetName(), parentGroup);
-                        tmpGroup = parentGroup;
-                    }
+                NcGroup tmpGroup = GetParentGroup();
+                while(tmpGroup != null && !tmpGroup.IsNull()) {
+                    ncGroups.Add(tmpGroup.GetName(), tmpGroup);
+                    tmpGroup = tmpGroup.GetParentGroup();
                 }
             }
 
@@ -310,23 +305,75 @@ namespace netcdf4 {
         }
 
         public int GetAttCount(Location location=Location.Current) {
-            throw new NotImplementedException("GetAttCount() not implemented");
-            return 0;
+            CheckNull();
+            Int32 ngatts = 0;
+            if(LocationIsCurrentGroup(location)){ 
+                NcCheck.Check(NetCDF.nc_inq_natts(myId, ref ngatts));
+            }
+
+            if(LocationIsParentGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string, NcGroup> g in groups) {
+                    ngatts += g.Value.GetAttCount();
+                }
+            }
+            
+
+            if(LocationIsChildGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> g in groups) {
+                    ngatts += g.Value.GetAttCount();
+                }
+            }
+            return ngatts;
         }
 
         public Dictionary<string, NcGroupAtt> GetAtts(Location location=Location.Current) {
-            throw new NotImplementedException("GetAtts() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcGroupAtt> ncAtts = new Dictionary<string, NcGroupAtt>();
+
+            if(LocationIsCurrentGroup(location)) {
+                int attCount = GetAttCount();
+                for(int i=0;i<attCount;i++) {
+                    NcGroupAtt tmpGroupAtt = new NcGroupAtt(this, i);
+                    ncAtts.Add(tmpGroupAtt.GetName(), tmpGroupAtt);
+                }
+            }
+
+            if(LocationIsParentGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string, NcGroup> g in groups) {
+                    ncAtts.Union(g.Value.GetAtts());
+                }
+            }
+            if(LocationIsChildGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string, NcGroup> g in groups) {
+                    ncAtts.Union(g.Value.GetAtts());
+                }
+            }
+            return ncAtts;
         }
 
         public HashSet<NcGroupAtt> GetAtts(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetAtts() not implemented");
-            return null;
+            CheckNull();
+            HashSet<NcGroupAtt> attSet = new HashSet<NcGroupAtt>();
+            Dictionary<string, NcGroupAtt> ncAtts = GetAtts(location);
+            foreach(KeyValuePair<string, NcGroupAtt> k in ncAtts) {
+                if(k.Key == name)
+                    attSet.Add(k.Value);
+            }
+            return attSet;
         }
 
         public NcGroupAtt GetAtt(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetAtt() not implemented");
-            return null;
+            CheckNull();
+            Dictionary<string, NcGroupAtt> ncAtts = GetAtts(location);
+            foreach(KeyValuePair<string, NcGroupAtt> k in ncAtts) {
+                if(k.Key == name)
+                    return k.Value;
+            }
+            return new NcGroupAtt(); // null
         }
 
         public NcGroupAtt PutAtt(string name, List<string> dataValues) {

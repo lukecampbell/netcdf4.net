@@ -8,6 +8,7 @@ using System.Collections.Generic;
 namespace netcdf4 {
 
     public class NcAtt {
+        public const Int32 NC_GLOBAL = -1;
         ~NcAtt() {
         }
 
