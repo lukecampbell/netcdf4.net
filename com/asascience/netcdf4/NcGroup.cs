@@ -86,7 +86,7 @@ namespace netcdf4 {
         }
         protected void CheckNull() {
             if(IsNull()) {
-                throw new exceptions.NcNullGrp("Attempt to invoke NcGroup.GetId on a Null group");
+                throw new exceptions.NcNullGrp("Attempt to invoke NcGroup method on a Null group");
             }
         }
     
@@ -206,23 +206,63 @@ namespace netcdf4 {
         }
 
         public int GetVarCount(Location location=Location.Current) {
-            throw new NotImplementedException("GetVarCount() not implemented");
-            return 0;
+            int nvars=0;
+            if(LocationIsCurrentGroup(location)) {
+                NcCheck.Check(NetCDF.nc_inq_nvars(myId, ref nvars));
+            }
+
+            if(LocationIsParentGroup(location)) {
+                foreach(KeyValuePair<string,NcGroup> g in GetGroups(GroupLocation.ParentsGrps)) {
+                    nvars += g.Value.GetVarCount();
+                }
+            }
+
+            if(LocationIsChildGroup(location)) {
+                foreach(KeyValuePair<string, NcGroup> g in GetGroups(GroupLocation.AllChildrenGrps)) {
+                    nvars += g.Value.GetVarCount();
+                }
+            }
+            return nvars;
         }
 
         public Dictionary<string, NcVar> GetVars(Location location=Location.Current) {
-            throw new NotImplementedException("GetVars() not implemented");
-            return null;
+            Dictionary<string, NcVar> vars = new Dictionary<string, NcVar>();
+            if(LocationIsCurrentGroup(location)) {
+                int varCount = GetVarCount();
+                Int32[] varIds = new Int32[varCount];
+                foreach(Int32 varId in varIds) {
+                    NcVar tmpVar = new NcVar(this, varId);
+                    vars.Add(tmpVar.GetName(), tmpVar);
+                }
+            }
+            if(LocationIsParentGroup(location)) {
+                foreach(KeyValuePair<string, NcGroup> g in GetGroups(GroupLocation.ParentsGrps)) {
+                    vars.Union(g.Value.GetVars());
+                }
+            }
+            if(LocationIsChildGroup(location)) {
+                foreach(KeyValuePair<string, NcGroup> g in GetGroups(GroupLocation.AllChildrenGrps)) {
+                    vars.Union(g.Value.GetVars());
+                }
+            }
+            return vars;
         }
 
         public HashSet<NcVar> GetVars(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetVars() not implemented");
-            return null;
+            HashSet<NcVar> ncVars = new HashSet<NcVar>();
+            foreach(KeyValuePair<string, NcVar> k in GetVars(location)) {
+                if(k.Key == name)
+                    ncVars.Add(k.Value);
+            }
+            return ncVars;
         }
 
         public NcVar GetVar(string name, Location location=Location.Current) {
-            throw new NotImplementedException("GetVar() not implemented");
-            return null;
+            foreach(KeyValuePair<string, NcVar> k in GetVars(location)) {
+                if(k.Key == name)
+                    return k.Value;
+            }
+            return new NcVar(); // return null
         }
 
         // Add a new netCDF variable
@@ -376,11 +416,6 @@ namespace netcdf4 {
             return new NcGroupAtt(); // null
         }
 
-        public NcGroupAtt PutAtt(string name, List<string> dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
         public NcGroupAtt PutAtt(string name, string dataValues) {
             CheckNull();
             NcCheck.Check(NetCDF.nc_put_att_text(myId, NcAtt.NC_GLOBAL, name, dataValues.Length, dataValues));
@@ -467,13 +502,88 @@ namespace netcdf4 {
             NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new double[] { datumValue }));
             return GetAtt(name);
         }
-
-        public NcGroupAtt PutAtt(string name, NcType type, List<string> dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        
+        public NcGroupAtt PutAtt(string name, NcType type, sbyte[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
 
-        /* TODO: Fill in the rest of the PutAtts */
+        public NcGroupAtt PutAtt(string name, NcType type, byte[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+
+        
+        public NcGroupAtt PutAtt(string name, NcType type, Int16[] dataValues) {
+            CheckNull();
+            //TODO: Support for VLEN | OPAQUE | ENUM | COMPOUND
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+
+        public NcGroupAtt PutAtt(string name, NcType type, UInt16[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, Int32[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, UInt32[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, Int64[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, UInt64[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+
+        public NcGroupAtt PutAtt(string name, NcType type, float[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
+
+        public NcGroupAtt PutAtt(string name, NcType type, double[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            return GetAtt(name);
+        }
 
         public int GetDimCount(Location location=Location.Current) {
             CheckNull();

@@ -544,6 +544,16 @@ namespace netcdf4.exceptions {
         protected NcNullVar(System.Runtime.Serialization.SerializationInfo info,System.Runtime.Serialization.StreamingContext context) {
         }
     }
+    class NcNullAtt : NcException {
+        public NcNullAtt() : base() {
+        }
+        public NcNullAtt(string message) : base(message) {
+        }
+        public NcNullAtt(string message, System.Exception inner) : base(message, inner) { 
+        }
+        protected NcNullAtt(System.Runtime.Serialization.SerializationInfo info,System.Runtime.Serialization.StreamingContext context) {
+        }
+    }
     class NcElateDef : NcException {
         public NcElateDef() : base() {
         }

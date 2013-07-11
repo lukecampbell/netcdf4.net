@@ -283,7 +283,8 @@ namespace netcdf4 {
         
         // int nc_get_att_text(int ncid, int varid, const char *name, char *ip);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_get_att_text(Int32 ncid, Int32 varid, string name, StringBuilder op);
+        public static extern Int32 nc_get_att_text(Int32 ncid, Int32 varid, string name, 
+            [In(), Out()]    byte[] ip);
         
         // int nc_put_att_uchar(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const unsigned char *op);
@@ -348,7 +349,7 @@ namespace netcdf4 {
         
         // int nc_get_att_uint(int ncid, int varid, const char *name, int *ip);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_get_att_int(Int32 ncid, Int32 varid, string name,     
+        public static extern Int32 nc_get_att_uint(Int32 ncid, Int32 varid, string name,     
             [In(), Out()]    UInt32[] ip);
         
         // int nc_put_att_long(int ncid, int varid, const char *name, nc_type xtype,

@@ -3,6 +3,7 @@
  */
 
 using System;
+using System.Text;
 using System.Collections.Generic;
 
 namespace netcdf4 {
@@ -57,10 +58,110 @@ namespace netcdf4 {
         public NcGroup GetParentGroup() {
             return new NcGroup(groupId);
         }
+        protected void CheckAttLen(int arrayLength) {
+            Int32 att_len = GetAttLength();
+            if(arrayLength < att_len)
+                throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
+        }
+        protected void CheckNull() {
+            if(nullObject) {
+                throw new exceptions.NcNullAtt("Attempt to invoke NcAtt method on a Null group");
+            }
+        }
+        private void CheckFixedType() {
+            if(!GetType().IsFixedType())
+                throw new NotImplementedException("GetValues() for non-fixed types is not yet implemented");
+        }
 
         public string GetValues() {
-            return null;
+            CheckNull();
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            int attLen = GetAttLength();
+            byte[] buffer = new byte[attLen];
+            NcCheck.Check(NetCDF.nc_get_att_text(groupId, varId, myName, buffer));
+            return encoder.GetString(buffer);
         }
+
+        public void GetValues(sbyte[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_schar(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(byte[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_uchar(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(Int16[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_short(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(UInt16[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_ushort(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(Int32[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_int(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(UInt32[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_uint(groupId, varId, myName, dataValues));
+        }
+        
+        public void GetValues(Int64[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_longlong(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(UInt64[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_ulonglong(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(float[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_float(groupId, varId, myName, dataValues));
+        }
+
+        public void GetValues(double[] dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking)
+                CheckAttLen(dataValues.Length);
+            CheckFixedType();
+            NcCheck.Check(NetCDF.nc_get_att_double(groupId, varId, myName, dataValues));
+        }
+
 
 
         /* getValues methods */
