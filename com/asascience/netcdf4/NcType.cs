@@ -102,6 +102,15 @@ namespace netcdf4 {
             return (NcTypeEnum)myId;
         }
 
+        public bool IsFixedType() {
+            NcTypeEnum nc_type = GetTypeClass();
+            if(nc_type == NcTypeEnum.NC_VLEN || nc_type == NcTypeEnum.NC_OPAQUE || nc_type == NcTypeEnum.NC_ENUM
+                                                                        || nc_type == NcTypeEnum.NC_COMPOUND)
+                return false;
+            return true;
+        }
+            
+
         public string GetTypeClassName() {
             switch(myId) {
               case (int)NcTypeEnum.NC_BYTE    : return "NC_BYTE";

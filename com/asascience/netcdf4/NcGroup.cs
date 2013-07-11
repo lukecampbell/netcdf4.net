@@ -382,48 +382,90 @@ namespace netcdf4 {
         }
 
         public NcGroupAtt PutAtt(string name, string dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            NcCheck.Check(NetCDF.nc_put_att_text(myId, NcAtt.NC_GLOBAL, name, dataValues.Length, dataValues));
+            return GetAtt(name);
+        }
+        public NcGroupAtt PutAtt(string name, NcType type, sbyte datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), 1, new sbyte[] { datumValue }));
+            return GetAtt(name);
         }
 
-        public NcGroupAtt PutAtt(string name, NcType type, short datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcGroupAtt PutAtt(string name, NcType type, byte datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), 1, new byte[] { datumValue }));
+            return GetAtt(name);
         }
 
-        public NcGroupAtt PutAtt(string name, NcType type, int datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        
+        public NcGroupAtt PutAtt(string name, NcType type, Int16 datumValue) {
+            CheckNull();
+            //TODO: Support for VLEN | OPAQUE | ENUM | COMPOUND
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new Int16[] { datumValue }));
+            return GetAtt(name);
         }
 
-        public NcGroupAtt PutAtt(string name, NcType type, long datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcGroupAtt PutAtt(string name, NcType type, UInt16 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new UInt16[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, Int32 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new Int32[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, UInt32 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new UInt32[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, Int64 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new Int64[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcGroupAtt PutAtt(string name, NcType type, UInt64 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new UInt64[] { datumValue }));
+            return GetAtt(name);
         }
 
         public NcGroupAtt PutAtt(string name, NcType type, float datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new float[] { datumValue }));
+            return GetAtt(name);
         }
 
         public NcGroupAtt PutAtt(string name, NcType type, double datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcGroupAtt PutAtt(string name, NcType type, ushort datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcGroupAtt PutAtt(string name, NcType type, uint datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcGroupAtt PutAtt(string name, NcType type, ulong datumValue) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new double[] { datumValue }));
+            return GetAtt(name);
         }
 
         public NcGroupAtt PutAtt(string name, NcType type, List<string> dataValues) {
