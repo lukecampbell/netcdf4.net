@@ -287,8 +287,26 @@ namespace netcdf4 {
         }
 
         public NcVar AddVar(string name, NcType ncType, List<NcDim> ncDimVector) {
-            throw new NotImplementedException("AddVar() not implemented");
-            return null;
+            CheckNull();
+            NcType tmpType=null;
+            Int32 varId=0;
+            Int32[] dimIds = new Int32[ncDimVector.Count];
+            if(ncType.IsNull())
+                throw new exceptions.NcNullType("Attempt to invoke NcGroup.AddVar with a Null NcType object");
+            tmpType = GetType(ncType.GetName(), Location.ParentsAndCurrent);
+            if(tmpType.IsNull())
+                throw new exceptions.NcNullType("Attempt to invoke NcGroup.AddVar failed: NcType must be defined in either the current group or a parent group");
+            for(int i=0;i<ncDimVector.Count;i++) {
+                if(ncDimVector[i].IsNull())
+                    throw new exceptions.NcNullDim("Attempt to invoke NcGroup.AddVar failed: NcType must be defined in either the current group or a parent group");
+                NcDim tmpDim = GetDim(ncDimVector[i].GetName(), Location.ParentsAndCurrent);
+                if(tmpDim.IsNull())
+                    throw new exceptions.NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group");
+                dimIds[i] = ncDimVector[i].GetId();
+            }
+            NcCheck.Check(NetCDF.nc_def_var(myId, name, (NetCDF.nc_type)tmpType.GetId(), ncDimVector.Count, dimIds, ref varId));
+
+            return new NcVar(this, varId);
         }
 
         public int GetAttCount(Location location=Location.Current) {

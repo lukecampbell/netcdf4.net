@@ -92,7 +92,7 @@ namespace netcdf4 {
             }
             nullObject = false;
         }
-        public void close() {
+        public void Close() {
             NcCheck.Check(NetCDF.nc_close(myId));
             nullObject = true;
             myId = 0;

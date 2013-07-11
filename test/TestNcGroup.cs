@@ -38,7 +38,7 @@ namespace netcdf4.test {
                 Assert.Equals(groupName, "/");
                 Assert.True(group.IsRootGroup());
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -61,7 +61,7 @@ namespace netcdf4.test {
                 group = file.GetParentGroup();
                 Assert.True(group.IsNull());
             } finally {
-                file.close();
+                file.Close();
             }
             return true;
         }
@@ -88,7 +88,7 @@ namespace netcdf4.test {
                 }
 
             } finally {
-                file.close();
+                file.Close();
             }
 
             CheckDelete(filePath);
@@ -119,7 +119,7 @@ namespace netcdf4.test {
                     }
                 }
             } finally {
-                file.close();
+                file.Close();
             }
 
             CheckDelete(filePath);

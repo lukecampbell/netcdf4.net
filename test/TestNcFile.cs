@@ -18,7 +18,7 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             NcFile file = new NcFile(filePath, FileMode.replace, FileFormat.nc4);
             id = file.GetId();
-            file.close();
+            file.Close();
             if(System.IO.File.Exists(filePath)) {
                 System.IO.File.Delete(filePath);
                 return true;
@@ -37,7 +37,7 @@ namespace netcdf4.test {
 
             NcFile file = new NcFile(filePath, FileMode.read);
             Int32 id = file.GetId();
-            file.close();
+            file.Close();
             file = null;
             return true;
         }

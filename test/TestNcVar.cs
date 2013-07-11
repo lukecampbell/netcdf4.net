@@ -5,6 +5,8 @@
 
 using System;
 using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using netcdf4;
 using netcdf4.exceptions;
 
@@ -22,6 +24,7 @@ namespace netcdf4.test {
             AddTest(TestInt32Var, "TestInt32Var");
             AddTest(TestFloatVar, "TestFloatVar");
             AddTest(TestDoubleVar, "TestDoubleVar");
+            AddTest(TestExtensive, "TestExtensive");
         }
 
         public bool TestVarPutGet() {
@@ -36,7 +39,7 @@ namespace netcdf4.test {
                 FileSetup(ref file, ref dim1, ref var1);
                 var1.PutVar(vals);
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -73,7 +76,7 @@ namespace netcdf4.test {
 
 
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -122,7 +125,7 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[15], (byte)15);
 
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -168,7 +171,7 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[14], (Int16)40);
                 Assert.Equals(readBuffer[15], (Int16)15);
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -214,7 +217,7 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[14], (Int32)40);
                 Assert.Equals(readBuffer[15], (Int32)15);
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -258,7 +261,7 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[14], (float)40);
                 Assert.Equals(readBuffer[15], (float)15);
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -303,7 +306,7 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[14], (double)40);
                 Assert.Equals(readBuffer[15], (double)15);
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
@@ -323,13 +326,70 @@ namespace netcdf4.test {
                 var1.GetVar(readBuffer);
                 Assert.Equals(encoder.GetString(readBuffer), buffer);
             } finally {
-                file.close();
+                file.Close();
             }
             CheckDelete(filePath);
             return true;
         }
 
+        public bool TestExtensive() {
+            NcFile file = null;
+            NcGroup east = null;
+            NcGroup west = null;
+            NcDim timeDim = null;
+            NcDim latDim = null;
+            NcDim lonDim = null;
+            NcVar timeVar = null;
+            NcVar latVar = null;
+            NcVar lonVar = null;
+            NcVar temp = null;
+            float[] buffer;
 
+            double[] timeArray = new double[] { 0, 1, 2, 3, 4, 5, 6 };
+            double[] latArray  = new double[] { 40.1, 40.2, 40.3, 40.4, 40.5 };
+            double[] lonArray  = new double[] { -73.5, -73.4, -73.3, -73.2 };
+            float[] sstArray   = new float[140];
+
+            double[] readBuffer = new double[140];
+            for(int i=0;i<140;i++)
+                sstArray[i] = (float) i;
+
+            try {
+                file = TestHelper.NewFile(filePath);
+                east = file.AddGroup("east");
+                west = file.AddGroup("west");
+
+                // Fill out east first
+                timeDim = east.AddDim("time"); // UNLIMITED
+                latDim = east.AddDim("lat", 5); // 5 lats
+                lonDim = east.AddDim("lon", 4); // 4 lons 
+                timeVar = east.AddVar("time", NcDouble.Instance, timeDim);
+                latVar = east.AddVar("lat", NcDouble.Instance, latDim);
+                lonVar = east.AddVar("lon", NcDouble.Instance, lonDim);
+                temp = east.AddVar("sst", NcFloat.Instance,(List<NcDim>)new[]{timeDim, latDim, lonDim}.ToList());
+
+                timeVar.PutVar(new Int32[] { 0 } , new Int32[] { timeArray.Length }, timeArray);
+                latVar.PutVar(latArray);
+                lonVar.PutVar(lonArray);
+                temp.PutVar(new Int32[] { 0,0,0}, new Int32[] { 7, 5, 4 }, sstArray);
+
+                // Now check that the writes were successful and that
+                // the read buffer matches the writes
+
+                timeVar.GetVar(readBuffer);
+                for(int i=0;i<7;i++) Assert.Equals(readBuffer[i], timeArray[i]);
+                latVar.GetVar(readBuffer);
+                for(int i=0;i<5;i++) Assert.Equals(readBuffer[i], latArray[i]);
+                lonVar.GetVar(readBuffer);
+                for(int i=0;i<4;i++) Assert.Equals(readBuffer[i], lonArray[i]);
+                temp.GetVar(readBuffer);
+                for(int i=0;i<140;i++) Assert.Equals((float)readBuffer[i], sstArray[i]);
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
     }
 }
 

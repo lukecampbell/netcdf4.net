@@ -564,5 +564,15 @@ namespace netcdf4.exceptions {
         protected NcBufferOverflow(System.Runtime.Serialization.SerializationInfo info,System.Runtime.Serialization.StreamingContext context) {
         }
     }
+    class NcDimUnlimited : NcException {
+        public NcDimUnlimited() : base() {
+        }
+        public NcDimUnlimited(string message) : base(message) {
+        }
+        public NcDimUnlimited(string message, System.Exception inner) : base(message, inner) { 
+        }
+        protected NcDimUnlimited(System.Runtime.Serialization.SerializationInfo info,System.Runtime.Serialization.StreamingContext context) {
+        }
+    }
 }
 

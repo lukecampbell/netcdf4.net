@@ -355,6 +355,15 @@ namespace netcdf4 {
                 throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
         }
 
+        // Used to check if any of the dimensions are unlimited, if they are then clients should specify the indexes and lengths to use
+        protected void DimUnlimitedCheck() {
+            List<NcDim> dims = GetDims();
+            foreach(NcDim dim in dims) {
+                if(dim.IsUnlimited())
+                    throw new exceptions.NcDimUnlimited("Can't write array to a dimension with NC_UNLIMITED without index and count");
+            }
+        }
+
 
         public void GetVar(byte[] dataValues, bool strictChecking=true) {
             CheckNull();
@@ -548,8 +557,10 @@ namespace netcdf4 {
 
         public void PutVar(byte[] dataValues, bool strictChecking=true) {
             CheckNull();
-            if(strictChecking)
+            if(strictChecking) {
                 BufferCheck(dataValues.Length);
+                DimUnlimitedCheck();
+            }
             if(NcChar.Instance.Equals(GetType()))
                 NcCheck.Check(NetCDF.nc_put_var_text(groupId,myId,dataValues));
             else
@@ -558,29 +569,37 @@ namespace netcdf4 {
 
         public void PutVar(Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
-            if(strictChecking)
+            if(strictChecking) {
                 BufferCheck(dataValues.Length);
+                DimUnlimitedCheck();
+            }
             NcCheck.Check(NetCDF.nc_put_var_short(groupId, myId, dataValues));
         }
 
         public void PutVar(Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
-            if(strictChecking)
+            if(strictChecking) {
                 BufferCheck(dataValues.Length);
+                DimUnlimitedCheck();
+            }
             NcCheck.Check(NetCDF.nc_put_var_int(groupId, myId, dataValues));
         }
 
         public void PutVar(float[] dataValues, bool strictChecking=true) {
             CheckNull();
-            if(strictChecking)
+            if(strictChecking) {
                 BufferCheck(dataValues.Length);
+                DimUnlimitedCheck();
+            }
             NcCheck.Check(NetCDF.nc_put_var_float(groupId, myId, dataValues));
         }
 
         public void PutVar(double[] dataValues, bool strictChecking=true) {
             CheckNull();
-            if(strictChecking)
+            if(strictChecking) {
                 BufferCheck(dataValues.Length);
+                DimUnlimitedCheck();
+            }
             NcCheck.Check(NetCDF.nc_put_var_double(groupId, myId, dataValues));
         }
 
