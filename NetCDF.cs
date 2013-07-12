@@ -260,7 +260,8 @@ namespace netcdf4 {
         
         // int nc_inq_attname(int ncid, int varid, int attnum, char *name);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_attname(Int32 ncid, Int32 varid, Int32 attnum, StringBuilder name);
+        public static extern Int32 nc_inq_attname(Int32 ncid, Int32 varid, Int32 attnum, 
+            [In(), Out()] byte[] name);
 
         // ATTRIBUTE READING AND WRITING
 

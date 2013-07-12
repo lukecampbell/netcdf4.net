@@ -23,12 +23,12 @@ namespace netcdf4 {
 
         public NcAtt(NcAtt rhs) {
             nullObject = rhs.nullObject;
-            myName = String.Copy(rhs.myName);
+            myName = rhs.myName;
             groupId = rhs.groupId;
             varId = rhs.varId;
         }
 
-        public string GetName() {
+        public virtual string GetName() {
             return myName;
         }
     

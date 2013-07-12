@@ -163,7 +163,7 @@ namespace netcdf4.test {
                 Assert.Equals(readBuffer[6], (byte)6);
 
                 // test striding
-                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new byte[] { 40, 40, 40});
+                var1.PutVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, new byte[] { 40, 40, 40, 40});
                 var1.GetVar(new Int32[] { 10 }, new Int32[] { 5 }, new Int32[] {2}, readBuffer);
                 Assert.Equals(readBuffer[0], (byte)40);
                 Assert.Equals(readBuffer[2], (byte)40);

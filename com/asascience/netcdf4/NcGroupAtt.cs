@@ -19,11 +19,13 @@ namespace netcdf4 {
 
         // Constructor for an existing global attr
         public NcGroupAtt(NcGroup grp, int index) : base(false) {
+            ASCIIEncoding encoder = new ASCIIEncoding();
             groupId = grp.GetId();
             varId = NC_GLOBAL;
-            StringBuilder attName = new StringBuilder((int)NetCDF.netCDF_limits.NC_MAX_NAME);
-            NcCheck.Check(NetCDF.nc_inq_attname(groupId, varId, index, attName));
-            myName = attName.ToString();
+            byte[] buffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME];
+            NcCheck.Check(NetCDF.nc_inq_attname(groupId, varId, index, buffer));
+            string sbuffer = encoder.GetString(buffer);
+            myName = sbuffer.Substring(0, sbuffer.IndexOf('\0')); // A null-terminated C-string
         }
 
     }

@@ -28,6 +28,11 @@ namespace netcdf4 {
             nullObject = true;
         }
 
+        public NcVar(Int32 grpId, Int32 varId) {
+            nullObject = false;
+            myId = varId;
+            groupId = grpId;
+        }
         public NcVar(NcGroup grp, Int32 varId) {
             nullObject = false;
             myId = varId;
@@ -155,103 +160,190 @@ namespace netcdf4 {
         }
 
         public NcVarAtt GetAtt(string name) {
-            throw new NotImplementedException("GetAtt() not implemented");
-            return null;
+            foreach(KeyValuePair<string, NcVarAtt> k in GetAtts()) {
+                if(k.Key == name)  {
+                    return k.Value;
+                } 
+            }
+            return new NcVarAtt(); // return null;
         }
 
         public Dictionary<string, NcVarAtt> GetAtts() {
-            throw new NotImplementedException("GetAtts() not implemented");
-            return null;
+            CheckNull();
+            int attCount = GetAttCount();
+            Dictionary<string, NcVarAtt> ncAtts = new Dictionary<string, NcVarAtt>();
+            NcVarAtt tmpAtt;
+            for(int i=0;i<attCount;i++) {
+                tmpAtt = new NcVarAtt(groupId, myId, i);
+                ncAtts.Add(tmpAtt.GetName(), tmpAtt);
+            }
+            return ncAtts;
         }
 
         public NcVarAtt PutAtt(string name, string dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            NcCheck.Check(NetCDF.nc_put_att_text(groupId, myId, name, dataValues.Length, dataValues));
+            return GetAtt(name);
         }
 
+        public NcVarAtt PutAtt(string name, NcType type, sbyte datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new sbyte[] {datumValue}));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, byte datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new byte[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, Int16 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new Int16[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, UInt16 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new UInt16[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, Int32 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new Int32[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, UInt32 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new UInt32[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, Int64 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new Int64[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, UInt64 datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new UInt64[]{ datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, float datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new float[] { datumValue }));
+            return GetAtt(name);
+        }
+        
+        public NcVarAtt PutAtt(string name, NcType type, double datumValue) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new double[]{ datumValue }));
+            return GetAtt(name);
+        }
+
+        public NcVarAtt PutAtt(string name, NcType type, sbyte[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
+        }
+        
         public NcVarAtt PutAtt(string name, NcType type, byte[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcVarAtt PutAtt(string name, NcType type, short dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcVarAtt PutAtt(string name, NcType type, int dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
-        public NcVarAtt PutAtt(string name, NcType type, long dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcVarAtt PutAtt(string name, NcType type, float dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcVarAtt PutAtt(string name, NcType type, double dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcVarAtt PutAtt(string name, NcType type, Int16[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
-        public NcVarAtt PutAtt(string name, NcType type, ushort dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcVarAtt PutAtt(string name, NcType type, UInt16[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
-        public NcVarAtt PutAtt(string name, NcType type, uint dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcVarAtt PutAtt(string name, NcType type, Int32[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
-        public NcVarAtt PutAtt(string name, NcType type, ulong dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-
-        public NcVarAtt PutAtt(string name, NcType type, short[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcVarAtt PutAtt(string name, NcType type, UInt32[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
-        public NcVarAtt PutAtt(string name, NcType type, int[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcVarAtt PutAtt(string name, NcType type, Int64[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
-        public NcVarAtt PutAtt(string name, NcType type, long[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+        public NcVarAtt PutAtt(string name, NcType type, UInt64[] dataValues) {
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
-
+        
         public NcVarAtt PutAtt(string name, NcType type, float[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
         
         public NcVarAtt PutAtt(string name, NcType type, double[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-        
-        public NcVarAtt PutAtt(string name, NcType type, ushort[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-        
-        public NcVarAtt PutAtt(string name, NcType type, uint[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
-        }
-        
-        public NcVarAtt PutAtt(string name, NcType type, ulong[] dataValues) {
-            throw new NotImplementedException("PutAtt() not implemented");
-            return null;
+            CheckNull();
+            if(!type.IsFixedType())
+                throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            return GetAtt(name);
         }
 
         public void SetChunking(ChunkMode chunkMode, Int32[] chunkSizes) {

@@ -410,8 +410,9 @@ namespace netcdf4 {
             CheckNull();
             Dictionary<string, NcGroupAtt> ncAtts = GetAtts(location);
             foreach(KeyValuePair<string, NcGroupAtt> k in ncAtts) {
-                if(k.Key == name)
+                if(k.Key == name) {
                     return k.Value;
+                }
             }
             return new NcGroupAtt(); // null
         }
