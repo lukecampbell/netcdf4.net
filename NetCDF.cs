@@ -158,6 +158,11 @@ namespace netcdf4 {
             NC_MAX_VAR_DIMS = 10
             ///* max per variable dimensions */
         }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct vlen_t {
+            public Int32 len;  // size_t
+            public IntPtr data; // void *
+        }
         // const char *nc_inq_libvers(void);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern IntPtr nc_inq_libvers();
@@ -286,11 +291,11 @@ namespace netcdf4 {
 
         //int nc_put_att(int ncid, int varid, const char *name, nc_type xtype, size_t len, const void *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att(Int32 ncid, Int32 varid, string name, nc_type xtype, Int32 len, ref VlenStruct op);
+        public static extern Int32 nc_put_att(Int32 ncid, Int32 varid, string name, nc_type xtype, Int32 len, ref vlen_t op);
         
         //int nc_get_att(int ncid, int varid, const char *name, void *ip)
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_get_att(Int32 ncid, Int32 varid, string name, ref VlenStruct op);
+        public static extern Int32 nc_get_att(Int32 ncid, Int32 varid, string name, ref vlen_t op);
         
         
         // int nc_put_att_text(int ncid, int varid, const char *name,
@@ -1515,15 +1520,40 @@ namespace netcdf4 {
 
         //int nc_put_var1(int ncid, int varid,  const size_t *indexp, const void *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, ref VlenStruct op);
+        public static extern Int32 nc_put_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, ref vlen_t op);
+
+        public static Int32 nc_put_var1_vlen<T>(Int32 ncid, Int32 varid, [In()] Int32[] indexp, T[] data) {
+            GCHandle hdl = GCHandle.Alloc(data, GCHandleType.Pinned);
+            try {
+                vlen_t vs = new vlen_t();
+                vs.len = data.Length;
+                vs.data = hdl.AddrOfPinnedObject();
+                return nc_put_var1(ncid, varid, indexp, ref vs);
+            } finally {
+                hdl.Free();
+            }
+        }
         
         //int nc_get_var1(int ncid, int varid,  const size_t *indexp, void *ip);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_get_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, ref VlenStruct ip);
-       
+        public static extern Int32 nc_get_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, ref vlen_t ip);
+
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out double[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                data = new double[vs.len];
+                Marshal.Copy(vs.data, data, 0, vs.len);
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
         //int nc_free_vlen(nc_vlen_t *vl);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_free_vlen(ref VlenStruct vl);
+        public static extern Int32 nc_free_vlen(ref vlen_t vl);
 
         //int nc_inq_user_type(int ncid, nc_type xtype, char *name, size_t *size, nc_type *base_nc_typep, size_t *nfieldsp, int *classp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]

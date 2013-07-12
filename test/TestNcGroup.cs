@@ -133,19 +133,14 @@ namespace netcdf4.test {
             NcDim dim = null;
             NcVar var = null;
             double[] vlenBuffer = new double[] { 0, 12, 4 };
-            Vlen data = new Vlen(vlenBuffer);
-            Vlen readVlen = null;
-            VlenStruct vs;
             double[] readBuffer = new double[8];
             try {
                 file = TestHelper.NewFile(filePath);
                 vlen = file.AddVlenType("vlen", NcDouble.Instance);
                 dim = file.AddDim("time", 1);
                 var = file.AddVar("time", vlen, dim);
-                var.PutVar(new Int32[] { 0 }, data);
-                var.GetVar(new Int32[] { 0 }, ref readVlen);
-                vs = readVlen.ToStruct();
-                Marshal.Copy(vs.p, readBuffer, 0, vs.len);
+                var.PutVar(new Int32[] { 0 }, vlenBuffer );
+                var.GetVar(new Int32[] { 0 }, readBuffer );
                 for(int i=0;i<vlenBuffer.Length;i++)
                     Assert.Equals(vlenBuffer[i], readBuffer[i]);
 

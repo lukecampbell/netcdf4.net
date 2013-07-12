@@ -539,31 +539,6 @@ namespace netcdf4 {
             NcCheck.Check(NetCDF.nc_get_var_double(groupId, myId, dataValues));
         }
 
-        public void GetVar(Int32[] index, ref Vlen datumValue, bool strictChecking=true) {
-            CheckNull();
-            if(strictChecking) 
-                DimCheck(index.Length);
-            if(GetType().GetTypeClass() != NcTypeEnum.NC_VLEN)
-                throw new exceptions.NcException("Var is not of type Vlen: " + GetType().GetTypeClassName());
-            VlenStruct vs = new VlenStruct();
-            NcCheck.Check(NetCDF.nc_get_var1(groupId, myId, index, ref vs));
-            try { // From this point on NetCDF alocated an array in-memory we need to free it properly
-                NcVlenType vlenType = new NcVlenType(GetType());
-                NcType innerType = vlenType.GetBaseType();
-                if(innerType == NcDouble.Instance) {
-                    double[] buffer;
-                    buffer = new double[vs.len];
-                    Marshal.Copy(vs.p, buffer, 0, vs.len);
-                    datumValue = new Vlen(buffer);
-                } 
-            } finally {
-                NcCheck.Check(NetCDF.nc_free_vlen(ref vs));
-            }
-        }
-                    
-             
-
-        
         public void GetVar(Int32[] index, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
@@ -659,6 +634,12 @@ namespace netcdf4 {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
                     throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_VLEN) {
+                double[] buffer;
+                NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
+                Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
+                return;
             }
             NcCheck.Check(NetCDF.nc_get_var1_double(groupId, myId, index, dataValues));
         }
@@ -1035,16 +1016,12 @@ namespace netcdf4 {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
                     throw new exceptions.NcBufferOverflow("Value buffer must have at least 1 value");
+                if(GetType().GetTypeClass() == NcTypeEnum.NC_VLEN) {
+                    NcCheck.Check(NetCDF.nc_put_var1_vlen<double>(groupId, myId, index, dataValues));
+                    return;
+                }
             }
             NcCheck.Check(NetCDF.nc_put_var1_double(groupId, myId, index, dataValues));
-        }
-
-        public void PutVar(Int32[] index, Vlen datumValue, bool strictChecking=true) {
-            CheckNull();
-            if(strictChecking)
-                DimCheck(index.Length);
-            VlenStruct vs = datumValue.ToStruct();
-            NcCheck.Check(NetCDF.nc_put_var1(groupId, myId, index, ref vs));
         }
 
         public void PutVar(Int32[] index, Int32[] count, sbyte[] dataValues, bool strictChecking=true) {
