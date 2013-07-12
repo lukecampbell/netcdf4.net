@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using netcdf4;
 
 namespace netcdf4.test {
@@ -16,6 +17,7 @@ namespace netcdf4.test {
             AddTest(test_get_parent_group, "test_get_parent_group");
             AddTest(test_get_group_count, "test_get_group_count");
             AddTest(test_get_groups, "test_get_groups");
+            AddTest(TestVlen, "TestVlen");
         }
 
         public NcFile newFile(string filePath) {
@@ -122,6 +124,34 @@ namespace netcdf4.test {
                 file.Close();
             }
 
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool TestVlen() {
+            NcFile file = null;
+            NcVlenType vlen = null;
+            NcDim dim = null;
+            NcVar var = null;
+            double[] vlenBuffer = new double[] { 0, 12, 4 };
+            Vlen data = new Vlen(vlenBuffer);
+            Vlen readVlen = null;
+            VlenStruct vs;
+            double[] readBuffer = new double[8];
+            try {
+                file = TestHelper.NewFile(filePath);
+                vlen = file.AddVlenType("vlen", NcDouble.Instance);
+                dim = file.AddDim("time", 1);
+                var = file.AddVar("time", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, data);
+                var.GetVar(new Int32[] { 0 }, ref readVlen);
+                vs = readVlen.ToStruct();
+                Marshal.Copy(vs.p, readBuffer, 0, vs.len);
+                for(int i=0;i<vlenBuffer.Length;i++)
+                    Assert.Equals(vlenBuffer[i], readBuffer[i]);
+
+            } finally {
+                file.Close();
+            }
             CheckDelete(filePath);
             return true;
         }

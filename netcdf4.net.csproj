@@ -78,6 +78,7 @@
     <Compile Include="com\asascience\netcdf4\NcVar.cs" />
     <Compile Include="com\asascience\netcdf4\NcVarAtt.cs" />
     <Compile Include="com\asascience\netcdf4\NcVlenType.cs" />
+    <Compile Include="com\asascience\netcdf4\NcVlenStruct.cs" />
     <Compile Include="RunTests.cs" />
     <Compile Include="test\test_netcdf4_bridge.cs" />
     <Compile Include="test\unittest.cs" />

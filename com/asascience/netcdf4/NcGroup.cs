@@ -514,8 +514,9 @@ namespace netcdf4 {
 
         public NcGroupAtt PutAtt(string name, NcType type, byte[] dataValues) {
             CheckNull();
-            if(!type.IsFixedType())
+            if(!type.IsFixedType()) {
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
+            }
             NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
@@ -874,9 +875,12 @@ namespace netcdf4 {
             return null;
         }*/
 
-        public NcVlenType AddVlenType(string name, NcType basetype) {
-            throw new NotImplementedException("AddVlenType() not implemented");
-            return null;
+        public NcVlenType AddVlenType(string name, NcType baseType) {
+            CheckNull();
+            Int32 typeId=0;
+            NcCheck.Check(NetCDF.nc_def_vlen(myId, name, (NetCDF.nc_type)baseType.GetId(), ref typeId));
+            NcVlenType ncTypeTmp = new NcVlenType(this, name);
+            return ncTypeTmp;
         }
         
         public NcOpaqueType AddOpaqueType(string name, long size) {

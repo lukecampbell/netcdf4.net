@@ -98,7 +98,32 @@ namespace netcdf4 {
         }
 
         public NcTypeEnum GetTypeClass() {
-            // TODO: Add support for user defined types
+            switch(myId) {
+                case (int)NcTypeEnum.NC_BYTE    : return NcTypeEnum.NC_BYTE;
+                case (int)NcTypeEnum.NC_UBYTE   : return NcTypeEnum.NC_UBYTE;
+                case (int)NcTypeEnum.NC_CHAR    : return NcTypeEnum.NC_CHAR;
+                case (int)NcTypeEnum.NC_SHORT   : return NcTypeEnum.NC_SHORT;
+                case (int)NcTypeEnum.NC_USHORT  : return NcTypeEnum.NC_USHORT;
+                case (int)NcTypeEnum.NC_INT     : return NcTypeEnum.NC_UBYTE;
+                case (int)NcTypeEnum.NC_UINT    : return NcTypeEnum.NC_UINT;  
+                case (int)NcTypeEnum.NC_INT64   : return NcTypeEnum.NC_INT64; 
+                case (int)NcTypeEnum.NC_UINT64  : return NcTypeEnum.NC_UINT64;
+                case (int)NcTypeEnum.NC_FLOAT   : return NcTypeEnum.NC_FLOAT;
+                case (int)NcTypeEnum.NC_DOUBLE  : return NcTypeEnum.NC_DOUBLE;
+                case (int)NcTypeEnum.NC_STRING  : return NcTypeEnum.NC_STRING;
+                case (int)NcTypeEnum.NC_VLEN    : return NcTypeEnum.NC_VLEN;
+                case (int)NcTypeEnum.NC_OPAQUE  : return NcTypeEnum.NC_OPAQUE;
+                case (int)NcTypeEnum.NC_ENUM    : return NcTypeEnum.NC_ENUM;
+                case (int)NcTypeEnum.NC_COMPOUND: return NcTypeEnum.NC_COMPOUND;
+                default :
+                    byte[] readBuffer = null;
+                    Int32 sizep=0;
+                    Int32 base_nc_typep=0;
+                    Int32 nfieldsp=0;
+                    Int32 classp=0;
+                    NcCheck.Check(NetCDF.nc_inq_user_type(groupId, myId, readBuffer, ref sizep, ref base_nc_typep, ref nfieldsp, ref classp));
+                    return (NcTypeEnum)classp;
+            }
             return (NcTypeEnum)myId;
         }
 
@@ -109,29 +134,28 @@ namespace netcdf4 {
                 return false;
             return true;
         }
-            
 
         public string GetTypeClassName() {
             switch(myId) {
-              case (int)NcTypeEnum.NC_BYTE    : return "NC_BYTE";
-              case (int)NcTypeEnum.NC_UBYTE   : return "NC_UBYTE";
-              case (int)NcTypeEnum.NC_CHAR    : return "NC_CHAR";
-              case (int)NcTypeEnum.NC_SHORT   : return "NC_SHORT";
-              case (int)NcTypeEnum.NC_USHORT  : return "NC_USHORT";
-              case (int)NcTypeEnum.NC_INT     : return "NC_INT";
-              case (int)NcTypeEnum.NC_UINT    : return "NC_UINT";  
-              case (int)NcTypeEnum.NC_INT64   : return "NC_INT64"; 
-              case (int)NcTypeEnum.NC_UINT64  : return "NC_UINT64";
-              case (int)NcTypeEnum.NC_FLOAT   : return "NC_FLOAT";
-              case (int)NcTypeEnum.NC_DOUBLE  : return "NC_DOUBLE";
-              case (int)NcTypeEnum.NC_STRING  : return "NC_STRING";
-              case (int)NcTypeEnum.NC_VLEN    : return "NC_VLEN";
-              case (int)NcTypeEnum.NC_OPAQUE  : return "NC_OPAQUE";
-              case (int)NcTypeEnum.NC_ENUM    : return "NC_ENUM";
-              case (int)NcTypeEnum.NC_COMPOUND: return "NC_COMPOUND";
+                case (int)NcTypeEnum.NC_BYTE    : return "NC_BYTE";
+                case (int)NcTypeEnum.NC_UBYTE   : return "NC_UBYTE";
+                case (int)NcTypeEnum.NC_CHAR    : return "NC_CHAR";
+                case (int)NcTypeEnum.NC_SHORT   : return "NC_SHORT";
+                case (int)NcTypeEnum.NC_USHORT  : return "NC_USHORT";
+                case (int)NcTypeEnum.NC_INT     : return "NC_INT";
+                case (int)NcTypeEnum.NC_UINT    : return "NC_UINT";  
+                case (int)NcTypeEnum.NC_INT64   : return "NC_INT64"; 
+                case (int)NcTypeEnum.NC_UINT64  : return "NC_UINT64";
+                case (int)NcTypeEnum.NC_FLOAT   : return "NC_FLOAT";
+                case (int)NcTypeEnum.NC_DOUBLE  : return "NC_DOUBLE";
+                case (int)NcTypeEnum.NC_STRING  : return "NC_STRING";
+                case (int)NcTypeEnum.NC_VLEN    : return "NC_VLEN";
+                case (int)NcTypeEnum.NC_OPAQUE  : return "NC_OPAQUE";
+                case (int)NcTypeEnum.NC_ENUM    : return "NC_ENUM";
+                case (int)NcTypeEnum.NC_COMPOUND: return "NC_COMPOUND";
+                
             }
-            // I wouldn't say it's an exception but it's definitely not normal.
-            return "Unknown Type";
+            return "Used Defined Type: " + (myId-32);
         }
 
         public bool IsNull() {
