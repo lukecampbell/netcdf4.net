@@ -1786,6 +1786,12 @@ namespace netcdf4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] UInt64[] ip);
 
+        /* Get enum name from enum value. Name size will be <= NC_MAX_NAME. */
+        //int nc_inq_enum_ident(int ncid, nc_type xtype, long long value, char *identifier);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_inq_enum_ident(Int32 ncid, Int32 xtype, Int64 value_op, [In(), Out()] byte[] identifier);
+        
+
         
         
     }

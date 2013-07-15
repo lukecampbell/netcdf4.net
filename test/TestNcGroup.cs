@@ -416,10 +416,19 @@ namespace netcdf4.test {
                 Assert.Equals(enumType.GetName(), "Int64enum");
                 Assert.Equals(enumType.GetMemberCount(), 0);
                 Assert.True(NcInt64.Instance.Equals(enumType.GetBaseType()));
-                enumType.AddMember("BASE", 0);
-                enumType.AddMember("VOR", 1);
-                enumType.AddMember("DME", 2);
-                enumType.AddMember("TAC", 3);
+                enumType.AddMember("BASE", (Int64)0);
+                enumType.AddMember("VOR", (Int64)1);
+                enumType.AddMember("DME", (Int64)2);
+                enumType.AddMember("TAC", (Int64)3);
+                Assert.Equals(enumType.GetMemberCount(), 4);
+                Assert.Equals(enumType.GetMemberNameFromValue( (sbyte) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (byte) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (Int16) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (UInt16) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (Int32) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (UInt32) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (Int64) 1), "VOR");
+                Assert.Equals(enumType.GetMemberNameFromValue( (UInt64) 1), "VOR");
 
                 var = file.AddVar("enumInt64Var", enumType, dim);
                 var.PutVar(new Int64[] { 3 });
@@ -440,6 +449,8 @@ namespace netcdf4.test {
                 var.PutVar(new UInt64[] { 3 });
                 var.GetVar(UInt64Buffer);
                 Assert.Equals(UInt64Buffer[0], (UInt64)3);
+
+                
 
 
             } finally {

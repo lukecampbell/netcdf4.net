@@ -69,6 +69,71 @@ namespace netcdf4 {
             return num_membersp;
         }
 
+        public string GetMemberNameFromValue(sbyte memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(byte memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(Int16 memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(UInt16 memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(Int32 memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(UInt32 memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(Int64 memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+        public string GetMemberNameFromValue(UInt64 memberValue) {
+            byte[] nameBuffer = new byte[(int)NetCDF.netCDF_limits.NC_MAX_NAME+1];
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            NcCheck.Check(NetCDF.nc_inq_enum_ident(groupId, myId, (Int64) memberValue, nameBuffer));
+            string buf = encoder.GetString(nameBuffer);
+            return buf.Substring(0, buf.IndexOf('\0'));
+        }
+
+
         public void AddMember(string name, sbyte memberValue) {
             NcCheck.Check(NetCDF.nc_insert_enum(groupId, myId, name, ref memberValue));
         }
