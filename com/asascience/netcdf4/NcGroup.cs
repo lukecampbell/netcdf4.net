@@ -869,11 +869,13 @@ namespace netcdf4 {
             return new NcType(); // null
         }
 
-        /*
-        public NcEnumType AddEnumType(string name, NcTypeEnum basetype) {
-            throw new NotImplementedException("AddEnumType() not implemented");
-            return null;
-        }*/
+        public NcEnumType AddEnumType(string name, NcEnumType.Types baseType) {
+            CheckNull();
+            Int32 typeId=0;
+            NcCheck.Check(NetCDF.nc_def_enum(myId, (int)baseType, name, ref typeId));
+            NcEnumType tmp = new NcEnumType(this, name);
+            return tmp;
+        }
 
         public NcVlenType AddVlenType(string name, NcType baseType) {
             CheckNull();

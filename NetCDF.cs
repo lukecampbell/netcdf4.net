@@ -1499,7 +1499,8 @@ namespace netcdf4 {
 
         //int nc_inq_enum(int ncid, nc_type xtype, char *name, nc_type *base_nc_typep, size_t *base_sizep, size_t *num_membersp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_enum(Int32 ncid, Int32 xtype, StringBuilder name, ref Int32 base_nc_typep, ref Int32 base_sizep, ref Int32 num_membersp);
+        public static extern Int32 nc_inq_enum(Int32 ncid, Int32 xtype, [In(), Out()] byte[] name, 
+                ref Int32 base_nc_typep, ref Int32 base_sizep, ref Int32 num_membersp);
 
         //int nc_inq_typeids(int ncid, int *ntypes, int *typeids);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -1512,7 +1513,7 @@ namespace netcdf4 {
         //int nc_inq_vlen(int ncid, nc_type xtype, char *name, size_t *datum_sizep, nc_type *base_nc_typep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_vlen(Int32 ncid, Int32 xtype, [In(), Out()] byte[] name, ref Int32 datum_sizep, 
-                ref NetCDF.nc_type nc_typep);
+                ref Int32 nc_typep);
         
         //int nc_def_vlen(int ncid, const char *name, nc_type base_typeid, nc_type *xtypep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -1698,17 +1699,95 @@ namespace netcdf4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_user_type(Int32 ncid, Int32 xtype, [In(), Out()] byte[] name, ref Int32 size, 
                 ref Int32 base_nc_typep, ref Int32 nfieldsp, ref Int32 classp);
-
         //int nc_def_opaque(int ncid, size_t size, const char *name, nc_type *xtypep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_def_opaque(Int32 ncid, Int32 size, string name, ref Int32 xtypep);
         
-
         //int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_opaque(Int32 ncid, Int32 xtype, [In(), Out()] byte[] name, ref Int32 size);
         
+        //int nc_def_enum(int ncid, nc_type base_typeid, const char *name, nc_type *typeidp);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_def_enum(Int32 ncid, Int32 base_type_id, string name, ref Int32 typeidp);
+        
+        //int nc_insert_enum(int ncid, nc_type xtype, const char *name, const void *value);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref sbyte op);
+        
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref byte op);
+        
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref Int16 op);
+        
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref UInt16 op);
+        
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref Int32 op);
+        
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref UInt32 op);
 
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref Int64 op);
+        
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_insert_enum(Int32 ncid, Int32 base_type_id, string name, ref UInt64 op);
+        
+        //int nc_put_var(int ncid, int varid,  const void *op);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] sbyte[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] byte[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] Int16[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] UInt16[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] Int32[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] UInt32[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] Int64[] op);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var(Int32 ncid, Int32 varid, [In()] UInt64[] op);
+
+        //int nc_get_var(int ncid, int varid,  void *ip);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] sbyte[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] byte[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] Int16[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] UInt16[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] Int32[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] UInt32[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] Int64[] ip);
+
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var(Int32 ncid, Int32 varid, [In(), Out()] UInt64[] ip);
+
+        
+        
     }
 }
 

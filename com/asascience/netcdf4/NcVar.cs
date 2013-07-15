@@ -462,6 +462,10 @@ namespace netcdf4 {
             CheckNull();
             if(strictChecking) 
                 BufferCheck(dataValues.Length);
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
+            }
             if(NcChar.Instance.Equals(GetType()))
                 NcCheck.Check(NetCDF.nc_get_var_text(groupId, myId, dataValues));
             else
@@ -471,6 +475,10 @@ namespace netcdf4 {
             CheckNull();
             if(strictChecking) 
                 BufferCheck(dataValues.Length);
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
+            }
             if(NcChar.Instance.Equals(GetType()))
                 NcCheck.Check(NetCDF.nc_get_var_text(groupId, myId, dataValues));
             else
@@ -482,6 +490,10 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
+            }
             NcCheck.Check(NetCDF.nc_get_var_short(groupId, myId, dataValues));
         }
         
@@ -489,6 +501,10 @@ namespace netcdf4 {
             CheckNull();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
             }
             NcCheck.Check(NetCDF.nc_get_var_ushort(groupId, myId, dataValues));
         }
@@ -498,6 +514,10 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
+            }
             NcCheck.Check(NetCDF.nc_get_var_int(groupId, myId, dataValues));
         }
         
@@ -506,12 +526,20 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
+            }
             NcCheck.Check(NetCDF.nc_get_var_uint(groupId, myId, dataValues));
         }
         public void GetVar(Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
             }
             NcCheck.Check(NetCDF.nc_get_var_longlong(groupId, myId, dataValues));
         }
@@ -520,6 +548,10 @@ namespace netcdf4 {
             CheckNull();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_get_var(groupId, myId, dataValues));
+                return;
             }
             NcCheck.Check(NetCDF.nc_get_var_ulonglong(groupId, myId, dataValues));
         }
@@ -914,6 +946,10 @@ namespace netcdf4 {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
+            }
             if(NcChar.Instance.Equals(GetType()))
                 NcCheck.Check(NetCDF.nc_put_var_text(groupId,myId,dataValues));
             else
@@ -924,6 +960,10 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
             }
             if(NcChar.Instance.Equals(GetType()))
                 NcCheck.Check(NetCDF.nc_put_var_text(groupId,myId,dataValues));
@@ -937,6 +977,10 @@ namespace netcdf4 {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
+            }
             NcCheck.Check(NetCDF.nc_put_var_short(groupId, myId, dataValues));
         }
         
@@ -945,6 +989,10 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
             }
             NcCheck.Check(NetCDF.nc_put_var_ushort(groupId, myId, dataValues));
         }
@@ -955,6 +1003,10 @@ namespace netcdf4 {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
+            }
             NcCheck.Check(NetCDF.nc_put_var_int(groupId, myId, dataValues));
         }
         
@@ -963,6 +1015,10 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
             }
             NcCheck.Check(NetCDF.nc_put_var_uint(groupId, myId, dataValues));
         }
@@ -973,6 +1029,10 @@ namespace netcdf4 {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
             }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
+            }
             NcCheck.Check(NetCDF.nc_put_var_longlong(groupId, myId, dataValues));
         }
         
@@ -981,6 +1041,10 @@ namespace netcdf4 {
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
+                NcCheck.Check(NetCDF.nc_put_var(groupId, myId, dataValues));
+                return;
             }
             NcCheck.Check(NetCDF.nc_put_var_ulonglong(groupId, myId, dataValues));
         }

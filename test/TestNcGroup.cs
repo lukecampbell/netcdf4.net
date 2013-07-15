@@ -19,6 +19,7 @@ namespace netcdf4.test {
             AddTest(test_get_groups, "test_get_groups");
             AddTest(TestVlen, "TestVlen");
             AddTest(TestOpaque, "TestOpaque");
+            AddTest(TestEnum, "TestEnum");
         }
 
         public NcFile newFile(string filePath) {
@@ -298,6 +299,153 @@ namespace netcdf4.test {
             } finally {
                 file.Close();
             }
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool TestEnum() {
+            NcFile file = null;
+            NcType type = null;
+            NcEnumType enumType = null;
+            NcDim dim = null;
+            NcVar var = null;
+            sbyte[] sbyteBuffer = new sbyte[1];
+            byte[] byteBuffer = new byte[1];
+            Int16[] Int16Buffer = new Int16[1];
+            UInt16[] UInt16Buffer = new UInt16[1];
+            Int32[] Int32Buffer = new Int32[1];
+            UInt32[] UInt32Buffer = new UInt32[1];
+            Int64[] Int64Buffer = new Int64[1];
+            UInt64[] UInt64Buffer = new UInt64[1];
+            
+            try {
+                file = TestHelper.NewFile(filePath);
+                dim = file.AddDim("time", 1);
+                
+                type = file.AddEnumType("sbyteenum", NcEnumType.Types.NC_BYTE);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "sbyteenum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcByte.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumsbyteVar", enumType, dim);
+                var.PutVar(new sbyte[] { 3 });
+                var.GetVar(sbyteBuffer);
+                Assert.Equals(sbyteBuffer[0], (sbyte)3);
+
+                type = file.AddEnumType("byteenum", NcEnumType.Types.NC_UBYTE);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "byteenum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcUbyte.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumbyteVar", enumType, dim);
+                var.PutVar(new byte[] { 3 });
+                var.GetVar(byteBuffer);
+                Assert.Equals(byteBuffer[0], (byte)3);
+
+                type = file.AddEnumType("Int16enum", NcEnumType.Types.NC_SHORT);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "Int16enum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcShort.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumInt16Var", enumType, dim);
+                var.PutVar(new Int16[] { 3 });
+                var.GetVar(Int16Buffer);
+                Assert.Equals(Int16Buffer[0], (Int16)3);
+
+                type = file.AddEnumType("UInt16enum", NcEnumType.Types.NC_USHORT);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "UInt16enum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcUshort.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumUInt16Var", enumType, dim);
+                var.PutVar(new UInt16[] { 3 });
+                var.GetVar(UInt16Buffer);
+                Assert.Equals(UInt16Buffer[0], (UInt16)3);
+
+                type = file.AddEnumType("Int32enum", NcEnumType.Types.NC_INT);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "Int32enum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcInt.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumInt32Var", enumType, dim);
+                var.PutVar(new Int32[] { 3 });
+                var.GetVar(Int32Buffer);
+                Assert.Equals(Int32Buffer[0], (Int32)3);
+
+                type = file.AddEnumType("UInt32enum", NcEnumType.Types.NC_UINT);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "UInt32enum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcUint.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumUInt32Var", enumType, dim);
+                var.PutVar(new UInt32[] { 3 });
+                var.GetVar(UInt32Buffer);
+                Assert.Equals(UInt32Buffer[0], (UInt32)3);
+
+                type = file.AddEnumType("Int64enum", NcEnumType.Types.NC_INT64);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "Int64enum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcInt64.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumInt64Var", enumType, dim);
+                var.PutVar(new Int64[] { 3 });
+                var.GetVar(Int64Buffer);
+                Assert.Equals(Int64Buffer[0], (Int64)3);
+
+                type = file.AddEnumType("UInt64enum", NcEnumType.Types.NC_UINT64);
+                enumType = new NcEnumType(type);
+                Assert.Equals(enumType.GetName(), "UInt64enum");
+                Assert.Equals(enumType.GetMemberCount(), 0);
+                Assert.True(NcUint64.Instance.Equals(enumType.GetBaseType()));
+                enumType.AddMember("BASE", 0);
+                enumType.AddMember("VOR", 1);
+                enumType.AddMember("DME", 2);
+                enumType.AddMember("TAC", 3);
+
+                var = file.AddVar("enumUInt64Var", enumType, dim);
+                var.PutVar(new UInt64[] { 3 });
+                var.GetVar(UInt64Buffer);
+                Assert.Equals(UInt64Buffer[0], (UInt64)3);
+
+
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
             return true;
         }
     }
