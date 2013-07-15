@@ -1534,9 +1534,17 @@ namespace netcdf4 {
             }
         }
         
+        //int nc_put_var1(int ncid, int varid,  const size_t *indexp, const void *op);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_put_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, [In()] byte[] op);
+
         //int nc_get_var1(int ncid, int varid,  const size_t *indexp, void *ip);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_get_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, ref vlen_t ip);
+        
+        //int nc_get_var1(int ncid, int varid,  const size_t *indexp, void *ip);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_get_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, [In(), Out()] byte[] op);
 
         /* Overloading for the numeric types */
 
@@ -1688,8 +1696,18 @@ namespace netcdf4 {
 
         //int nc_inq_user_type(int ncid, nc_type xtype, char *name, size_t *size, nc_type *base_nc_typep, size_t *nfieldsp, int *classp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_user_type(Int32 ncid, Int32 xtype, [Out()] byte[] name, ref Int32 size, 
+        public static extern Int32 nc_inq_user_type(Int32 ncid, Int32 xtype, [In(), Out()] byte[] name, ref Int32 size, 
                 ref Int32 base_nc_typep, ref Int32 nfieldsp, ref Int32 classp);
+
+        //int nc_def_opaque(int ncid, size_t size, const char *name, nc_type *xtypep);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_def_opaque(Int32 ncid, Int32 size, string name, ref Int32 xtypep);
+        
+
+        //int nc_inq_opaque(int ncid, nc_type xtype, char *name, size_t *sizep);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_inq_opaque(Int32 ncid, Int32 xtype, [In(), Out()] byte[] name, ref Int32 size);
+        
 
     }
 }

@@ -883,9 +883,11 @@ namespace netcdf4 {
             return ncTypeTmp;
         }
         
-        public NcOpaqueType AddOpaqueType(string name, long size) {
-            throw new NotImplementedException("AddOpaqueType() not implemented");
-            return null;
+        public NcOpaqueType AddOpaqueType(string name, Int32 size) {
+            CheckNull();
+            Int32 typeid=0;
+            NcCheck.Check(NetCDF.nc_def_opaque(myId, size, name, ref typeid));
+            return new NcOpaqueType(this, name);
         }
 
         public NcCompoundType AddCompoundType(string name, long size) {

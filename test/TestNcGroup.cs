@@ -18,6 +18,7 @@ namespace netcdf4.test {
             AddTest(test_get_group_count, "test_get_group_count");
             AddTest(test_get_groups, "test_get_groups");
             AddTest(TestVlen, "TestVlen");
+            AddTest(TestOpaque, "TestOpaque");
         }
 
         public NcFile newFile(string filePath) {
@@ -168,7 +169,7 @@ namespace netcdf4.test {
             double[] doubleReadBuffer = new double[8];
 
             try {
-                file = TestHelper.NewFile("nc_test.nc");
+                file = TestHelper.NewFile(filePath);
                 dim = file.AddDim("time", 1);
 
                 // string
@@ -262,7 +263,41 @@ namespace netcdf4.test {
             } finally {
                 file.Close();
             }
-            //CheckDelete(filePath);
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool TestOpaque() {
+            NcFile file = null;
+            NcVar var = null;
+            NcDim dim = null;
+            NcType type = null;
+            NcOpaqueType opaqueType = null;
+
+            byte[] opaqueBuffer = new byte[32];
+            byte[] readBuffer = new byte[32];
+            for(int i=0;i<32;i++) opaqueBuffer[i] = (byte)i;
+
+            try {
+                file = TestHelper.NewFile(filePath);
+                type = file.AddOpaqueType("opaque", 32);
+                opaqueType = new NcOpaqueType(type);
+
+                Assert.Equals(type.GetTypeClass(), NcTypeEnum.NC_OPAQUE);
+                Assert.Equals(opaqueType.GetTypeSize(), 32);
+
+                dim = file.AddDim("time", 1);
+                var = file.AddVar("opaqueVar", opaqueType, dim);
+                int iLen = 0;
+                var.PutVar(new Int32[] { 0 }, opaqueBuffer);
+                iLen = var.GetVar(new Int32[] { 0 }, readBuffer);
+                Assert.Equals(iLen, 32);
+                for(int i=0;i<32;i++)
+                    Assert.Equals(readBuffer[i], opaqueBuffer[i]);
+
+
+            } finally {
+                file.Close();
+            }
             return true;
         }
     }

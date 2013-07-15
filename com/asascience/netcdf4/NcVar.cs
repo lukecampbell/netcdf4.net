@@ -573,16 +573,25 @@ namespace netcdf4 {
 
         public int GetVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            NcType type = GetType();
+            NcTypeEnum typeClass = type.GetTypeClass();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
                     throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
             }
-            if(GetType().GetTypeClass() == NcTypeEnum.NC_VLEN) {
+            if(typeClass == NcTypeEnum.NC_VLEN) {
                 byte[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
                 return Math.Min(dataValues.Length, buffer.Length);
+            }
+            if(typeClass == NcTypeEnum.NC_OPAQUE) {
+                NcOpaqueType tmp = new NcOpaqueType(type);
+                if(strictChecking && dataValues.Length < tmp.GetTypeSize())
+                    throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
+                NcCheck.Check(NetCDF.nc_get_var1(groupId, myId, index, dataValues));
+                return tmp.GetTypeSize();
             }
             NcCheck.Check(NetCDF.nc_get_var1_uchar(groupId, myId, index, dataValues));
             return 1;
@@ -1034,6 +1043,13 @@ namespace netcdf4 {
             }
             if(GetType().GetTypeClass() == NcTypeEnum.NC_VLEN) {
                 NcCheck.Check(NetCDF.nc_put_var1_vlen<byte>(groupId, myId, index, dataValues));
+                return;
+            }
+            if(GetType().GetTypeClass() == NcTypeEnum.NC_OPAQUE) {
+                NcOpaqueType tmp = new NcOpaqueType(GetType());
+                if(strictChecking && dataValues.Length < tmp.GetTypeSize())
+                    throw new exceptions.NcBufferOverflow("Value buffer be at least as large as the opaque type size");
+                NcCheck.Check(NetCDF.nc_put_var1(groupId, myId, index, dataValues));
                 return;
             }
             if(NcChar.Instance.Equals(GetType()))
