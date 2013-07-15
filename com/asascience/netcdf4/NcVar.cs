@@ -539,7 +539,22 @@ namespace netcdf4 {
             NcCheck.Check(NetCDF.nc_get_var_double(groupId, myId, dataValues));
         }
 
-        public void GetVar(Int32[] index, sbyte[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, out string dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking) {
+                DimCheck(index.Length);
+            }
+            if(GetType().GetTypeClass() != NcTypeEnum.NC_VLEN) {
+                throw new exceptions.NcBadType("netCDF data type must be VLEN for strings at one index position");
+            }
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            byte[] buffer;
+            NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
+            dataValues = encoder.GetString(buffer);
+            return buffer.Length;
+        }
+
+        public int GetVar(Int32[] index, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -550,12 +565,13 @@ namespace netcdf4 {
                 sbyte[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_schar(groupId, myId, index, dataValues));
+            return 1;
         }
 
-        public void GetVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -566,12 +582,13 @@ namespace netcdf4 {
                 byte[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_uchar(groupId, myId, index, dataValues));
+            return 1;
         }
 
-        public void GetVar(Int32[] index, Int16[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -582,12 +599,13 @@ namespace netcdf4 {
                 Int16[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_short(groupId, myId, index, dataValues));
+            return 1;
         }
         
-        public void GetVar(Int32[] index, UInt16[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -598,12 +616,13 @@ namespace netcdf4 {
                 UInt16[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_ushort(groupId, myId, index, dataValues));
+            return 1;
         }
 
-        public void GetVar(Int32[] index, Int32[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -614,12 +633,13 @@ namespace netcdf4 {
                 Int32[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_int(groupId, myId, index, dataValues));
+            return 1;
         }
         
-        public void GetVar(Int32[] index, UInt32[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -630,12 +650,13 @@ namespace netcdf4 {
                 UInt32[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_uint(groupId, myId, index, dataValues));
+            return 1;
         }
         
-        public void GetVar(Int32[] index, Int64[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -646,12 +667,13 @@ namespace netcdf4 {
                 Int64[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_longlong(groupId, myId, index, dataValues));
+            return 1;
         }
         
-        public void GetVar(Int32[] index, UInt64[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -662,12 +684,13 @@ namespace netcdf4 {
                 UInt64[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_ulonglong(groupId, myId, index, dataValues));
+            return 1;
         }
 
-        public void GetVar(Int32[] index, float[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, float[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -678,11 +701,12 @@ namespace netcdf4 {
                 float[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_float(groupId, myId, index, dataValues));
+            return 1;
         }
-        public void GetVar(Int32[] index, double[] dataValues, bool strictChecking=true) {
+        public int GetVar(Int32[] index, double[] dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {
                 DimCheck(index.Length);
@@ -693,9 +717,10 @@ namespace netcdf4 {
                 double[] buffer;
                 NcCheck.Check(NetCDF.nc_get_var1_vlen(groupId, myId, index, out buffer));
                 Array.Copy(buffer, dataValues, Math.Min(dataValues.Length, buffer.Length));
-                return;
+                return Math.Min(dataValues.Length, buffer.Length);
             }
             NcCheck.Check(NetCDF.nc_get_var1_double(groupId, myId, index, dataValues));
+            return 1;
         }
 
         public void GetVar(Int32[] index, Int32[] count, sbyte[] dataValues, bool strictChecking=true) {
@@ -967,6 +992,20 @@ namespace netcdf4 {
                 DimUnlimitedCheck();
             }
             NcCheck.Check(NetCDF.nc_put_var_double(groupId, myId, dataValues));
+        }
+
+        public void PutVar(Int32[] index, string dataValues, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking) {
+                DimCheck(index.Length);
+                if(dataValues.Length < 1)
+                    throw new exceptions.NcBufferOverflow("Value buffer must have at least 1 value");
+            }
+            if(GetType().GetTypeClass() != NcTypeEnum.NC_VLEN)
+                throw new exceptions.NcBadType("netCDF data type must be VLEN for strings at one index position");
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            byte[] byteBuffer = encoder.GetBytes(dataValues);
+            NcCheck.Check(NetCDF.nc_put_var1_vlen<byte>(groupId, myId, index, byteBuffer));
         }
 
         public void PutVar(Int32[] index, sbyte[] dataValues, bool strictChecking=true) {
