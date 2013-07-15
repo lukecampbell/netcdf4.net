@@ -132,17 +132,120 @@ namespace netcdf4.test {
             NcVlenType vlen = null;
             NcDim dim = null;
             NcVar var = null;
-            double[] vlenBuffer = new double[] { 0, 12, 4 };
-            double[] readBuffer = new double[8];
+            sbyte[] sbyteVlenBuffer = new sbyte[] { 0, -12, -4 };
+            sbyte[] sbyteReadBuffer = new sbyte[8];
+            
+            byte[] byteVlenBuffer = new byte[] { 0, 12, 4 };
+            byte[] byteReadBuffer = new byte[8];
+            
+            Int16[] Int16VlenBuffer = new Int16[] { 0, -12, -4 };
+            Int16[] Int16ReadBuffer = new Int16[8];
+            
+            UInt16[] UInt16VlenBuffer = new UInt16[] { 0, 12, 4 };
+            UInt16[] UInt16ReadBuffer = new UInt16[8];
+            
+            Int32[] Int32VlenBuffer = new Int32[] { 0, -12, -4 };
+            Int32[] Int32ReadBuffer = new Int32[8];
+            
+            UInt32[] UInt32VlenBuffer = new UInt32[] { 0, 12, 4 };
+            UInt32[] UInt32ReadBuffer = new UInt32[8];
+            
+            Int64[] Int64VlenBuffer = new Int64[] { 0, -12, -4 };
+            Int64[] Int64ReadBuffer = new Int64[8];
+            
+            UInt64[] UInt64VlenBuffer = new UInt64[] { 0, 12, 4 };
+            UInt64[] UInt64ReadBuffer = new UInt64[8];
+            
+            float[] floatVlenBuffer = new float[] { 0, 12, 4 };
+            float[] floatReadBuffer = new float[8];
+            
+            double[] doubleVlenBuffer = new double[] { 0, 12, 4 };
+            double[] doubleReadBuffer = new double[8];
+
             try {
                 file = TestHelper.NewFile(filePath);
-                vlen = file.AddVlenType("vlen", NcDouble.Instance);
                 dim = file.AddDim("time", 1);
-                var = file.AddVar("time", vlen, dim);
-                var.PutVar(new Int32[] { 0 }, vlenBuffer );
-                var.GetVar(new Int32[] { 0 }, readBuffer );
-                for(int i=0;i<vlenBuffer.Length;i++)
-                    Assert.Equals(vlenBuffer[i], readBuffer[i]);
+                
+                // sbyte
+                vlen = file.AddVlenType("vlensbyte", NcByte.Instance);
+                var = file.AddVar("sbyte", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, sbyteVlenBuffer );
+                var.GetVar(new Int32[] { 0 }, sbyteReadBuffer );
+                for(int i=0; i<sbyteVlenBuffer.Length; i++)
+                    Assert.Equals(sbyteVlenBuffer[i], sbyteReadBuffer[i]);
+                
+                // byte
+                vlen = file.AddVlenType("vlenbyte", NcByte.Instance);
+                var = file.AddVar("byte", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, byteVlenBuffer );
+                var.GetVar(new Int32[] { 0 }, byteReadBuffer );
+                for(int i=0; i<byteVlenBuffer.Length; i++)
+                    Assert.Equals(byteVlenBuffer[i], byteReadBuffer[i]);
+                
+                // Int16
+                vlen = file.AddVlenType("vlenInt16", NcShort.Instance);
+                var = file.AddVar("Int16", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, Int16VlenBuffer );
+                var.GetVar(new Int32[] { 0 }, Int16ReadBuffer );
+                for(int i=0; i<Int16VlenBuffer.Length; i++)
+                    Assert.Equals(Int16VlenBuffer[i], Int16ReadBuffer[i]);
+                
+                // UInt16
+                vlen = file.AddVlenType("vlenUInt16", NcUshort.Instance);
+                var = file.AddVar("UInt16", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, UInt16VlenBuffer );
+                var.GetVar(new Int32[] { 0 }, UInt16ReadBuffer );
+                for(int i=0; i<UInt16VlenBuffer.Length; i++)
+                    Assert.Equals(UInt16VlenBuffer[i], UInt16ReadBuffer[i]);
+                
+                // Int32
+                vlen = file.AddVlenType("vlenInt32", NcInt.Instance);
+                var = file.AddVar("Int32", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, Int32VlenBuffer );
+                var.GetVar(new Int32[] { 0 }, Int32ReadBuffer );
+                for(int i=0; i<Int32VlenBuffer.Length; i++)
+                    Assert.Equals(Int32VlenBuffer[i], Int32ReadBuffer[i]);
+                
+                // UInt32
+                vlen = file.AddVlenType("vlenUInt32", NcUint.Instance);
+                var = file.AddVar("UInt32", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, UInt32VlenBuffer );
+                var.GetVar(new Int32[] { 0 }, UInt32ReadBuffer );
+                for(int i=0; i<UInt32VlenBuffer.Length; i++)
+                    Assert.Equals(UInt32VlenBuffer[i], UInt32ReadBuffer[i]);
+                
+                // Int64
+                vlen = file.AddVlenType("vlenInt64", NcInt64.Instance);
+                var = file.AddVar("Int64", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, Int64VlenBuffer );
+                var.GetVar(new Int32[] { 0 }, Int64ReadBuffer );
+                for(int i=0; i<Int64VlenBuffer.Length; i++)
+                    Assert.Equals(Int64VlenBuffer[i], Int64ReadBuffer[i]);
+                
+                // UInt64
+                vlen = file.AddVlenType("vlenUInt64", NcUint64.Instance);
+                var = file.AddVar("UInt64", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, UInt64VlenBuffer );
+                var.GetVar(new Int32[] { 0 }, UInt64ReadBuffer );
+                for(int i=0; i<UInt64VlenBuffer.Length; i++)
+                    Assert.Equals(UInt64VlenBuffer[i], UInt64ReadBuffer[i]);
+                
+                // float
+                vlen = file.AddVlenType("vlenfloat", NcFloat.Instance);
+                var = file.AddVar("float", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, floatVlenBuffer );
+                var.GetVar(new Int32[] { 0 }, floatReadBuffer );
+                for(int i=0; i<floatVlenBuffer.Length; i++)
+                    Assert.Equals(floatVlenBuffer[i], floatReadBuffer[i]);
+                
+                // double
+                vlen = file.AddVlenType("vlendouble", NcDouble.Instance);
+                var = file.AddVar("double", vlen, dim);
+                var.PutVar(new Int32[] { 0 }, doubleVlenBuffer );
+                var.GetVar(new Int32[] { 0 }, doubleReadBuffer );
+                for(int i=0;i<doubleVlenBuffer.Length;i++)
+                    Assert.Equals(doubleVlenBuffer[i], doubleReadBuffer[i]);
+
 
             } finally {
                 file.Close();

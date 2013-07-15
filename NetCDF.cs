@@ -1538,6 +1538,137 @@ namespace netcdf4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_get_var1(Int32 ncid, Int32 varid, [In()] Int32[] indexp, ref vlen_t ip);
 
+        /* Overloading for the numeric types */
+
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out sbyte[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                byte[] tmp = new byte[vs.len];
+                data = new sbyte[vs.len];
+                Marshal.Copy(vs.data, tmp, 0, vs.len);
+                for(int i=0;i<vs.len;i++)
+                    data[i] = (sbyte)tmp[i];
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out byte[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                data = new byte[vs.len];
+                Marshal.Copy(vs.data, data, 0, vs.len);
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out Int16[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                data = new Int16[vs.len];
+                Marshal.Copy(vs.data, data, 0, vs.len);
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out UInt16[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                Int16[] tmp = new Int16[vs.len];
+                data = new UInt16[vs.len];
+                Marshal.Copy(vs.data, tmp, 0, vs.len);
+                for(int i=0;i<vs.len;i++)
+                    data[i] = (UInt16) tmp[i];
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out Int32[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                data = new Int32[vs.len];
+                Marshal.Copy(vs.data, data, 0, vs.len);
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out UInt32[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                Int32[] tmp = new Int32[vs.len];
+                data = new UInt32[vs.len];
+                Marshal.Copy(vs.data, tmp, 0, vs.len);
+                for(int i=0;i<vs.len;i++)
+                    data[i] = (UInt32) tmp[i];
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out Int64[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                data = new Int64[vs.len];
+                Marshal.Copy(vs.data, data, 0, vs.len);
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out UInt64[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                Int64[] tmp = new Int64[vs.len];
+                data = new UInt64[vs.len];
+                Marshal.Copy(vs.data, tmp, 0, vs.len);
+                for(int i=0;i<vs.len;i++)
+                    data[i] = (UInt64) tmp[i];
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
+        public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out float[] data) {
+            Int32 retval;
+            vlen_t vs = new vlen_t();
+            retval = nc_get_var1(ncid, varid, indexp, ref vs);
+            try { // From this point on NetCDF allocated an array in-memory and we MUST free it
+                data = new float[vs.len];
+                Marshal.Copy(vs.data, data, 0, vs.len);
+            } finally {
+                NcCheck.Check(nc_free_vlen(ref vs));
+            }
+            return retval;
+        }
+        
         public static Int32 nc_get_var1_vlen(Int32 ncid, Int32 varid, [In()] Int32[] indexp, out double[] data) {
             Int32 retval;
             vlen_t vs = new vlen_t();
