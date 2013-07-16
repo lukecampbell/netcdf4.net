@@ -37,7 +37,6 @@ namespace netcdf4.test {
             NcDim dim1  = null;
             NcVar var1  = null;
             Int32[] vals = new Int32[20];
-            Int32[] recvVals = new Int32[20];
             for(int i=0;i<20;i++) 
                 vals[i] = i;
             try {
@@ -75,7 +74,7 @@ namespace netcdf4.test {
                     var1.GetVar(buffer);
                     // If it gets to here the program will crash hard anyway
                     throw new AssertFailedException("BufferOverflow exception not raised");
-                } catch(NcBufferOverflow e) {
+                } catch(NcBufferOverflow) {
                     // yay it worked
                 }
 
@@ -117,13 +116,13 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { 128 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 var1.PutVar(new Int32[] { 0 }, new int[] { -128 });
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { -129 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
 
             } finally {
@@ -178,13 +177,13 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { 128 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 var1.PutVar(new Int32[] { 0 }, new int[] { -128 });
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { -129 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
 
             } finally {
@@ -238,13 +237,13 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { 32768 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 var1.PutVar(new Int32[] { 0 }, new int[] { -32768 });
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { -32769 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
             } finally {
                 file.Close();
@@ -296,12 +295,12 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { 65536 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 try {
                     var1.PutVar(new Int32[] { 0 }, new int[] { -1 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
             } finally {
                 file.Close();
@@ -354,13 +353,13 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new long[] { 2147483648 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 var1.PutVar(new Int32[] { 0 }, new long[] { -2147483648 });
                 try {
                     var1.PutVar(new Int32[] { 0 }, new long[] { -2147483649 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
             } finally {
                 file.Close();
@@ -412,12 +411,12 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new ulong[] { 4294967296 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 try {
                     var1.PutVar(new Int32[] { 0 }, new long[] { -1 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
             } finally {
                 file.Close();
@@ -469,7 +468,7 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new ulong[] { 9223372036854775808L });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
                 var1.PutVar(new Int32[] { 0 }, new long[] { -9223372036854775808L });
                 // Can't actually show the negative... how would you represent the overflow?
@@ -523,7 +522,7 @@ namespace netcdf4.test {
                 try {
                     var1.PutVar(new Int32[] { 0 }, new long[] { -1 });
                     throw new AssertFailedException("Failed to raise NcRange exception.");
-                } catch (NcRange e) {
+                } catch (NcRange) {
                 }
             } finally {
                 file.Close();

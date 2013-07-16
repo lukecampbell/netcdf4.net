@@ -115,16 +115,15 @@ namespace netcdf4 {
                 case (int)NcTypeEnum.NC_OPAQUE  : return NcTypeEnum.NC_OPAQUE;
                 case (int)NcTypeEnum.NC_ENUM    : return NcTypeEnum.NC_ENUM;
                 case (int)NcTypeEnum.NC_COMPOUND: return NcTypeEnum.NC_COMPOUND;
-                default :
-                    byte[] readBuffer = null;
-                    Int32 sizep=0;
-                    Int32 base_nc_typep=0;
-                    Int32 nfieldsp=0;
-                    Int32 classp=0;
-                    NcCheck.Check(NetCDF.nc_inq_user_type(groupId, myId, readBuffer, ref sizep, ref base_nc_typep, ref nfieldsp, ref classp));
-                    return (NcTypeEnum)classp;
+                default : break;
             }
-            return (NcTypeEnum)myId;
+            byte[] readBuffer = null;
+            Int32 sizep=0;
+            Int32 base_nc_typep=0;
+            Int32 nfieldsp=0;
+            Int32 classp=0;
+            NcCheck.Check(NetCDF.nc_inq_user_type(groupId, myId, readBuffer, ref sizep, ref base_nc_typep, ref nfieldsp, ref classp));
+            return (NcTypeEnum)classp;
         }
 
         public bool IsFixedType() {

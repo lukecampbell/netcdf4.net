@@ -14,6 +14,7 @@ namespace netcdf4.test {
             // Test addition goes here
             AddTest(TestGroupAttributes, "TestGroupAttributes");
             AddTest(TestVarAttributes, "TestVarAttributes");
+            AddTest(TestAttrGeneric, "TestAttrGeneric");
         }
         public bool TestGroupAttributes() {
             NcFile file = null;
@@ -148,7 +149,6 @@ namespace netcdf4.test {
                 att = var.PutAtt("string", "test");
                 Assert.Equals(att.GetName(), "string");
                 Assert.Equals(att.GetValues(), "test");
-                Console.WriteLine("Passed the first one");
 
 
                 att = var.PutAtt("sbyte", NcByte.Instance, (sbyte) -1);
@@ -238,6 +238,21 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             return true;
         }
+
+        public bool TestAttrGeneric() {
+            NcFile file = null; 
+            NcAtt attr;
+            try {
+                file = TestHelper.NewFile(filePath);
+                attr = file.PutAtt("ConventionCount", NcUint64.Instance, 2);
+                Assert.False(attr.IsNull());
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+
 
     }
 }

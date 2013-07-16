@@ -18,7 +18,7 @@ namespace netcdf4 {
         }
 
         public NcAtt(bool nullObject) {
-            nullObject = nullObject;
+            this.nullObject = nullObject;
         }
 
         public NcAtt(NcAtt rhs) {
@@ -38,7 +38,7 @@ namespace netcdf4 {
             return lenp;
         }
 
-        public NcType GetType()  {
+        public NcType GetNcType()  {
             NetCDF.nc_type xtypep=0;
             NcCheck.Check(NetCDF.nc_inq_atttype(groupId, varId, myName, ref xtypep));
 
@@ -69,7 +69,7 @@ namespace netcdf4 {
             }
         }
         private void CheckFixedType() {
-            if(!GetType().IsFixedType())
+            if(!GetNcType().IsFixedType())
                 throw new NotImplementedException("GetValues() for non-fixed types is not yet implemented");
         }
 

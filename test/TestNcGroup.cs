@@ -13,10 +13,10 @@ namespace netcdf4.test {
     class TestNcGroup : UnitTest {
         protected const string filePath = "nc_clobber.nc";
         public TestNcGroup() {
-            AddTest(test_get_name, "test_get_name");
-            AddTest(test_get_parent_group, "test_get_parent_group");
-            AddTest(test_get_group_count, "test_get_group_count");
-            AddTest(test_get_groups, "test_get_groups");
+            AddTest(TestGetName, "TestGetName");
+            AddTest(TestGetParentGroup, "TestGetParentGroup");
+            AddTest(TestGetGroupCount, "TestGetGroupCount");
+            AddTest(TestGetGroups, "TestGetGroups");
             AddTest(TestVlen, "TestVlen");
             AddTest(TestOpaque, "TestOpaque");
             AddTest(TestEnum, "TestEnum");
@@ -29,7 +29,7 @@ namespace netcdf4.test {
         }
 
 
-        public bool test_get_name() {
+        public bool TestGetName() {
             string groupName;
             int id;
             CheckDelete(filePath);
@@ -49,17 +49,17 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             return true;
         }
-        public bool test_get_parent_group() {
+        public bool TestGetParentGroup() {
             NcGroup group;
+            NcGroup grpTest;
             NcFile file=null;
 
             group = new NcGroup();
             try {
-                NcGroup grpTest = group.GetParentGroup();
+                grpTest = group.GetParentGroup();
+                Assert.True(grpTest.IsNull());
                 throw new AssertFailedException("NcNullGrp not thrown");
-            } catch (exceptions.NcNullGrp e) {
-            } catch (Exception e) {
-                throw new AssertFailedException("NcNullGrp not thrown");
+            } catch (exceptions.NcNullGrp) {
             }
 
             try {
@@ -72,17 +72,17 @@ namespace netcdf4.test {
             return true;
         }
 
-        public bool test_get_group_count() {
+        public bool TestGetGroupCount() {
             NcGroup group;
             NcFile file=null;
             try {
                 file = newFile(filePath);
                 group = file;
                 int groupCount;
-                int oGroupCount=0;
                 groupCount = group.GetGroupCount(GroupLocation.AllGrps);
                 Assert.Equals(groupCount, 1); // Only the root group/file so no groups are defined
                 NcGroup childGroup = group.AddGroup("child1");
+                Assert.False(childGroup.IsNull());
                 Assert.Equals(group.GetGroupCount(GroupLocation.AllGrps), 2);
                 Dictionary<string, NcGroup> groups = group.GetGroups(GroupLocation.AllGrps);
                 for(int i=0;i<groups.Count;i++) {
@@ -100,7 +100,7 @@ namespace netcdf4.test {
             CheckDelete(filePath);
             return true;
         }
-        public bool test_get_groups() {
+        public bool TestGetGroups() {
             NcGroup group;
             NcFile file=null;
 
@@ -468,8 +468,11 @@ namespace netcdf4.test {
                 NcDim dim2 = file.AddDim("hdg", 20);
 
                 NcVar var1 = file.AddVar("time", NcDouble.Instance, dim1);
+                Assert.False(var1.IsNull());
                 NcVar var2 = file.AddVar("hdg", NcDouble.Instance, dim2);
+                Assert.False(var2.IsNull());
                 NcVar var3 = file.AddVar("alt", NcDouble.Instance, new List<NcDim>() { dim1, dim2 });
+                Assert.False(var3.IsNull());
 
                 Dictionary<string, NcGroup> coordVars = file.GetCoordVars();
                 Assert.True(coordVars.ContainsKey("time") && coordVars["time"].GetId() == file.GetId());
@@ -490,11 +493,17 @@ namespace netcdf4.test {
             try {
                 file = TestHelper.NewFile(filePath);
                 NcGroup a = file.AddGroup("a");
+                Assert.False(a.IsNull());
                 NcGroup b = file.AddGroup("b");
+                Assert.False(b.IsNull());
                 NcGroup a1 = a.AddGroup("a1");
+                Assert.False(a1.IsNull());
                 NcGroup a2 = a.AddGroup("a2");
+                Assert.False(a2.IsNull());
                 NcGroup b1 = b.AddGroup("b1");
+                Assert.False(b1.IsNull());
                 NcGroup b2 = b.AddGroup("b2");
+                Assert.False(b2.IsNull());
 
                 Assert.Equals(file.GetGroupCount(GroupLocation.AllGrps), 7);
                 Assert.Equals(file.GetGroupCount(GroupLocation.AllChildrenGrps), 6);

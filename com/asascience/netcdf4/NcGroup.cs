@@ -76,7 +76,7 @@ namespace netcdf4 {
                 NcCheck.Check(NetCDF.nc_inq_grp_parent(myId, ref parentId));
                 NcGroup ncGroupParent = new NcGroup(parentId);
                 return ncGroupParent;
-            } catch (exceptions.NcEnoGrp e) {
+            } catch (exceptions.NcEnoGrp) {
                 return new NcGroup();
             }
         }
@@ -417,6 +417,72 @@ namespace netcdf4 {
             }
             return new NcGroupAtt(); // null
         }
+
+        public NcGroupAtt PutAtt(NcAtt attr) {
+            NcType t = attr.GetNcType();
+
+            if(NcByte.Instance.Equals(t)) {
+                sbyte[] buffer = new sbyte[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcUbyte.Instance.Equals(t)) {
+                byte[] buffer = new byte[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcShort.Instance.Equals(t)) {
+                Int16[] buffer = new Int16[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcUshort.Instance.Equals(t)) {
+                UInt16[] buffer = new UInt16[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcInt.Instance.Equals(t)) {
+                Int32[] buffer = new Int32[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcUint.Instance.Equals(t)) {
+                UInt32[] buffer = new UInt32[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcInt64.Instance.Equals(t)) {
+                Int64[] buffer = new Int64[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcUint64.Instance.Equals(t)) {
+                UInt64[] buffer = new UInt64[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcFloat.Instance.Equals(t)) {
+                float[] buffer = new float[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+
+            if(NcDouble.Instance.Equals(t)) {
+                double[] buffer = new double[attr.GetAttLength()];
+                NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+            return new NcGroupAtt();
+        }
+
 
         public NcGroupAtt PutAtt(string name, string dataValues) {
             CheckNull();
