@@ -20,6 +20,8 @@ namespace netcdf4.test {
             AddTest(TestVlen, "TestVlen");
             AddTest(TestOpaque, "TestOpaque");
             AddTest(TestEnum, "TestEnum");
+            AddTest(TestGetCoordVars, "TestGetCoordVars");
+            AddTest(TestNestedGroups, "TestNestedGroups");
         }
 
         public NcFile newFile(string filePath) {
@@ -450,7 +452,76 @@ namespace netcdf4.test {
                 var.GetVar(UInt64Buffer);
                 Assert.Equals(UInt64Buffer[0], (UInt64)3);
 
-                
+
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+
+        public bool TestGetCoordVars() {
+            NcFile file = null;
+            try {
+                file = TestHelper.NewFile(filePath);
+                NcDim dim1 = file.AddDim("time", 20);
+                NcDim dim2 = file.AddDim("hdg", 20);
+
+                NcVar var1 = file.AddVar("time", NcDouble.Instance, dim1);
+                NcVar var2 = file.AddVar("hdg", NcDouble.Instance, dim2);
+                NcVar var3 = file.AddVar("alt", NcDouble.Instance, new List<NcDim>() { dim1, dim2 });
+
+                Dictionary<string, NcGroup> coordVars = file.GetCoordVars();
+                Assert.True(coordVars.ContainsKey("time") && coordVars["time"].GetId() == file.GetId());
+                Assert.True(coordVars.ContainsKey("hdg") && coordVars["hdg"].GetId() == file.GetId());
+                Assert.False(coordVars.ContainsKey("alt"));
+
+            } finally {
+                file.Close(); 
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+
+        public bool TestNestedGroups() {
+            NcFile file = null;
+            NcDim dim;
+            Dictionary<string, NcGroup> groups;
+            try {
+                file = TestHelper.NewFile(filePath);
+                NcGroup a = file.AddGroup("a");
+                NcGroup b = file.AddGroup("b");
+                NcGroup a1 = a.AddGroup("a1");
+                NcGroup a2 = a.AddGroup("a2");
+                NcGroup b1 = b.AddGroup("b1");
+                NcGroup b2 = b.AddGroup("b2");
+
+                Assert.Equals(file.GetGroupCount(GroupLocation.AllGrps), 7);
+                Assert.Equals(file.GetGroupCount(GroupLocation.AllChildrenGrps), 6);
+                Assert.Equals(b2.GetGroupCount(GroupLocation.ParentsGrps), 2);
+                Assert.Equals(a2.GetGroupCount(GroupLocation.ParentsGrps), 2);
+                Assert.True(file.GetGroups(GroupLocation.AllChildrenGrps).ContainsKey("b1"));
+                groups = a1.GetGroups(GroupLocation.ParentsGrps);
+                Assert.True(groups.ContainsKey("/") && groups["/"].GetId() == file.GetId());
+                Assert.Equals(file.GetGroups("b1", GroupLocation.AllChildrenGrps).Count , 1);
+                Assert.True(file.GetGroup("a2", GroupLocation.ChildrenGrps).IsNull());
+                Assert.Equals(file.GetGroup("a2", GroupLocation.AllChildrenGrps).GetId(), a2.GetId());
+                Assert.True(file.IsRootGroup());
+                Assert.False(a.IsRootGroup());
+
+                foreach(KeyValuePair<string, NcGroup> group in file.GetGroups(GroupLocation.AllGrps)) {
+                    dim = group.Value.AddDim("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), 20);
+                    group.Value.AddVar("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), NcUint64.Instance, dim);
+                }
+
+
+                Assert.Equals(file.GetVarCount(Location.All), 7);
+                Assert.Equals(file.GetVars(Location.All).Count, 7);
+                foreach(KeyValuePair<string, NcVar> gvar in file.GetVars(Location.All)) {
+                    Assert.Equals(gvar.Key, gvar.Value.GetName());
+                    NcGroup g = gvar.Value.GetParentGroup();
+                    Assert.Equals(gvar.Key, "time" + (g.IsRootGroup() ? "Root" : g.GetName()));
+                }
 
 
             } finally {

@@ -1791,6 +1791,9 @@ namespace netcdf4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_enum_ident(Int32 ncid, Int32 xtype, Int64 value_op, [In(), Out()] byte[] identifier);
         
+        //int nc_inq_varids(int ncid, int *nvars, int *varids);
+        [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
+        public static extern Int32 nc_inq_varids(Int32 ncid, ref Int32 nvars, [In(), Out()] Int32[] varids);
 
         
         

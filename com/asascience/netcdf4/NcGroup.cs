@@ -98,7 +98,7 @@ namespace netcdf4 {
                 ngroups++;
             }
 
-            // search in parent groups
+            // search in current group
             if(location == GroupLocation.ChildrenGrps || location == GroupLocation.AllChildrenGrps 
                                                             || location == GroupLocation.AllGrps)  {
                 int numgrps=0;
@@ -106,7 +106,7 @@ namespace netcdf4 {
                 NcCheck.Check(NetCDF.nc_inq_grps(myId, ref numgrps, ncids));
                 ngroups += numgrps;
             }
-            // search is parent groups
+            // search in parent groups
             if(location == GroupLocation.ParentsGrps || location == GroupLocation.ParentsAndCurrentGrps 
                                                             || location == GroupLocation.AllGrps) {
                 Dictionary<string,NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
@@ -138,7 +138,7 @@ namespace netcdf4 {
                 int[] ncids = new int[groupCount];
                 int numgrps=0;
 
-                NcCheck.Check(NetCDF.nc_inq_grps(GetId(), ref numgrps, ncids));
+                NcCheck.Check(NetCDF.nc_inq_grps(myId, ref numgrps, ncids));
                 for(int i=0; i<groupCount; i++) {
                     NcGroup tmpGroup = new NcGroup(ncids[i]);
                     ncGroups.Add(tmpGroup.GetName(), tmpGroup);
@@ -230,6 +230,7 @@ namespace netcdf4 {
             if(LocationIsCurrentGroup(location)) {
                 int varCount = GetVarCount();
                 Int32[] varIds = new Int32[varCount];
+                NcCheck.Check(NetCDF.nc_inq_varids(myId, ref varCount, varIds));
                 foreach(Int32 varId in varIds) {
                     NcVar tmpVar = new NcVar(this, varId);
                     vars.Add(tmpVar.GetName(), tmpVar);
@@ -237,12 +238,12 @@ namespace netcdf4 {
             }
             if(LocationIsParentGroup(location)) {
                 foreach(KeyValuePair<string, NcGroup> g in GetGroups(GroupLocation.ParentsGrps)) {
-                    vars.Union(g.Value.GetVars());
+                    g.Value.GetVars().ToList().ForEach(x => vars[x.Key] = x.Value);
                 }
             }
             if(LocationIsChildGroup(location)) {
                 foreach(KeyValuePair<string, NcGroup> g in GetGroups(GroupLocation.AllChildrenGrps)) {
-                    vars.Union(g.Value.GetVars());
+                    g.Value.GetVars().ToList().ForEach(x => vars[x.Key] = x.Value);
                 }
             }
             return vars;
@@ -383,13 +384,13 @@ namespace netcdf4 {
             if(LocationIsParentGroup(location)) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
                 foreach(KeyValuePair<string, NcGroup> g in groups) {
-                    ncAtts.Union(g.Value.GetAtts());
+                    g.Value.GetAtts().ToList().ForEach(x => ncAtts[x.Key] = x.Value);
                 }
             }
             if(LocationIsChildGroup(location)) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
                 foreach(KeyValuePair<string, NcGroup> g in groups) {
-                    ncAtts.Union(g.Value.GetAtts());
+                    g.Value.GetAtts().ToList().ForEach(x => ncAtts[x.Key] = x.Value);
                 }
             }
             return ncAtts;
@@ -648,16 +649,14 @@ namespace netcdf4 {
             if(LocationIsParentGroup(location)) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
-                    Dictionary<string, NcDim> dimTmp = k.Value.GetDims();
-                    ncDims.Union(dimTmp);
+                    k.Value.GetDims().ToList().ForEach(x => ncDims[x.Key] = x.Value);
                 }
             }
 
             if(LocationIsChildGroup(location)) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
-                    Dictionary<string, NcDim> dimTmp = k.Value.GetDims();
-                    ncDims.Union(dimTmp);
+                    k.Value.GetDims().ToList().ForEach(x => ncDims[x.Key] = x.Value);
                 }
             }
             return ncDims;
@@ -797,8 +796,7 @@ namespace netcdf4 {
                                                         || location == Location.All) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
-                    Dictionary<string, NcType> tmpTypes = k.Value.GetTypes();
-                    ncTypes.Union(tmpTypes);
+                    k.Value.GetTypes().ToList().ForEach(x => ncTypes[x.Key] = x.Value);
                 }
             }
 
@@ -807,8 +805,7 @@ namespace netcdf4 {
                                                         || location == Location.All) {
                 Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
                 foreach(KeyValuePair<string, NcGroup> k in groups) {
-                    Dictionary<string, NcType> tmpTypes = k.Value.GetTypes();
-                    ncTypes.Union(tmpTypes);
+                    k.Value.GetTypes().ToList().ForEach(x => ncTypes[x.Key] = x.Value);
                 }
             }
             return ncTypes;
@@ -898,8 +895,28 @@ namespace netcdf4 {
         }
 
         public Dictionary<string, NcGroup> GetCoordVars(Location location=Location.Current) {
-            throw new NotImplementedException("GetCoordVars() not implemented");
-            return null;
+            Dictionary<string, NcGroup> coordVars = new Dictionary<string, NcGroup>();
+            if(LocationIsCurrentGroup(location)) {
+                foreach(KeyValuePair<string, NcDim> dim in GetDims()) {
+                    if(GetVars().ContainsKey(dim.Key))
+                        coordVars.Add(dim.Key, this);
+                }
+            }
+
+            if(LocationIsParentGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.ParentsGrps);
+                foreach(KeyValuePair<string,NcGroup> k in groups) {
+                    k.Value.GetCoordVars().ToList().ForEach(x => coordVars[x.Key] = x.Value);
+                }
+            }
+
+            if(LocationIsChildGroup(location)) {
+                Dictionary<string, NcGroup> groups = GetGroups(GroupLocation.AllChildrenGrps);
+                foreach(KeyValuePair<string,NcGroup> k in groups) {
+                    k.Value.GetCoordVars().ToList().ForEach(x => coordVars[x.Key] = x.Value);
+                }
+            }
+            return coordVars;
         }
 
         public void GetCoordVar(string coordVarName, ref NcDim ncDim, ref NcVar ncVar, Location location = Location.Current) {

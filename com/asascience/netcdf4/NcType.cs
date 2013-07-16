@@ -135,6 +135,10 @@ namespace netcdf4 {
             return true;
         }
 
+        public bool IsUserDefined() {
+            return myId >= 32;
+        }
+
         public string GetTypeClassName() {
             switch(myId) {
                 case (int)NcTypeEnum.NC_BYTE    : return "NC_BYTE";
