@@ -423,61 +423,76 @@ namespace netcdf4 {
 
             if(NcByte.Instance.Equals(t)) {
                 sbyte[] buffer = new sbyte[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUbyte.Instance.Equals(t)) {
                 byte[] buffer = new byte[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcShort.Instance.Equals(t)) {
                 Int16[] buffer = new Int16[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUshort.Instance.Equals(t)) {
                 UInt16[] buffer = new UInt16[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcInt.Instance.Equals(t)) {
                 Int32[] buffer = new Int32[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUint.Instance.Equals(t)) {
                 UInt32[] buffer = new UInt32[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcInt64.Instance.Equals(t)) {
                 Int64[] buffer = new Int64[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUint64.Instance.Equals(t)) {
                 UInt64[] buffer = new UInt64[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcFloat.Instance.Equals(t)) {
                 float[] buffer = new float[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcDouble.Instance.Equals(t)) {
                 double[] buffer = new double[attr.GetAttLength()];
+                attr.GetValues(buffer);
                 NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                return GetAtt(attr.GetName());
+            }
+            if(NcChar.Instance.Equals(t)) {
+                string sBuffer = attr.GetValues();
+                NcCheck.Check(NetCDF.nc_put_att_text(myId, NcAtt.NC_GLOBAL,attr.GetName(), sBuffer.Length, sBuffer));
                 return GetAtt(attr.GetName());
             }
             return new NcGroupAtt();
@@ -750,6 +765,13 @@ namespace netcdf4 {
             return new NcDim(); // null dim
         }
 
+        public NcDim AddDim(NcDim dim) {
+            CheckNull();
+            Int32 dimId = 0;
+            NcCheck.Check(NetCDF.nc_def_dim(myId, dim.GetName(), dim.IsUnlimited() ? NetCDF.NC_UNLIMITED : dim.GetSize(), ref dimId));
+            return new NcDim(this, dimId);
+        }
+        
         // Adds a dimension of limited size
         public NcDim AddDim(string name, Int32 dimSize) {
             CheckNull();

@@ -22,6 +22,8 @@ namespace netcdf4.test {
             AddTest(TestEnum, "TestEnum");
             AddTest(TestGetCoordVars, "TestGetCoordVars");
             AddTest(TestNestedGroups, "TestNestedGroups");
+            AddTest(TestDimGeneric, "TestDimGeneric");
+            AddTest(TestVarGeneric, "TestVarGeneric");
         }
 
         public NcFile newFile(string filePath) {
@@ -520,7 +522,9 @@ namespace netcdf4.test {
 
                 foreach(KeyValuePair<string, NcGroup> group in file.GetGroups(GroupLocation.AllGrps)) {
                     dim = group.Value.AddDim("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), 20);
-                    group.Value.AddVar("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), NcUint64.Instance, dim);
+                    NcVar v = group.Value.AddVar("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), NcUint64.Instance, dim);
+                    Assert.False(v.IsNull());
+                    Assert.Equals(file.GetVar(v.GetName(), Location.All).GetId(), v.GetId());
                 }
 
 
@@ -531,8 +535,47 @@ namespace netcdf4.test {
                     NcGroup g = gvar.Value.GetParentGroup();
                     Assert.Equals(gvar.Key, "time" + (g.IsRootGroup() ? "Root" : g.GetName()));
                 }
+                Assert.Equals(file.GetVars("timeRoot", Location.All).Count, 1);
 
 
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool TestDimGeneric() {
+            NcFile file1 = null; 
+            NcFile file2 = null;
+            try {
+                file1 = TestHelper.NewFile(filePath);
+                file2 = TestHelper.NewFile("other" + filePath);
+                NcDim dim1 = file1.AddDim("time"); //Unlimited
+                NcDim dim2 = file2.AddDim(dim1); 
+                Assert.True(dim2.IsUnlimited());
+                Assert.Equals(dim1.GetName(), dim2.GetName());
+            } finally {
+                file1.Close();
+                file2.Close();
+            }
+            CheckDelete(filePath);
+            CheckDelete("other" + filePath);
+            return true;
+        }
+
+        public bool TestVarGeneric() {
+            NcFile file = null;
+            try {
+                file = TestHelper.NewFile(filePath);
+                NcDim dim1 = file.AddDim("dim1", 5); 
+                NcVar testVar = file.AddVar("var1", "double", "dim1");
+                Assert.False(testVar.IsNull());
+                testVar = file.AddVar("var2", NcDouble.Instance, dim1);
+                Assert.False(testVar.IsNull());
+                testVar = file.AddVar("var3", "double", new List<string>() { "dim1" });
+                Assert.False(testVar.IsNull());
+                testVar = file.AddVar("var4", NcDouble.Instance, new List<NcDim>() { dim1 });
+                Assert.False(testVar.IsNull());
             } finally {
                 file.Close();
             }

@@ -240,16 +240,33 @@ namespace netcdf4.test {
         }
 
         public bool TestAttrGeneric() {
-            NcFile file = null; 
-            NcAtt attr;
+            NcFile file1 = null; 
+            NcFile file2 = null;
+            NcAtt attr1;
+            NcAtt attr2;
+            UInt64[] buffer1 = new UInt64[1];
+            UInt64[] buffer2 = new UInt64[1];
             try {
-                file = TestHelper.NewFile(filePath);
-                attr = file.PutAtt("ConventionCount", NcUint64.Instance, 2);
-                Assert.False(attr.IsNull());
+                file1 = TestHelper.NewFile(filePath);
+                file2 = TestHelper.NewFile("other" + filePath);
+                attr1 = file1.PutAtt("ConventionCount", NcUint64.Instance, 2);
+                attr2 = file2.PutAtt(attr1);
+                Assert.Equals(attr1.GetAttLength(), attr2.GetAttLength());
+                Assert.Equals(attr1.GetName(), attr2.GetName());
+                attr1.GetValues(buffer1);
+                attr2.GetValues(buffer2);
+                Assert.Equals(buffer1, buffer2);
+                attr1 = file1.PutAtt("Other", "StringThing");
+                Assert.False(attr1.IsNull());
+                attr2 = file2.PutAtt(attr1);
+                Assert.False(attr2.IsNull());
+                Assert.Equals(attr1.GetValues(), attr2.GetValues());
             } finally {
-                file.Close();
+                file1.Close();
+                file2.Close();
             }
             CheckDelete(filePath);
+            CheckDelete("other" + filePath);
             return true;
         }
 

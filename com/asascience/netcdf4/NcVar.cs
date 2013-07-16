@@ -119,7 +119,7 @@ namespace netcdf4 {
 
         protected void CheckNull() {
             if(nullObject) {
-                throw new exceptions.NcNullVar("Attempt to invoke NcGroup.GetId on a Null group");
+                throw new exceptions.NcNullVar("Attempt to invoke NcVar method on a Null NcVar");
             }
         }
 

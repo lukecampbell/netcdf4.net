@@ -22,6 +22,20 @@ namespace netcdf4.test {
             if(a.CompareTo(b) != 0)
                 throw new AssertFailedException(String.IsNullOrEmpty(message) ? a.ToString() + " != " + b.ToString() : message);
         }
+        public static void Equals(Array a, Array b, string message=null) {
+            if(a.Length != b.Length)
+                throw new AssertFailedException("A and B are not of equal length (" + a.Length + " != " + b.Length + ")");
+            for(int i=0;i<a.Length;i++) {
+                var ai = a.GetValue(i);
+                var bi = b.GetValue(i);
+                if(ai is IComparable && bi is IComparable) {
+                    Equals((IComparable)ai, (IComparable)bi, message);
+                } else if(ai != bi){
+                    throw new AssertFailedException(String.IsNullOrEmpty(message) ? a.GetValue(i).ToString() + " != " + b.GetValue(i).ToString() : message);
+                }
+            }
+        }
+
         public static void NotEquals(IComparable a, IComparable b, string message=null) {
             if(a == null)
                 throw new AssertFailedException("a is null");
