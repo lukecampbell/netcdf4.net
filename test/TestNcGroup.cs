@@ -523,6 +523,7 @@ namespace netcdf4.test {
                 foreach(KeyValuePair<string, NcGroup> group in file.GetGroups(GroupLocation.AllGrps)) {
                     dim = group.Value.AddDim("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), 20);
                     NcVar v = group.Value.AddVar("time" + (group.Value.IsRootGroup() ? "Root" : group.Key), NcUint64.Instance, dim);
+                    NcAtt att = group.Value.PutAtt("Attr" + (group.Value.IsRootGroup() ? "Root" : group.Key), "Value");
                     Assert.False(v.IsNull());
                     Assert.Equals(file.GetVar(v.GetName(), Location.All).GetId(), v.GetId());
                 }
@@ -536,6 +537,13 @@ namespace netcdf4.test {
                     Assert.Equals(gvar.Key, "time" + (g.IsRootGroup() ? "Root" : g.GetName()));
                 }
                 Assert.Equals(file.GetVars("timeRoot", Location.All).Count, 1);
+                
+                Assert.Equals(file.GetAttCount(Location.All), 7);
+                Assert.Equals(file.GetAtts(Location.All).Count, 7);
+                foreach(KeyValuePair<string, NcGroupAtt> k in file.GetAtts(Location.All)) {
+                    Assert.Equals(k.Value.GetValues(), "Value");
+                }
+
 
 
             } finally {
