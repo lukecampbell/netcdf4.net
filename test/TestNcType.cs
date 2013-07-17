@@ -13,10 +13,9 @@ namespace netcdf4.test {
     public class TestNcType : UnitTest {
         public TestNcType() {
             // Add tests
-            AddTest(test_types, "test_types");
-            AddTest(test_string_bridge, "test_string_bridge");
+            AddTest(TestTypes, "TestTypes");
         }
-        public bool test_types() {
+        public bool TestTypes() {
             for(int i=1;i<13;i++) {
                 NcType t = new NcType(i);
                 Assert.Equals(t.GetId(), i);
@@ -29,12 +28,6 @@ namespace netcdf4.test {
                 }
             }
 
-            return true;
-        }
-        public bool test_string_bridge() {
-            StringBuilder charName = new StringBuilder(256);
-            Int32 sizep = 0;
-            NcCheck.Check(NetCDF.nc_inq_type(0, (NetCDF.nc_type)1, charName, ref sizep));
             return true;
         }
     }

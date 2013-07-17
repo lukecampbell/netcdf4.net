@@ -18,7 +18,7 @@ namespace netcdf4 {
         nc4classic
     }
 
-    class NcFile : NcGroup {
+    public class NcFile : NcGroup {
         public const int NC_NOWRITE       = 0x0000;
         public const int NC_WRITE         = 0x0001;
         public const int NC_CLOBBER       = 0x0000;

@@ -8,7 +8,7 @@
     <ProjectGuid>{D0F27BB3-7E6A-41FC-87EA-DDEDC10EFC93}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>netcdf4.net</RootNamespace>
-    <AssemblyName>nc.net</AssemblyName>
+    <AssemblyName>nc-test</AssemblyName>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -48,38 +48,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="bin\Debug\netcdf4.net.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NetCDF.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="com\asascience\netcdf4\NcAtt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcGroup.cs" />
-    <Compile Include="com\asascience\netcdf4\NcByte.cs" />
-    <Compile Include="com\asascience\netcdf4\NcChar.cs" />
-    <Compile Include="com\asascience\netcdf4\NcCheck.cs" />
-    <Compile Include="com\asascience\netcdf4\NcCompoundType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcDim.cs" />
-    <Compile Include="com\asascience\netcdf4\NcDouble.cs" />
-    <Compile Include="com\asascience\netcdf4\NcEnumType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcException.cs" />
-    <Compile Include="com\asascience\netcdf4\NcFile.cs" />
-    <Compile Include="com\asascience\netcdf4\NcFloat.cs" />
-    <Compile Include="com\asascience\netcdf4\NcGroupAtt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcInt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcInt64.cs" />
-    <Compile Include="com\asascience\netcdf4\NcOpaqueType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcShort.cs" />
-    <Compile Include="com\asascience\netcdf4\NcString.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUbyte.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUint.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUint64.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUshort.cs" />
-    <Compile Include="com\asascience\netcdf4\NcVar.cs" />
-    <Compile Include="com\asascience\netcdf4\NcVarAtt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcVlenType.cs" />
     <Compile Include="RunTests.cs" />
-    <Compile Include="test\test_netcdf4_bridge.cs" />
     <Compile Include="test\unittest.cs" />
     <Compile Include="test\TestNcFile.cs" />
     <Compile Include="test\TestNcGroup.cs" />
