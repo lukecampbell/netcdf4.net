@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,7 +6,7 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D0F27BB3-7E6A-41FC-87EA-DDEDC10EFC93}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>library</OutputType>
     <RootNamespace>netcdf4.net</RootNamespace>
     <AssemblyName>netcdf4.net</AssemblyName>
     <PublishUrl>publish\</PublishUrl>
@@ -78,17 +78,6 @@
     <Compile Include="com\asascience\netcdf4\NcVar.cs" />
     <Compile Include="com\asascience\netcdf4\NcVarAtt.cs" />
     <Compile Include="com\asascience\netcdf4\NcVlenType.cs" />
-    <Compile Include="RunTests.cs" />
-    <Compile Include="test\test_netcdf4_bridge.cs" />
-    <Compile Include="test\unittest.cs" />
-    <Compile Include="test\TestNcFile.cs" />
-    <Compile Include="test\TestNcGroup.cs" />
-    <Compile Include="test\Assert.cs" />
-    <Compile Include="test\TestNcAtt.cs" />
-    <Compile Include="test\TestNcType.cs" />
-    <Compile Include="test\TestNcDim.cs" />
-    <Compile Include="test\TestHelper.cs" />
-    <Compile Include="test\TestNcVar.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -113,4 +102,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile" SyncReferences="True">
+          <BuildFilesVar Sync="True" Name="FILES" />
+          <DeployFilesVar />
+          <ResourcesVar Sync="True" Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Sync="True" Name="REFERENCES" />
+          <AsmRefVar Sync="True" Name="REFERENCES" />
+          <ProjectRefVar Sync="True" Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
+

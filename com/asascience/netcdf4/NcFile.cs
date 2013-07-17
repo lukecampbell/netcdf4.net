@@ -33,6 +33,10 @@ namespace netcdf4 {
         public const int NC_MPIIO         = 0x2000;
         public const int NC_MPIPOSIX      = 0x4000;
         public const int NC_PNETCDF       = 0x8000;
+        public const int NC_FORMAT_CLASSIC         = 0x01;
+        public const int NC_FORMAT_64BIT           = 0x02;
+        public const int NC_FORMAT_NETCDF4         = 0x03;
+        public const int NC_FORMAT_NETCDF4_CLASSIC = 0x04;
 
 
         public NcFile(NcGroup rhs) : base(rhs) {
@@ -97,6 +101,24 @@ namespace netcdf4 {
             nullObject = true;
             myId = 0;
         }
+
+        public FileFormat Format {
+            get {
+                Int32 formatp=0;
+                NcCheck.Check(NetCDF.nc_inq_format(myId, ref formatp));
+                if(formatp == NC_FORMAT_CLASSIC)
+                    return FileFormat.classic;
+                if(formatp == NC_FORMAT_64BIT)
+                    return FileFormat.classic64;
+                if(formatp == NC_FORMAT_NETCDF4)
+                    return FileFormat.nc4;
+                if(formatp == NC_FORMAT_NETCDF4_CLASSIC)
+                    return FileFormat.nc4classic;
+
+                throw new exceptions.NcInvalidArg("Unknown file format: " + formatp);
+            }
+        }
+
         ~NcFile() {
             if(!nullObject) {
                 NcCheck.Check(NetCDF.nc_close(myId));
