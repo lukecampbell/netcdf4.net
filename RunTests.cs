@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ASA.NetCDF4.test
+namespace ASA.NetCDF4.Test
 {
     class RunTests
     {
@@ -17,7 +17,8 @@ namespace ASA.NetCDF4.test
                 new TestNcAtt(),
                 new TestNcType(),
                 new TestNcDim(),
-                new TestNcVar()
+                new TestNcVar(),
+                new TestNcArray()
             };
             
             foreach(UnitTest test in tests) {

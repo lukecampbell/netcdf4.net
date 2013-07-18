@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using ASA.NetCDF4;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     class TestHelper {
         public static NcFile NewFile(string filePath) {
             NcFile file;

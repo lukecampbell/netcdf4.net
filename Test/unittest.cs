@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     public class UnitTest {
         public delegate bool TestCase();
         private List<TestCase> tests;

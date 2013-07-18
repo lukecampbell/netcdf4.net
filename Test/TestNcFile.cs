@@ -5,7 +5,7 @@
 using System;
 using ASA.NetCDF4;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     class TestNcFile : UnitTest {
         public TestNcFile() {
             AddTest(TestOpenCreate, "TestOpenCreate");

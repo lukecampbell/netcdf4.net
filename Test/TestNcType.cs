@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using ASA.NetCDF4;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     public class TestNcType : UnitTest {
         public TestNcType() {
             // Add tests

@@ -78,6 +78,7 @@
     <Compile Include="ASA\NetCDF4\NcVarAtt.cs" />
     <Compile Include="ASA\NetCDF4\NcVlenType.cs" />
     <Compile Include="ASA\NetCDF4\NetCDF.cs" />
+    <Compile Include="ASA\NetCDF4\NcArray.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     class TestData : UnitTest {
         private const string filePath = "nc_clobber.nc";
         private const string dataFilePath = "test-data/201223618.nc";

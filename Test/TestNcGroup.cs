@@ -9,7 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using ASA.NetCDF4;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     class TestNcGroup : UnitTest {
         protected const string filePath = "nc_clobber.nc";
         public TestNcGroup() {

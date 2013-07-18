@@ -6,7 +6,7 @@
 using System;
 using ASA.NetCDF4;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     class TestNcAtt : UnitTest {
         protected const string filePath = "nc_clobber.nc";
 

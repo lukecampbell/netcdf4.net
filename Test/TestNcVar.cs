@@ -10,7 +10,7 @@ using System.Linq;
 using ASA.NetCDF4;
 using ASA.NetCDF4.exceptions;
 
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     public class TestNcVar : UnitTest {
         private string filePath = "nc_clobber.nc";
 

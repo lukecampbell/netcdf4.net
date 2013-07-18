@@ -4,7 +4,7 @@
  */
 
 using System;
-namespace ASA.NetCDF4.test {
+namespace ASA.NetCDF4.Test {
     [Serializable()]
     public class AssertFailedException : System.Exception {
         public AssertFailedException() : base() {}
