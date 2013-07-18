@@ -6,6 +6,7 @@
 using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace ASA.NetCDF4 {
@@ -128,6 +129,12 @@ namespace ASA.NetCDF4 {
             return dimCount;
         }
 
+        public List<int> GetShape() {
+            List<int> shape = new List<int>();
+            foreach(NcDim d in GetDims())
+                shape.Add(d.GetSize());
+            return shape;
+        }
         public NcDim GetDim(Int32 i) {
             CheckNull();
             List<NcDim> ncDims = GetDims();
@@ -405,10 +412,10 @@ namespace ASA.NetCDF4 {
         }
 
         protected void BufferCheck(int len) {
-            Int32 spaceRequired = 0;
-            List<NcDim> dims = GetDims();
-            foreach(NcDim dim in dims) {
-                spaceRequired += dim.GetSize();
+            Int32 spaceRequired = 1;
+            List<int> shape = GetShape();
+            foreach(int dimLen in shape) {
+                spaceRequired *= dimLen;
             }
             if( len < spaceRequired )
                 throw new exceptions.NcBufferOverflow("Array is not large enough to represent variable");
@@ -454,6 +461,81 @@ namespace ASA.NetCDF4 {
                     throw new exceptions.NcDimUnlimited("Can't write array to a dimension with NC_UNLIMITED without index and count");
             }
         }
+
+        public NcArray GetVar() {
+            CheckNull();
+            int spaceRequired = 1;
+            List<int> shape = GetShape();
+            foreach(int dimLen in shape) {
+                spaceRequired *= dimLen;
+            }
+
+            switch(GetNcType().GetTypeClass()) {
+
+                case NcTypeEnum.NC_BYTE: {
+                    sbyte[] buffer = new sbyte[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_UBYTE: {
+                    byte[] buffer = new byte[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_SHORT: {
+                    Int16[] buffer = new Int16[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_USHORT: {
+                    UInt16[] buffer = new UInt16[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_INT: {
+                    Int32[] buffer = new Int32[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_UINT: {
+                    UInt32[] buffer = new UInt32[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_INT64: {
+                    Int64[] buffer = new Int64[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_UINT64: {
+                    UInt64[] buffer = new UInt64[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_FLOAT: {
+                    float[] buffer = new float[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+                case NcTypeEnum.NC_DOUBLE: {
+                    double[] buffer = new double[spaceRequired];
+                    GetVar(buffer);
+                    return new NcArray(buffer, shape);
+                }
+
+            }
+            return new NcArray();
+        }
+
 
 
         public void GetVar(sbyte[] dataValues, bool strictChecking=true) {
@@ -937,6 +1019,47 @@ namespace ASA.NetCDF4 {
         public void GetVar(Int32[] startp, Int32[] countp, Int32[] stridep, Int32[] imapp, double[] dataValues, bool strictChecking=true) {
             throw new NotImplementedException("GetVar() not implemented");
         }
+
+        public void PutVar(NcArray array, bool strictChecking=true) {
+            CheckNull();
+            if(strictChecking) {
+                BufferCheck(array.Length);
+                DimUnlimitedCheck();
+            }
+            switch(array.GetNcType().GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    PutVar((sbyte[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_UBYTE:
+                    PutVar((byte[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_SHORT:
+                    PutVar((Int16[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_USHORT:
+                    PutVar((UInt16[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_INT:
+                    PutVar((Int32[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_UINT:
+                    PutVar((UInt32[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_INT64:
+                    PutVar((Int64[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_UINT64:
+                    PutVar((UInt64[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_FLOAT:
+                    PutVar((float[]) array.Array);
+                    return;
+                case NcTypeEnum.NC_DOUBLE:
+                    PutVar((double[]) array.Array);
+                    return;
+            }
+        }
+
 
         public void PutVar(sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();

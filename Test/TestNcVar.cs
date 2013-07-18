@@ -31,6 +31,7 @@ namespace ASA.NetCDF4.Test {
             AddTest(TestDoubleVar, "TestDoubleVar");
             AddTest(TestExtensive, "TestExtensive");
             AddTest(TestScalar, "TestScalar");
+            AddTest(TestShape, "TestShape");
         }
 
         public bool TestVarPutGet() {
@@ -703,7 +704,7 @@ namespace ASA.NetCDF4.Test {
             NcFile file = null;
             float[] buffer = new float[] { 1.0f };
             try {
-                file = TestHelper.NewFile("sample.nc");
+                file = TestHelper.NewFile(filePath);
                 NcVar var = file.AddVar("scalar", NcFloat.Instance);
 
                 var.PutAtt("long_name", "A scalar variable");
@@ -715,7 +716,24 @@ namespace ASA.NetCDF4.Test {
             } finally {
                 file.Close();
             }
-            //CheckDelete(filePath);
+            CheckDelete(filePath);
+            return true;
+        }
+
+        public bool TestShape() {
+            NcFile file = null;
+            try { 
+                file = TestHelper.NewFile(filePath);
+                NcDim dim = file.AddDim("time", 4);
+                NcDim node = file.AddDim("node", 5);
+                NcDim egg = file.AddDim("egg", 6);
+
+                NcVar var = file.AddVar("var", NcFloat.Instance, new List<NcDim>() { dim, node, egg });
+                List<int> shape = var.GetShape();
+                Assert.Equals(shape.ToArray(), new int[] { 4, 5, 6});
+            } finally {
+                file.Close();
+            }
             return true;
         }
 

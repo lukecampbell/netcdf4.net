@@ -22,6 +22,67 @@ namespace ASA.NetCDF4 {
         private int ndim;
         private int[] shape;
 
+        private Array selected;
+
+        public NcArray() {
+            isNull = true;
+        }
+
+        public NcArray(NcType type, List<Int32> shape) {
+            int spaceRequired = 1;
+            this.shape = shape.ToArray();
+            foreach(int dimLen in shape) {
+                spaceRequired *= dimLen;
+            }
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    sbyteArray = new sbyte[spaceRequired];
+                    selected = sbyteArray;
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    byteArray = new byte[spaceRequired];
+                    selected = byteArray;
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    int16Array = new Int16[spaceRequired];
+                    selected = int16Array;
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    uint16Array = new UInt16[spaceRequired];
+                    selected = uint16Array;
+                    break;
+                case NcTypeEnum.NC_INT:
+                    int32Array = new Int32[spaceRequired];
+                    selected = int32Array;
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    uint32Array = new UInt32[spaceRequired];
+                    selected = uint32Array;
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    int64Array = new Int64[spaceRequired];
+                    selected = int64Array;
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    uint64Array = new UInt64[spaceRequired];
+                    selected = uint64Array;
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    floatArray = new float[spaceRequired];
+                    selected = floatArray;
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    doubleArray = new double[spaceRequired];
+                    selected = doubleArray;
+                    break;
+
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            this.type = type;
+            isNull = false;
+        }
+
 
         public NcArray(sbyte[] array, List<Int32> shape=null) {
             type = NcByte.Instance;
@@ -33,6 +94,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = sbyteArray;
+            isNull = false;
+        }
+        public NcArray(sbyte[] array, int[] shape=null) {
+            type = NcByte.Instance;
+            sbyteArray = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = sbyteArray;
+            isNull = false;
         }
 
         public NcArray(byte[] array, List<Int32> shape=null) {
@@ -45,6 +121,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = byteArray;
+            isNull = false;
+        }
+        public NcArray(byte[] array, int[] shape=null) {
+            type = NcUbyte.Instance;
+            byteArray = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = byteArray;
+            isNull = false;
         }
 
         public NcArray(Int16[] array, List<Int32> shape=null) {
@@ -57,6 +148,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = int16Array;
+            isNull = false;
+        }
+        public NcArray(Int16[] array, int[] shape=null) {
+            type = NcShort.Instance;
+            int16Array = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = int16Array;
+            isNull = false;
         }
 
         public NcArray(UInt16[] array, List<Int32> shape=null) {
@@ -69,6 +175,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = uint16Array;
+            isNull = false;
+        }
+        public NcArray(UInt16[] array, int[] shape=null) {
+            type = NcUshort.Instance;
+            uint16Array = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = uint16Array;
+            isNull = false;
         }
 
         public NcArray(Int32[] array, List<Int32> shape=null) {
@@ -81,6 +202,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = int32Array;
+            isNull = false;
+        }
+        public NcArray(Int32[] array, int[] shape=null) {
+            type = NcInt.Instance;
+            int32Array = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = int32Array;
+            isNull = false;
         }
 
         public NcArray(UInt32[] array, List<Int32> shape=null) {
@@ -93,6 +229,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = uint32Array;
+            isNull = false;
+        }
+        public NcArray(UInt32[] array, int[] shape=null) {
+            type = NcUint.Instance;
+            uint32Array = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = uint32Array;
+            isNull = false;
         }
 
         public NcArray(Int64[] array, List<Int32> shape=null) {
@@ -105,6 +256,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = int64Array;
+            isNull = false;
+        }
+        public NcArray(Int64[] array, int[] shape=null) {
+            type = NcInt64.Instance;
+            int64Array = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = int64Array;
+            isNull = false;
         }
 
         public NcArray(UInt64[] array, List<Int32> shape=null) {
@@ -117,6 +283,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = uint64Array;
+            isNull = false;
+        }
+        public NcArray(UInt64[] array, int[] shape=null) {
+            type = NcUint64.Instance;
+            uint64Array = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = uint64Array;
+            isNull = false;
         }
 
         public NcArray(float[] array, List<Int32> shape=null) {
@@ -129,6 +310,21 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = floatArray;
+            isNull = false;
+        }
+        public NcArray(float[] array, int[] shape=null) {
+            type = NcFloat.Instance;
+            floatArray = array;
+            if(shape == null) {
+                ndim = 1;
+                this.shape = new int[] { array.Length };
+            } else {
+                ndim = shape.Length;
+                this.shape = shape;
+            }
+            selected = floatArray;
+            isNull = false;
         }
 
         public NcArray(double[] array, List<Int32> shape=null) {
@@ -141,116 +337,9 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Count;
                 this.shape = shape.ToArray();
             }
+            selected = doubleArray;
+            isNull = false;
         }
-
-        public NcArray(sbyte[] array, int[] shape=null) {
-            type = NcByte.Instance;
-            sbyteArray = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(byte[] array, int[] shape=null) {
-            type = NcUbyte.Instance;
-            byteArray = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(Int16[] array, int[] shape=null) {
-            type = NcShort.Instance;
-            int16Array = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(UInt16[] array, int[] shape=null) {
-            type = NcUshort.Instance;
-            uint16Array = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(Int32[] array, int[] shape=null) {
-            type = NcInt.Instance;
-            int32Array = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(UInt32[] array, int[] shape=null) {
-            type = NcUint.Instance;
-            uint32Array = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(Int64[] array, int[] shape=null) {
-            type = NcInt64.Instance;
-            int64Array = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(UInt64[] array, int[] shape=null) {
-            type = NcUint64.Instance;
-            uint64Array = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
-        public NcArray(float[] array, int[] shape=null) {
-            type = NcFloat.Instance;
-            floatArray = array;
-            if(shape == null) {
-                ndim = 1;
-                this.shape = new int[] { array.Length };
-            } else {
-                ndim = shape.Length;
-                this.shape = shape;
-            }
-        }
-
         public NcArray(double[] array, int[] shape=null) {
             type = NcDouble.Instance;
             doubleArray = array;
@@ -261,7 +350,10 @@ namespace ASA.NetCDF4 {
                 ndim = shape.Length;
                 this.shape = shape;
             }
+            selected = doubleArray;
+            isNull = false;
         }
+
 
         private int offset(int[] index) {
             int a = 1;
@@ -293,7 +385,9 @@ namespace ASA.NetCDF4 {
 
 
 
+
         public void Slice(out sbyte[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -339,8 +433,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out byte[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -386,8 +482,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out Int16[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -433,8 +531,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out UInt16[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -480,8 +580,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out Int32[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -527,8 +629,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out UInt32[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -574,8 +678,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out Int64[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -621,8 +727,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out UInt64[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -668,8 +776,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out float[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -704,6 +814,7 @@ namespace ASA.NetCDF4 {
 
             }
 
+            
             array = new float[totalSize];
 
             int arrayOffset=0;
@@ -715,8 +826,10 @@ namespace ASA.NetCDF4 {
             }
 
         }
+        
 
         public void Slice(out double[] array, int[] start=null, int[] stop=null, int[] stride=null) {
+            CheckNull();
             if(start == null) {
                 start = new int[ndim];
                 for(int i=0;i<ndim;i++) start[i] = 0;
@@ -762,7 +875,7 @@ namespace ASA.NetCDF4 {
             }
 
         }
-
+        
 
         public void At(out sbyte result, int[] index) {
             if(index.Length != ndim) 
@@ -833,6 +946,77 @@ namespace ASA.NetCDF4 {
 
             result = doubleArray[offset(index)];
         }
+
+        public void ValueAt(out sbyte result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = sbyteArray[offset(index)];
+        }
+
+        public void ValueAt(out byte result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = byteArray[offset(index)];
+        }
+
+        public void ValueAt(out Int16 result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = int16Array[offset(index)];
+        }
+
+        public void ValueAt(out UInt16 result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = uint16Array[offset(index)];
+        }
+
+        public void ValueAt(out Int32 result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = int32Array[offset(index)];
+        }
+
+        public void ValueAt(out UInt32 result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = uint32Array[offset(index)];
+        }
+
+        public void ValueAt(out Int64 result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = int64Array[offset(index)];
+        }
+
+        public void ValueAt(out UInt64 result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = uint64Array[offset(index)];
+        }
+
+        public void ValueAt(out float result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = floatArray[offset(index)];
+        }
+
+        public void ValueAt(out double result, params int[] index) {
+            if(index.Length != ndim) 
+                throw new exceptions.NcInvalidArg("The index must contain the same number of elements as the number of dimensions.");
+
+            result = doubleArray[offset(index)];
+        }
+        
         
         public Array Array {
             get {
@@ -871,6 +1055,36 @@ namespace ASA.NetCDF4 {
             }
         }
         
+        protected void CheckNull() {
+            if(isNull) {
+                throw new exceptions.NcNullVar("Attempt to invoke NcArray method on a Null NcVar");
+            }
+        }
+
+        public NcType GetNcType() {
+            return type;
+        }
+
+        public int[] Shape {
+            get { 
+                return shape;
+            }
+        }
+
+        public int Length {
+            get {
+                int l=1;
+                for(int i=0;i<ndim;i++)
+                    l *= shape[i];
+                return l;
+            }
+        }
+
+        private bool isNull;
+        
+        public bool IsNull() {
+            return isNull;
+        }
 
     }
 }
