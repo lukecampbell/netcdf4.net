@@ -61,12 +61,10 @@ namespace ASA.NetCDF4 {
         public NcType GetNcType() {
             if(nullObject)
                 return new NcType(); // Return null-type
-            NetCDF.nc_type xtypep=0;
-            Int32 xtype=0;
+            int xtypep=0;
 
             NcCheck.Check(NetCDF.nc_inq_vartype(groupId, myId, ref xtypep));
-            xtype = (int) xtypep;
-            switch(xtype) {
+            switch(xtypep) {
                 case (int)NcTypeEnum.NC_BYTE:
                     return NcByte.Instance;
                 case (int)NcTypeEnum.NC_UBYTE:
@@ -95,7 +93,7 @@ namespace ASA.NetCDF4 {
             NcGroup group = new NcGroup(groupId);
             Dictionary<string, NcType> types = group.GetTypes(Location.ParentsAndCurrent);
             foreach(KeyValuePair<string, NcType> k in types) {
-                if(k.Value.GetId() == xtype)
+                if(k.Value.GetId() == xtypep)
                     return k.Value;
             }
             // Should never get to here
@@ -191,7 +189,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new sbyte[] {datumValue}));
+            NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, type.GetId(), 1, new sbyte[] {datumValue}));
             return GetAtt(name);
         }
         
@@ -199,7 +197,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new byte[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, type.GetId(), 1, new byte[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -207,7 +205,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new Int16[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, type.GetId(), 1, new Int16[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -215,7 +213,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new UInt16[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, type.GetId(), 1, new UInt16[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -223,7 +221,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new Int32[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, type.GetId(), 1, new Int32[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -231,7 +229,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new UInt32[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, type.GetId(), 1, new UInt32[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -239,7 +237,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new Int64[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, type.GetId(), 1, new Int64[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -247,7 +245,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new UInt64[]{ datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, type.GetId(), 1, new UInt64[]{ datumValue }));
             return GetAtt(name);
         }
         
@@ -255,7 +253,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new float[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, type.GetId(), 1, new float[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -263,7 +261,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, (NetCDF.nc_type) type.GetId(), 1, new double[]{ datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, type.GetId(), 1, new double[]{ datumValue }));
             return GetAtt(name);
         }
 
@@ -271,7 +269,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -279,7 +277,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -287,7 +285,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -295,7 +293,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -303,7 +301,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -311,7 +309,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -319,7 +317,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -327,7 +325,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -335,7 +333,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
         
@@ -343,7 +341,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
 

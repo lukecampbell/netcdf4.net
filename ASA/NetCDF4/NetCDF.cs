@@ -256,15 +256,15 @@ namespace ASA.NetCDF4 {
         
         // int nc_inq_att(int ncid, int varid, const char *name, nc_type *xtypep, size_t *lenp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_att(Int32 ncid, Int32 varid, string name, ref NetCDF.nc_type xtypep, ref Int32 lenp);
+        public static extern Int32 nc_inq_att(Int32 ncid, Int32 varid, string name, ref Int32 xtypep, ref Int32 lenp);
         
         // int  nc_inq_attid(int ncid, int varid, const char *name, int *idp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_attid(Int32 ncid, Int32 varid, string name, ref NetCDF.nc_type xtypep, ref Int32 lenp);
+        public static extern Int32 nc_inq_attid(Int32 ncid, Int32 varid, string name, ref Int32 xtypep, ref Int32 lenp);
         
         // int  nc_inq_atttype(int ncid, int varid, const char *name, nc_type *xtypep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_atttype(Int32 ncid, Int32 varid, string name, ref NetCDF.nc_type xtypep);
+        public static extern Int32 nc_inq_atttype(Int32 ncid, Int32 varid, string name, ref Int32 xtypep);
         
         // int  nc_inq_attlen(int ncid, int varid, const char *name, size_t *lenp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -291,7 +291,7 @@ namespace ASA.NetCDF4 {
 
         //int nc_put_att(int ncid, int varid, const char *name, nc_type xtype, size_t len, const void *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att(Int32 ncid, Int32 varid, string name, nc_type xtype, Int32 len, ref vlen_t op);
+        public static extern Int32 nc_put_att(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len, ref vlen_t op);
         
         //int nc_get_att(int ncid, int varid, const char *name, void *ip)
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -311,7 +311,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_uchar(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const unsigned char *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_uchar(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,
+        public static extern Int32 nc_put_att_uchar(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,
             [In()] byte[] op);
         
         // int nc_get_att_uchar(int ncid, int varid, const char *name, unsigned char *ip);
@@ -322,7 +322,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_schar(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const signed char *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_schar(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_schar(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    sbyte[] op);
         
         // int nc_get_att_schar(int ncid, int varid, const char *name, signed char *ip);
@@ -333,7 +333,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_short(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const short *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_short(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_short(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    Int16[] op);
         
         // int nc_get_att_short(int ncid, int varid, const char *name, short *ip);
@@ -344,7 +344,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_ushort(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const short *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_ushort(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_ushort(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    UInt16[] op);
         
         // int nc_get_att_ushort(int ncid, int varid, const char *name, short *ip);
@@ -355,7 +355,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_int(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const int *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_int(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_int(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    Int32[] op);
         
         // int nc_get_att_int(int ncid, int varid, const char *name, int *ip);
@@ -366,7 +366,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_uint(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const int *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_uint(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_uint(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    UInt32[] op);
         
         // int nc_get_att_uint(int ncid, int varid, const char *name, int *ip);
@@ -377,7 +377,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_long(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const long *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_long(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_long(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    Int32[] op);
         
         // int nc_get_att_long(int ncid, int varid, const char *name, long *ip);
@@ -387,7 +387,7 @@ namespace ASA.NetCDF4 {
 
         //int nc_put_att_longlong(int ncid, int varid, const char *name, nc_type xtype, size_t len, const long long *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_longlong(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,
+        public static extern Int32 nc_put_att_longlong(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,
             [In()]  Int64[] op);
 
         //int nc_get_att_longlong(int ncid, int varid, const char *name, long long *ip);
@@ -397,7 +397,7 @@ namespace ASA.NetCDF4 {
 
         //int nc_put_att_ulonglong(int ncid, int varid, const char *name, nc_type xtype, size_t len, const unsigned long long *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_ulonglong(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,
+        public static extern Int32 nc_put_att_ulonglong(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,
             [In()] UInt64[] op);
 
         //int nc_get_att_ulonglong(int ncid, int varid, const char *name, unsigned long long *ip);
@@ -408,7 +408,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_float(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const float *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_float(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_float(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    float[] op);
         
         // int nc_get_att_float(int ncid, int varid, const char *name, float *ip);
@@ -419,7 +419,7 @@ namespace ASA.NetCDF4 {
         // int nc_put_att_double(int ncid, int varid, const char *name, nc_type xtype,
         //    size_t len, const double *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_put_att_double(Int32 ncid, Int32 varid, string name, NetCDF.nc_type xtype, Int32 len,     
+        public static extern Int32 nc_put_att_double(Int32 ncid, Int32 varid, string name, Int32 xtype, Int32 len,     
             [In()]    double[] op);
         
         // int nc_get_att_double(int ncid, int varid, const char *name, double *ip);
@@ -432,12 +432,12 @@ namespace ASA.NetCDF4 {
         // int nc_def_var(int ncid, const char *name,
         //     nc_type xtype, int ndims, const int *dimidsp, int *varidp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_def_var(Int32 ncid, string name, nc_type xtype, Int32 ndims,     
+        public static extern Int32 nc_def_var(Int32 ncid, string name, Int32 xtype, Int32 ndims,     
             [In()]    int[] dimids, ref Int32 varid);
         
         // int nc_inq_var(int ncid, int varid, char *name, nc_type *xtypep, int *ndimsp, int *dimidsp, int *nattsp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_var(Int32 ncid, Int32 varid, StringBuilder name, ref nc_type xtypep, ref Int32 ndimsp,     
+        public static extern Int32 nc_inq_var(Int32 ncid, Int32 varid, StringBuilder name, ref Int32 xtypep, ref Int32 ndimsp,     
             [Out()]    int[] dimidsp, ref Int32 nattsp);
         // int nc_inq_varid(int ncid, const char *name, int *varidp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -449,7 +449,7 @@ namespace ASA.NetCDF4 {
         
         // int  nc_inq_vartype(int ncid, int varid, nc_type *xtypep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_vartype(Int32 ncid, Int32 varid, ref nc_type xtypep);
+        public static extern Int32 nc_inq_vartype(Int32 ncid, Int32 varid, ref Int32 xtypep);
         
         // int  nc_inq_varndims(int ncid, int varid, int *ndimsp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -1459,7 +1459,7 @@ namespace ASA.NetCDF4 {
 
         //int nc_inq_type(int ncid, nc_type xtype, char *name, size_t *size);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_inq_type(Int32 ncid, NetCDF.nc_type xtype, StringBuilder name, ref Int32 size);
+        public static extern Int32 nc_inq_type(Int32 ncid, Int32 xtype, StringBuilder name, ref Int32 size);
 
         //int nc_inq_unlimdims(int ncid, int *nunlimdimsp, int *unlimdimidsp);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
@@ -1517,7 +1517,7 @@ namespace ASA.NetCDF4 {
         
         //int nc_def_vlen(int ncid, const char *name, nc_type base_typeid, nc_type *xtypep);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
-        public static extern Int32 nc_def_vlen(Int32 ncid, string name, NetCDF.nc_type base_typeid, ref Int32 xtypep);
+        public static extern Int32 nc_def_vlen(Int32 ncid, string name, Int32 base_typeid, ref Int32 xtypep);
 
         //int nc_put_var1(int ncid, int varid,  const size_t *indexp, const void *op);
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]

@@ -39,16 +39,16 @@ namespace ASA.NetCDF4 {
         }
 
         public NcType GetNcType()  {
-            NetCDF.nc_type xtypep=0;
+            int xtypep=0;
             NcCheck.Check(NetCDF.nc_inq_atttype(groupId, varId, myName, ref xtypep));
 
-            if((int)xtypep <= 12) {
+            if(xtypep <= 12) {
                 // This is an atomic type
-                return new NcType((int)xtypep);
+                return new NcType(xtypep);
             } else {
                 Dictionary<string, NcType> typeMap = GetParentGroup().GetTypes(Location.ParentsAndCurrent);
                 foreach(KeyValuePair<string, NcType> k in typeMap) {
-                    if(k.Value.GetId() == (int)xtypep)
+                    if(k.Value.GetId() == xtypep)
                         return k.Value;
                 }
             }

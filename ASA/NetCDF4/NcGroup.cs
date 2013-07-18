@@ -266,6 +266,34 @@ namespace ASA.NetCDF4 {
             return new NcVar(); // return null
         }
 
+        // Add a scalar variable
+        public NcVar AddVar(string name, string typeName) 
+        {
+            CheckNull();
+            NcType tmpType = GetType(typeName, Location.ParentsAndCurrent);
+            if(tmpType.IsNull())
+                throw new exceptions.NcNullType("Attempt to invoke NcGroup.AddVar failed: typeName must be defined in either the current group or a parent group");
+
+            Int32 varId = 0;
+            Int32[] dimIds = null;
+            NcCheck.Check(NetCDF.nc_def_var(myId, name,  tmpType.GetId(), 0, dimIds, ref varId));
+            return new NcVar(this, varId);
+        }
+
+        // Add a scalar variable
+        public NcVar AddVar(string name, NcType type) 
+        {
+            CheckNull();
+            if(type.IsNull())
+                throw new exceptions.NcNullType("Attempt to invoke NcGroup.AddVar failed: typeName must be defined in either the current group or a parent group");
+
+            Int32 varId = 0;
+            Int32[] dimIds = null;
+            NcCheck.Check(NetCDF.nc_def_var(myId, name,  type.GetId(), 0, dimIds, ref varId));
+            return new NcVar(this, varId);
+        }
+
+
         // Add a new netCDF variable
         public NcVar AddVar(string name, string typeName, string dimName) {
             CheckNull();
@@ -279,7 +307,7 @@ namespace ASA.NetCDF4 {
 
             Int32 varId=0;
             Int32[] dimId = {tmpDim.GetId()};
-            NcCheck.Check(NetCDF.nc_def_var(myId, name, (NetCDF.nc_type)tmpType.GetId(), 1, dimId, ref varId));
+            NcCheck.Check(NetCDF.nc_def_var(myId, name, tmpType.GetId(), 1, dimId, ref varId));
             return new NcVar(this, varId);
         }
 
@@ -299,7 +327,7 @@ namespace ASA.NetCDF4 {
 
             Int32 varId=0;
             Int32[] dimId = {tmpDim.GetId()};
-            NcCheck.Check(NetCDF.nc_def_var(myId, name, (NetCDF.nc_type)tmpType.GetId(), 1, dimId, ref varId));
+            NcCheck.Check(NetCDF.nc_def_var(myId, name, tmpType.GetId(), 1, dimId, ref varId));
             return new NcVar(this, varId);
         }
 
@@ -318,7 +346,7 @@ namespace ASA.NetCDF4 {
             }
 
             Int32 varId=0;
-            NcCheck.Check(NetCDF.nc_def_var(myId, name, (NetCDF.nc_type)tmpType.GetId(), dimIds.Length, dimIds, ref varId));
+            NcCheck.Check(NetCDF.nc_def_var(myId, name, tmpType.GetId(), dimIds.Length, dimIds, ref varId));
             return new NcVar(this, varId);
         }
 
@@ -340,7 +368,7 @@ namespace ASA.NetCDF4 {
                     throw new exceptions.NcNullDim("Attempt to invoke NcGroup::addVar failed: NcDim must be defined in either the current group or a parent group");
                 dimIds[i] = ncDimVector[i].GetId();
             }
-            NcCheck.Check(NetCDF.nc_def_var(myId, name, (NetCDF.nc_type)tmpType.GetId(), ncDimVector.Count, dimIds, ref varId));
+            NcCheck.Check(NetCDF.nc_def_var(myId, name, tmpType.GetId(), ncDimVector.Count, dimIds, ref varId));
 
             return new NcVar(this, varId);
         }
@@ -424,70 +452,70 @@ namespace ASA.NetCDF4 {
             if(NcByte.Instance.Equals(t)) {
                 sbyte[] buffer = new sbyte[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUbyte.Instance.Equals(t)) {
                 byte[] buffer = new byte[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcShort.Instance.Equals(t)) {
                 Int16[] buffer = new Int16[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUshort.Instance.Equals(t)) {
                 UInt16[] buffer = new UInt16[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcInt.Instance.Equals(t)) {
                 Int32[] buffer = new Int32[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUint.Instance.Equals(t)) {
                 UInt32[] buffer = new UInt32[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcInt64.Instance.Equals(t)) {
                 Int64[] buffer = new Int64[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcUint64.Instance.Equals(t)) {
                 UInt64[] buffer = new UInt64[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcFloat.Instance.Equals(t)) {
                 float[] buffer = new float[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
 
             if(NcDouble.Instance.Equals(t)) {
                 double[] buffer = new double[attr.GetAttLength()];
                 attr.GetValues(buffer);
-                NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, attr.GetName(), (NetCDF.nc_type) t.GetId(), attr.GetAttLength(), buffer));
+                NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, attr.GetName(),  t.GetId(), attr.GetAttLength(), buffer));
                 return GetAtt(attr.GetName());
             }
             if(NcChar.Instance.Equals(t)) {
@@ -508,7 +536,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), 1, new sbyte[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, name,  type.GetId(), 1, new sbyte[] { datumValue }));
             return GetAtt(name);
         }
 
@@ -516,7 +544,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), 1, new byte[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name,  type.GetId(), 1, new byte[] { datumValue }));
             return GetAtt(name);
         }
 
@@ -526,7 +554,7 @@ namespace ASA.NetCDF4 {
             //TODO: Support for VLEN | OPAQUE | ENUM | COMPOUND
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new Int16[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new Int16[] { datumValue }));
             return GetAtt(name);
         }
 
@@ -534,7 +562,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new UInt16[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new UInt16[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -542,7 +570,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new Int32[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new Int32[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -550,7 +578,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new UInt32[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new UInt32[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -558,7 +586,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new Int64[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new Int64[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -566,7 +594,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new UInt64[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new UInt64[] { datumValue }));
             return GetAtt(name);
         }
 
@@ -574,7 +602,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new float[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new float[] { datumValue }));
             return GetAtt(name);
         }
 
@@ -582,7 +610,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), 1, new double[] { datumValue }));
+            NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, type.GetId(), 1, new double[] { datumValue }));
             return GetAtt(name);
         }
         
@@ -590,7 +618,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues));
+            NcCheck.Check(NetCDF.nc_put_att_schar(myId, NcAtt.NC_GLOBAL, name,  type.GetId(), dataValues.Length, dataValues));
             return GetAtt(name);
         }
 
@@ -599,7 +627,7 @@ namespace ASA.NetCDF4 {
             if(!type.IsFixedType()) {
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             }
-            NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type) type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_uchar(myId, NcAtt.NC_GLOBAL, name,  type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
 
@@ -609,7 +637,7 @@ namespace ASA.NetCDF4 {
             //TODO: Support for VLEN | OPAQUE | ENUM | COMPOUND
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_short(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
 
@@ -617,7 +645,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_ushort(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
         
@@ -625,7 +653,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_int(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
         
@@ -633,7 +661,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_uint(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
         
@@ -641,7 +669,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_longlong(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
         
@@ -649,7 +677,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_ulonglong(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
 
@@ -657,7 +685,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_float(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
 
@@ -665,7 +693,7 @@ namespace ASA.NetCDF4 {
             CheckNull();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
-            NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, (NetCDF.nc_type)type.GetId(), dataValues.Length, dataValues ));
+            NcCheck.Check(NetCDF.nc_put_att_double(myId, NcAtt.NC_GLOBAL, name, type.GetId(), dataValues.Length, dataValues ));
             return GetAtt(name);
         }
 
@@ -965,7 +993,7 @@ namespace ASA.NetCDF4 {
         public NcVlenType AddVlenType(string name, NcType baseType) {
             CheckNull();
             Int32 typeId=0;
-            NcCheck.Check(NetCDF.nc_def_vlen(myId, name, (NetCDF.nc_type)baseType.GetId(), ref typeId));
+            NcCheck.Check(NetCDF.nc_def_vlen(myId, name, baseType.GetId(), ref typeId));
             NcVlenType ncTypeTmp = new NcVlenType(this, name);
             return ncTypeTmp;
         }

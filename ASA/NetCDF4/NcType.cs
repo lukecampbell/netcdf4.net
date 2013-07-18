@@ -86,14 +86,14 @@ namespace ASA.NetCDF4 {
         public string GetName() {
             StringBuilder charName = new StringBuilder((int)NetCDF.netCDF_limits.NC_MAX_NAME);
             Int32 sizep = 0;
-            NcCheck.Check(NetCDF.nc_inq_type(groupId, (NetCDF.nc_type)myId,charName, ref sizep));
+            NcCheck.Check(NetCDF.nc_inq_type(groupId, myId,charName, ref sizep));
             return charName.ToString();
         }
 
         public Int32 GetSize() {
             StringBuilder charName = new StringBuilder((int)NetCDF.netCDF_limits.NC_MAX_NAME);
             Int32 sizep = 0;
-            NcCheck.Check(NetCDF.nc_inq_type(groupId, (NetCDF.nc_type)myId, charName, ref sizep));
+            NcCheck.Check(NetCDF.nc_inq_type(groupId, myId, charName, ref sizep));
             return sizep;
         }
 

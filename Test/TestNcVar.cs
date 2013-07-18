@@ -30,6 +30,7 @@ namespace ASA.NetCDF4.test {
             AddTest(TestFloatVar, "TestFloatVar");
             AddTest(TestDoubleVar, "TestDoubleVar");
             AddTest(TestExtensive, "TestExtensive");
+            AddTest(TestScalar, "TestScalar");
         }
 
         public bool TestVarPutGet() {
@@ -698,6 +699,26 @@ namespace ASA.NetCDF4.test {
             CheckDelete(filePath);
             return true;
         }
+        public bool TestScalar() {
+            NcFile file = null;
+            float[] buffer = new float[] { 1.0f };
+            try {
+                file = TestHelper.NewFile("sample.nc");
+                NcVar var = file.AddVar("scalar", NcFloat.Instance);
+
+                var.PutAtt("long_name", "A scalar variable");
+                var.PutVar(new float[] { 1.0f });
+                buffer[0] = 90.0f;
+                Assert.Equals(buffer[0], 90.0f);
+                var.GetVar(buffer);
+                Assert.Equals(buffer[0], 1.0f);
+            } finally {
+                file.Close();
+            }
+            //CheckDelete(filePath);
+            return true;
+        }
+
     }
 }
 
