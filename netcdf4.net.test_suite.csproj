@@ -52,16 +52,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RunTests.cs" />
-    <Compile Include="test\unittest.cs" />
-    <Compile Include="test\TestNcFile.cs" />
-    <Compile Include="test\TestNcGroup.cs" />
-    <Compile Include="test\Assert.cs" />
-    <Compile Include="test\TestNcAtt.cs" />
-    <Compile Include="test\TestNcType.cs" />
-    <Compile Include="test\TestNcDim.cs" />
-    <Compile Include="test\TestHelper.cs" />
-    <Compile Include="test\TestNcVar.cs" />
-    <Compile Include="test\TestData.cs" />
+    <Compile Include="Test\unittest.cs" />
+    <Compile Include="Test\TestNcFile.cs" />
+    <Compile Include="Test\TestNcGroup.cs" />
+    <Compile Include="Test\Assert.cs" />
+    <Compile Include="Test\TestNcAtt.cs" />
+    <Compile Include="Test\TestNcType.cs" />
+    <Compile Include="Test\TestNcDim.cs" />
+    <Compile Include="Test\TestHelper.cs" />
+    <Compile Include="Test\TestNcVar.cs" />
+    <Compile Include="Test\TestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

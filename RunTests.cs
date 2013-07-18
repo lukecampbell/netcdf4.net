@@ -4,9 +4,8 @@
  */
 using System;
 using System.Collections.Generic;
-using netcdf4;
 
-namespace netcdf4.test
+namespace ASA.NetCDF4.test
 {
     class RunTests
     {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -51,33 +51,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="com\asascience\netcdf4\NcAtt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcGroup.cs" />
-    <Compile Include="com\asascience\netcdf4\NcByte.cs" />
-    <Compile Include="com\asascience\netcdf4\NcChar.cs" />
-    <Compile Include="com\asascience\netcdf4\NcCheck.cs" />
-    <Compile Include="com\asascience\netcdf4\NcCompoundType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcDim.cs" />
-    <Compile Include="com\asascience\netcdf4\NcDouble.cs" />
-    <Compile Include="com\asascience\netcdf4\NcEnumType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcException.cs" />
-    <Compile Include="com\asascience\netcdf4\NcFile.cs" />
-    <Compile Include="com\asascience\netcdf4\NcFloat.cs" />
-    <Compile Include="com\asascience\netcdf4\NcGroupAtt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcInt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcInt64.cs" />
-    <Compile Include="com\asascience\netcdf4\NcOpaqueType.cs" />
-    <Compile Include="com\asascience\netcdf4\NcShort.cs" />
-    <Compile Include="com\asascience\netcdf4\NcString.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUbyte.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUint.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUint64.cs" />
-    <Compile Include="com\asascience\netcdf4\NcUshort.cs" />
-    <Compile Include="com\asascience\netcdf4\NcVar.cs" />
-    <Compile Include="com\asascience\netcdf4\NcVarAtt.cs" />
-    <Compile Include="com\asascience\netcdf4\NcVlenType.cs" />
-    <Compile Include="com\asascience\netcdf4\NetCDF.cs" />
+    <Compile Include="ASA\NetCDF4\NcAtt.cs" />
+    <Compile Include="ASA\NetCDF4\NcType.cs" />
+    <Compile Include="ASA\NetCDF4\NcGroup.cs" />
+    <Compile Include="ASA\NetCDF4\NcByte.cs" />
+    <Compile Include="ASA\NetCDF4\NcChar.cs" />
+    <Compile Include="ASA\NetCDF4\NcCheck.cs" />
+    <Compile Include="ASA\NetCDF4\NcCompoundType.cs" />
+    <Compile Include="ASA\NetCDF4\NcDim.cs" />
+    <Compile Include="ASA\NetCDF4\NcDouble.cs" />
+    <Compile Include="ASA\NetCDF4\NcEnumType.cs" />
+    <Compile Include="ASA\NetCDF4\NcException.cs" />
+    <Compile Include="ASA\NetCDF4\NcFile.cs" />
+    <Compile Include="ASA\NetCDF4\NcFloat.cs" />
+    <Compile Include="ASA\NetCDF4\NcGroupAtt.cs" />
+    <Compile Include="ASA\NetCDF4\NcInt.cs" />
+    <Compile Include="ASA\NetCDF4\NcInt64.cs" />
+    <Compile Include="ASA\NetCDF4\NcOpaqueType.cs" />
+    <Compile Include="ASA\NetCDF4\NcShort.cs" />
+    <Compile Include="ASA\NetCDF4\NcString.cs" />
+    <Compile Include="ASA\NetCDF4\NcUbyte.cs" />
+    <Compile Include="ASA\NetCDF4\NcUint.cs" />
+    <Compile Include="ASA\NetCDF4\NcUint64.cs" />
+    <Compile Include="ASA\NetCDF4\NcUshort.cs" />
+    <Compile Include="ASA\NetCDF4\NcVar.cs" />
+    <Compile Include="ASA\NetCDF4\NcVarAtt.cs" />
+    <Compile Include="ASA\NetCDF4\NcVlenType.cs" />
+    <Compile Include="ASA\NetCDF4\NetCDF.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
