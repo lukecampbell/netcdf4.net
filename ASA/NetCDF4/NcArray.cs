@@ -927,6 +927,25 @@ namespace ASA.NetCDF4 {
             return Sub(a,b);
         }
 
+        public static NcArray Mult(NcArray a, NcArray b) {
+            NcArray result = a.Copy();
+            result.Mult(b);
+            return result;
+        }
+
+        public static NcArray operator*(NcArray a, NcArray b) {
+            return Mult(a,b);
+        }
+
+        public static NcArray Div(NcArray a, NcArray b) {
+            NcArray result = a.Copy();
+            result.Div(b);
+            return result;
+        }
+
+        public static NcArray operator/(NcArray a, NcArray b) {
+            return Div(a,b);
+        }
 
         public NcArray Sub(NcArray array) {
             if(!CompatibleShape(array.shape)) {
@@ -1023,6 +1042,332 @@ namespace ASA.NetCDF4 {
                     for(int i=0;i<mArray.Length;i++)
                         mArray.SetValue( (double)mArray.GetValue(i) + (double)array.mArray.GetValue(i), i);
                     break; 
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return this;
+        }
+        public NcArray Mult(NcArray array) {
+            if(!CompatibleShape(array.shape)) {
+                throw new exceptions.NcInvalidArg("Array shape mismatch");
+            }
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (sbyte)mArray.GetValue(i) * (sbyte)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_UBYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (byte)mArray.GetValue(i) * (byte)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_SHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int16)mArray.GetValue(i) * (Int16)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_USHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt16)mArray.GetValue(i) * (UInt16)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_INT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int32)mArray.GetValue(i) * (Int32)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_UINT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt32)mArray.GetValue(i) * (UInt32)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_INT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int64)mArray.GetValue(i) * (Int64)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_UINT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt64)mArray.GetValue(i) * (UInt64)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_FLOAT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (float)mArray.GetValue(i) * (float)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_DOUBLE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (double)mArray.GetValue(i) * (double)array.mArray.GetValue(i), i);
+                    break; 
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return this;
+        }
+        public NcArray Div(NcArray array) {
+            if(!CompatibleShape(array.shape)) {
+                throw new exceptions.NcInvalidArg("Array shape mismatch");
+            }
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (sbyte)mArray.GetValue(i) / (sbyte)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_UBYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (byte)mArray.GetValue(i) / (byte)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_SHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int16)mArray.GetValue(i) / (Int16)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_USHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt16)mArray.GetValue(i) / (UInt16)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_INT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int32)mArray.GetValue(i) / (Int32)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_UINT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt32)mArray.GetValue(i) / (UInt32)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_INT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int64)mArray.GetValue(i) / (Int64)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_UINT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt64)mArray.GetValue(i) / (UInt64)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_FLOAT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (float)mArray.GetValue(i) / (float)array.mArray.GetValue(i), i);
+                    break; 
+                case NcTypeEnum.NC_DOUBLE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (double)mArray.GetValue(i) / (double)array.mArray.GetValue(i), i);
+                    break; 
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return this;
+        }
+
+        public static NcArray Add(NcArray a, Object val) {
+            NcArray result = a.Copy();
+            result.Add(val);
+            return result;
+        }
+
+        public static NcArray operator+(NcArray a, Object val) {
+            return Add(a,val);
+        }
+        public static NcArray Sub(NcArray a, Object val) {
+            NcArray result = a.Copy();
+            result.Sub(val);
+            return result;
+        }
+
+        public static NcArray operator-(NcArray a, Object val) {
+            return Sub(a,val);
+        }
+        public static NcArray Mult(NcArray a, Object val) {
+            NcArray result = a.Copy();
+            result.Mult(val);
+            return result;
+        }
+
+        public static NcArray operator*(NcArray a, Object val) {
+            return Mult(a,val);
+        }
+        public static NcArray Div(NcArray a, Object val) {
+            NcArray result = a.Copy();
+            result.Div(val);
+            return result;
+        }
+
+        public static NcArray operator/(NcArray a, Object val) {
+            return Div(a,val);
+        }
+
+        public NcArray Add(Object val) {
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (sbyte) mArray.GetValue(i) + (sbyte) val, i);
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (byte) mArray.GetValue(i) + (byte) val, i);
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int16) mArray.GetValue(i) + (Int16) val, i);
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt16) mArray.GetValue(i) + (UInt16) val, i);
+                    break;
+                case NcTypeEnum.NC_INT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int32) mArray.GetValue(i) + (Int32) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt32) mArray.GetValue(i) + (UInt32) val, i);
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int64) mArray.GetValue(i) + (Int64) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt64) mArray.GetValue(i) + (UInt64) val, i);
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (float) mArray.GetValue(i) + (float) val, i);
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (double) mArray.GetValue(i) + (double) val, i);
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return this;
+        }
+        public NcArray Sub(Object val) {
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (sbyte) mArray.GetValue(i) - (sbyte) val, i);
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (byte) mArray.GetValue(i) - (byte) val, i);
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int16) mArray.GetValue(i) - (Int16) val, i);
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt16) mArray.GetValue(i) - (UInt16) val, i);
+                    break;
+                case NcTypeEnum.NC_INT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int32) mArray.GetValue(i) - (Int32) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt32) mArray.GetValue(i) - (UInt32) val, i);
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int64) mArray.GetValue(i) - (Int64) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt64) mArray.GetValue(i) - (UInt64) val, i);
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (float) mArray.GetValue(i) - (float) val, i);
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (double) mArray.GetValue(i) - (double) val, i);
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return this;
+        }
+        public NcArray Mult(Object val) {
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (sbyte) mArray.GetValue(i) * (sbyte) val, i);
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (byte) mArray.GetValue(i) * (byte) val, i);
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int16) mArray.GetValue(i) * (Int16) val, i);
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt16) mArray.GetValue(i) * (UInt16) val, i);
+                    break;
+                case NcTypeEnum.NC_INT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int32) mArray.GetValue(i) * (Int32) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt32) mArray.GetValue(i) * (UInt32) val, i);
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int64) mArray.GetValue(i) * (Int64) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt64) mArray.GetValue(i) * (UInt64) val, i);
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (float) mArray.GetValue(i) * (float) val, i);
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (double) mArray.GetValue(i) * (double) val, i);
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return this;
+        }
+        public NcArray Div(Object val) {
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (sbyte) mArray.GetValue(i) / (sbyte) val, i);
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (byte) mArray.GetValue(i) / (byte) val, i);
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int16) mArray.GetValue(i) / (Int16) val, i);
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt16) mArray.GetValue(i) / (UInt16) val, i);
+                    break;
+                case NcTypeEnum.NC_INT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int32) mArray.GetValue(i) / (Int32) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt32) mArray.GetValue(i) / (UInt32) val, i);
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (Int64) mArray.GetValue(i) / (Int64) val, i);
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (UInt64) mArray.GetValue(i) / (UInt64) val, i);
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (float) mArray.GetValue(i) / (float) val, i);
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    for(int i=0;i<mArray.Length;i++)
+                        mArray.SetValue( (double) mArray.GetValue(i) / (double) val, i);
+                    break;
                 default:
                     throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
             }

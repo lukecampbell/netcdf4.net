@@ -14,6 +14,7 @@ namespace ASA.NetCDF4.Test {
             AddTest(TestSlicing, "TestSlicing");
             AddTest(TestReshape, "TestReshape");
             AddTest(TestAddSub, "TestAddSub");
+            AddTest(TestMultDiv, "TestMultDiv");
             AddTest(TestGet, "TestGet");
             AddTest(TestPut, "TestPut");
         }
@@ -49,9 +50,9 @@ namespace ASA.NetCDF4.Test {
 
         public bool TestAddSub() {
             NcArray ones = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(1);
-            NcArray twos = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(2);
-            NcArray threes = new NcArray(NcInt.Instance, new int[] { 10}).Fill(3);
-            NcArray fours = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(4);
+            NcArray twos = ones + 1;
+            NcArray threes = ones + 2;
+            NcArray fours = twos + 2;
 
             Assert.True(threes.Equals(ones + twos));
             Assert.False(fours.Equals(ones + twos));
@@ -59,6 +60,26 @@ namespace ASA.NetCDF4.Test {
             Assert.True(ones.Equals(threes - twos));
             Assert.True(twos.Equals(fours - twos));
             Assert.False(ones.Equals(fours - ones));
+            return true;
+        }
+
+        public bool TestMultDiv() {
+            NcArray ones = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(1);
+            NcArray twos = ones * 2;
+            NcArray threes = twos + 1;
+            NcArray fours = twos * 2;
+            NcArray zeros = ones * 0;
+
+
+            Assert.True(threes.Equals(ones * threes));
+            Assert.True(twos.Equals(fours / twos));
+            Assert.True(twos.Equals(fours / 2));
+            try {
+                fours.Div(0);
+                throw new AssertFailedException("Failed to throw DivideByZeroException");
+            } catch (DivideByZeroException) {
+            }
+
             return true;
         }
 
