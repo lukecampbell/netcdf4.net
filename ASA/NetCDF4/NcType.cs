@@ -104,7 +104,7 @@ namespace ASA.NetCDF4 {
                 case (int)NcTypeEnum.NC_CHAR    : return NcTypeEnum.NC_CHAR;
                 case (int)NcTypeEnum.NC_SHORT   : return NcTypeEnum.NC_SHORT;
                 case (int)NcTypeEnum.NC_USHORT  : return NcTypeEnum.NC_USHORT;
-                case (int)NcTypeEnum.NC_INT     : return NcTypeEnum.NC_UBYTE;
+                case (int)NcTypeEnum.NC_INT     : return NcTypeEnum.NC_INT;
                 case (int)NcTypeEnum.NC_UINT    : return NcTypeEnum.NC_UINT;  
                 case (int)NcTypeEnum.NC_INT64   : return NcTypeEnum.NC_INT64; 
                 case (int)NcTypeEnum.NC_UINT64  : return NcTypeEnum.NC_UINT64;

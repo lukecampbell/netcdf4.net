@@ -12,6 +12,8 @@ namespace ASA.NetCDF4.Test {
         private string filePath = "test.nc";
         public TestNcArray() {
             AddTest(TestSlicing, "TestSlicing");
+            AddTest(TestReshape, "TestReshape");
+            AddTest(TestAddSub, "TestAddSub");
             AddTest(TestGet, "TestGet");
             AddTest(TestPut, "TestPut");
         }
@@ -22,20 +24,46 @@ namespace ASA.NetCDF4.Test {
             for(int i=0;i<64;i++) basicArray[i] = i;
 
             NcArray ncArray = new NcArray(basicArray, new int[] { 4,4,4});
-            int[] outArray;
-
-            ncArray.Slice(out outArray, new int[] { 2, 2, 2 }, new int[] { 4, 4, 4 });
-            Assert.Equals(outArray, new int[] { 42, 43, 46, 47, 58, 59, 62, 63 });
-
-            int val;
-            ncArray.At(out val, new int[] { 2,2,2 } );
-            Assert.Equals(val, 42);
-            ncArray.ValueAt(out val, 2,2,2);
-            Assert.Equals(val, 42);
-
+            NcArray outArray = ncArray.Slice(new int[] { 2, 2, 2}, new int[] {4, 4, 4});
+            Assert.Equals(outArray.Array, new int[] { 42, 43, 46, 47, 58, 59, 62, 63 });
 
             return true;
         }
+
+        public bool TestReshape() {
+
+            int[] shape = new int[] { 2,2,2 };
+            NcArray array = NcArray.Arange(NcDouble.Instance, 2*2*2).Reshape(shape);
+            Assert.Equals(array.Shape, shape);
+            array.Reshape(new int[] { 8 });
+            Assert.Equals(array.Shape, new int[]  { 8 } );
+            try {
+                array.GetValueAt(1,1,1);
+                throw new AssertFailedException("Failed to throw index bounds exception");
+            } catch (exceptions.NcInvalidArg) {
+            }
+
+            return true;
+
+        }
+
+        public bool TestAddSub() {
+            NcArray ones = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(1);
+            NcArray twos = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(2);
+            NcArray threes = new NcArray(NcInt.Instance, new int[] { 10}).Fill(3);
+            NcArray fours = new NcArray(NcInt.Instance, new int[] { 10 }).Fill(4);
+
+            Assert.True(threes.Equals(ones + twos));
+            Assert.False(fours.Equals(ones + twos));
+            Assert.True(fours.Equals(twos + twos));
+            Assert.True(ones.Equals(threes - twos));
+            Assert.True(twos.Equals(fours - twos));
+            Assert.False(ones.Equals(fours - ones));
+            return true;
+        }
+
+
+
 
         public bool TestGet() {
             NcFile file = null;
@@ -68,12 +96,30 @@ namespace ASA.NetCDF4.Test {
             NcFile file = null;
             try {
                 file = TestHelper.NewFile(filePath);
-                NcDim time = file.AddDim("time", 4);
-                NcDim x = file.AddDim("x", 4);
-                NcDim y = file.AddDim("y", 4);
-                NcVar u = file.AddVar("u", NcFloat.Instance, new List<NcDim>() { time, x, y });
-                NcVar v = file.AddVar("v", NcFloat.Instance, new List<NcDim>() { time, x, y });
+                NcDim time = file.AddDim("time", 2);
+                NcDim x = file.AddDim("x", 2);
+                NcDim y = file.AddDim("y", 2);
+                NcDim z = file.AddDim("z", 4);
+                NcVar u = file.AddVar("u", NcFloat.Instance, new List<NcDim>() { time, x, y, z });
+                NcVar v = file.AddVar("v", NcFloat.Instance, new List<NcDim>() { time, x, y, z });
 
+                NcArray uArray = new NcArray(NcFloat.Instance, u.Shape);
+                uArray.Fill(1);
+                uArray.FillSlice(20, new int[] { 0, 0, 0, 3 }, new int[] { 2, 2, 2, 4});
+                NcArray vArray = new NcArray(NcFloat.Instance, v.Shape);
+                vArray.Fill(100);
+
+                u.PutVar(uArray);
+
+                v.PutVar(vArray);
+
+                NcArray outArray = u.GetVar();
+                Assert.True(uArray.Equals(outArray));
+                
+                outArray = v.GetVar();
+                Assert.True(vArray.Equals(outArray));
+
+                    
 
             } finally {
                 file.Close();

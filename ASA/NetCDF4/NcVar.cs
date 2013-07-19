@@ -135,6 +135,13 @@ namespace ASA.NetCDF4 {
                 shape.Add(d.GetSize());
             return shape;
         }
+
+        public int[] Shape {
+            get {
+                return GetShape().ToArray();
+            }
+        }
+
         public NcDim GetDim(Int32 i) {
             CheckNull();
             List<NcDim> ncDims = GetDims();
@@ -1188,6 +1195,8 @@ namespace ASA.NetCDF4 {
             NcCheck.Check(NetCDF.nc_put_var_double(groupId, myId, dataValues));
         }
 
+        public void PutVar(Int32[] index, NcArray array, bool strictChecking=true) {
+        }
         public void PutVar(Int32[] index, string dataValues, bool strictChecking=true) {
             CheckNull();
             if(strictChecking) {

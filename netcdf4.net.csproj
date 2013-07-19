@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D0F27BB3-7E6A-41FC-87EA-DDEDC10EFC93}</ProjectGuid>
+    <ProjectGuid>{642B6529-5137-45F2-AF4B-FD471390685C}</ProjectGuid>
     <OutputType>library</OutputType>
     <RootNamespace>netcdf4.net</RootNamespace>
     <AssemblyName>netcdf4.net</AssemblyName>
@@ -119,4 +119,3 @@
     </MonoDevelop>
   </ProjectExtensions>
 </Project>
-
