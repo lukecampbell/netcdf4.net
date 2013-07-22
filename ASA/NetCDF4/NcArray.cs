@@ -24,6 +24,7 @@ namespace ASA.NetCDF4 {
             int spaceRequired = 1;
             this.shape = shape;
             ndim = shape.Length;
+            CheckShape(shape);
             foreach(int dimLen in shape) {
                 spaceRequired *= dimLen;
             }
@@ -69,6 +70,7 @@ namespace ASA.NetCDF4 {
             int spaceRequired = 1;
             this.shape = shape.ToArray();
             ndim = shape.Count;
+            CheckShape(shape.ToArray());
             foreach(int dimLen in shape) {
                 spaceRequired *= dimLen;
             }
@@ -124,6 +126,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
         
         public NcArray(Array array, NcType type, List<int> shape=null) {
@@ -139,6 +142,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(sbyte[] array, List<Int32> shape=null) {
@@ -152,6 +156,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(byte[] array, List<Int32> shape=null) {
@@ -165,6 +170,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(Int16[] array, List<Int32> shape=null) {
@@ -178,6 +184,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(UInt16[] array, List<Int32> shape=null) {
@@ -191,6 +198,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(Int32[] array, List<Int32> shape=null) {
@@ -204,6 +212,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(UInt32[] array, List<Int32> shape=null) {
@@ -217,6 +226,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(Int64[] array, List<Int32> shape=null) {
@@ -230,6 +240,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(UInt64[] array, List<Int32> shape=null) {
@@ -243,6 +254,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(float[] array, List<Int32> shape=null) {
@@ -256,6 +268,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(double[] array, List<Int32> shape=null) {
@@ -269,6 +282,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape.ToArray();
             }
             isNull = false;
+            CheckShape(shape);
         }
 
 
@@ -283,6 +297,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(byte[] array, int[] shape=null) {
@@ -296,6 +311,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(Int16[] array, int[] shape=null) {
@@ -309,6 +325,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(UInt16[] array, int[] shape=null) {
@@ -322,6 +339,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(Int32[] array, int[] shape=null) {
@@ -335,6 +353,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(UInt32[] array, int[] shape=null) {
@@ -348,6 +367,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(Int64[] array, int[] shape=null) {
@@ -361,6 +381,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(UInt64[] array, int[] shape=null) {
@@ -374,6 +395,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(float[] array, int[] shape=null) {
@@ -387,6 +409,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public NcArray(double[] array, int[] shape=null) {
@@ -400,6 +423,7 @@ namespace ASA.NetCDF4 {
                 this.shape = shape;
             }
             isNull = false;
+            CheckShape(shape);
         }
 
         public void CheckIndex(int[] index) {
@@ -575,6 +599,11 @@ namespace ASA.NetCDF4 {
             return result;
         }
 
+        public T Value<T>(int[] index) {
+            T result = (T) mArray.GetValue( offset(index) );
+            return result;
+        }
+
         public void SetValue(Object val, int[] index) {
             mArray.SetValue(val, offset(index));
         }
@@ -695,6 +724,17 @@ namespace ASA.NetCDF4 {
             return this;
         }
         
+        protected void CheckShape(int[] shape) {
+            for(int i=0;i<shape.Length;i++)
+                if(shape[i] < 1)
+                    throw new exceptions.NcInvalidArg("A dimension must have at least one element");
+        }
+
+        protected void CheckShape(List<int> shape) {
+            CheckShape(shape.ToArray());
+        }
+
+
         protected void CheckNull() {
             if(isNull) {
                 throw new exceptions.NcNullVar("Attempt to invoke NcArray method on a Null NcVar");
@@ -799,39 +839,57 @@ namespace ASA.NetCDF4 {
             switch(type.GetTypeClass()) {
                 case NcTypeEnum.NC_BYTE:
                         array = new sbyte[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((sbyte)i,i);
+                        break; 
                 case NcTypeEnum.NC_UBYTE:
                         array = new byte[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((byte)i,i);
+                        break; 
                 case NcTypeEnum.NC_SHORT:
                         array = new Int16[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((Int16)i,i);
+                        break; 
                 case NcTypeEnum.NC_USHORT:
                         array = new UInt16[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((UInt16)i,i);
+                        break; 
                 case NcTypeEnum.NC_INT:
                         array = new Int32[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((Int32)i,i);
+                        break; 
                 case NcTypeEnum.NC_UINT:
                         array = new UInt32[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((UInt32)i,i);
+                        break; 
                 case NcTypeEnum.NC_INT64:
                         array = new Int64[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((Int64)i,i);
+                        break; 
                 case NcTypeEnum.NC_UINT64:
                         array = new UInt64[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((UInt64)i,i);
+                        break; 
                 case NcTypeEnum.NC_FLOAT:
                         array = new float[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((float)i,i);
+                        break; 
                 case NcTypeEnum.NC_DOUBLE:
                         array = new double[spaceRequired];
-                        break;
+                        for(int i=0;i<array.Length;i++)
+                            array.SetValue((double)i,i);
+                        break; 
                 default:
                         throw new exceptions.NcBadType("Unsupported NcType for NcArray");
             }
-            for(int i=0;i<array.Length;i++)
-                array.SetValue(i,i);
 
             return new NcArray(array, type, shape);
         }

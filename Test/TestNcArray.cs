@@ -80,6 +80,10 @@ namespace ASA.NetCDF4.Test {
             } catch (DivideByZeroException) {
             }
 
+            NcArray buf = NcArray.Arange(NcDouble.Instance, 5);
+            buf = buf * 10.0;
+            int[] shape = new int[] { 1,3,5,7};
+            NcArray uVector = NcArray.Arange(NcShort.Instance, 1 * 3 * 5 * 7).Reshape(shape);
             return true;
         }
 
