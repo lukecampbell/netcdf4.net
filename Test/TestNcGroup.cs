@@ -594,8 +594,20 @@ namespace ASA.NetCDF4.Test {
 
         public bool TestGroupDefine() {
             NcFile file = null;
+            NcDim dim;
+            NcVar var;
             try {
                 file = new NcFile(filePath, NcFileMode.replace, NcFileFormat.classic);
+                file.CheckData();
+                dim = file.AddDim("dim1", 1);
+                file.CheckData();
+                var = file.AddVar("var1", NcInt.Instance, dim);
+                file.CheckData();
+                var.PutAtt("blah","blah");
+                file.CheckDefine();
+                NcArray array = NcArray.Arange(NcInt.Instance, 1);
+                var.PutVar(array);
+
             } finally {
                 file.Close();
             }
