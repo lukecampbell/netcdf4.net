@@ -1799,7 +1799,6 @@ namespace ASA.NetCDF4 {
         [DllImport("netcdf.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true, CallingConvention=CallingConvention.Cdecl)]
         public static extern Int32 nc_inq_format(Int32 ncid, ref Int32 formatp);
         
-        
     }
 }
 

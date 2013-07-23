@@ -32,6 +32,7 @@ namespace ASA.NetCDF4.Test {
             AddTest(TestExtensive, "TestExtensive");
             AddTest(TestScalar, "TestScalar");
             AddTest(TestShape, "TestShape");
+            AddTest(TestDefine, "TestDefine");
         }
 
         public bool TestVarPutGet() {
@@ -734,6 +735,27 @@ namespace ASA.NetCDF4.Test {
             } finally {
                 file.Close();
             }
+            CheckDelete(filePath);
+            return true;
+        }
+        public bool TestDefine() {
+            NcFile file = null;
+            try {
+                file = new NcFile(filePath, FileMode.replace, FileFormat.classic);
+                NcDim timeDim = file.AddDim("time", 20); 
+                NcVar timeVar = file.AddVar("time", NcDouble.Instance, timeDim);
+                timeVar.PutAtt("units", "minutes since 2000-01-01 00:00:00");
+                timeVar.PutAtt("long_name", "Time");
+                timeVar.CheckData();
+                NcArray vals = NcArray.Arange(NcDouble.Instance, 20);
+                timeVar.PutVar(vals);
+                Assert.Equals(timeVar.GetAtt("long_name"), "Time");
+
+                NcVar data = file.AddVar("data", NcDouble.Instance, timeDim);
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
             return true;
         }
 

@@ -122,6 +122,21 @@ namespace ASA.NetCDF4 {
             }
         }
 
+        public void CheckDefine() {
+            try {
+                NcCheck.Check(NetCDF.nc_redef(groupId));
+            } catch (exceptions.NcInDefineMode) {
+            }
+        }
+
+        public void CheckData() {
+            try {
+                NcCheck.Check(NetCDF.nc_enddef(groupId));
+            } catch (exceptions.NcNotInDefineMode) {
+            }
+        }
+
+
         public Int32 GetDimCount() {
             CheckNull();
             Int32 dimCount=0;
@@ -195,12 +210,14 @@ namespace ASA.NetCDF4 {
 
         public NcVarAtt PutAtt(string name, string dataValues) {
             CheckNull();
+            CheckDefine();
             NcCheck.Check(NetCDF.nc_put_att_text(groupId, myId, name, dataValues.Length, dataValues));
             return GetAtt(name);
         }
 
         public NcVarAtt PutAtt(string name, NcType type, sbyte datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, type.GetId(), 1, new sbyte[] {datumValue}));
@@ -209,6 +226,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, byte datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, type.GetId(), 1, new byte[] { datumValue }));
@@ -217,6 +235,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, Int16 datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, type.GetId(), 1, new Int16[] { datumValue }));
@@ -225,6 +244,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, UInt16 datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, type.GetId(), 1, new UInt16[] { datumValue }));
@@ -233,6 +253,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, Int32 datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, type.GetId(), 1, new Int32[] { datumValue }));
@@ -241,6 +262,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, UInt32 datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, type.GetId(), 1, new UInt32[] { datumValue }));
@@ -249,6 +271,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, Int64 datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, type.GetId(), 1, new Int64[] { datumValue }));
@@ -257,6 +280,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, UInt64 datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, type.GetId(), 1, new UInt64[]{ datumValue }));
@@ -265,6 +289,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, float datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, type.GetId(), 1, new float[] { datumValue }));
@@ -273,6 +298,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, double datumValue) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, type.GetId(), 1, new double[]{ datumValue }));
@@ -281,6 +307,7 @@ namespace ASA.NetCDF4 {
 
         public NcVarAtt PutAtt(string name, NcType type, sbyte[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_schar(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -289,6 +316,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, byte[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_uchar(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -297,6 +325,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, Int16[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_short(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -305,6 +334,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, UInt16[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_ushort(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -313,6 +343,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, Int32[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_int(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -321,6 +352,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, UInt32[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_uint(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -329,6 +361,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, Int64[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_longlong(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -337,6 +370,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, UInt64[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_ulonglong(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -345,6 +379,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, float[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_float(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -353,6 +388,7 @@ namespace ASA.NetCDF4 {
         
         public NcVarAtt PutAtt(string name, NcType type, double[] dataValues) {
             CheckNull();
+            CheckDefine();
             if(!type.IsFixedType())
                 throw new NotImplementedException("PutAtt() not implemented for non-fixed types");
             NcCheck.Check(NetCDF.nc_put_att_double(groupId, myId, name, type.GetId(), dataValues.Length, dataValues));
@@ -361,6 +397,7 @@ namespace ASA.NetCDF4 {
 
         public void SetChunking(ChunkMode chunkMode, Int32[] chunkSizes) {
             CheckNull();
+            CheckDefine();
             NcCheck.Check(NetCDF.nc_def_var_chunking(groupId, myId, (Int32) chunkMode, chunkSizes));
         }
 
@@ -378,6 +415,7 @@ namespace ASA.NetCDF4 {
         */
         public void SetCompression(bool enableShuffleFilter, bool enableDeflateFilter, Int32 deflateLevel) {
             CheckNull();
+            CheckDefine();
             if(enableDeflateFilter && (deflateLevel < 0 || deflateLevel > 9))
                 throw new exceptions.NcException("The deflateLevel must be set between 0 and 9");
             NcCheck.Check(NetCDF.nc_def_var_deflate(groupId, myId, enableShuffleFilter ? 1 : 0,enableDeflateFilter ? 1 : 0, deflateLevel));
@@ -396,6 +434,7 @@ namespace ASA.NetCDF4 {
 
         public void SetEndianness(EndianMode endianMode) {
             CheckNull();
+            CheckDefine();
             NcCheck.Check(NetCDF.nc_def_var_endian(groupId, myId, (int)endianMode));
         }
 
@@ -408,6 +447,7 @@ namespace ASA.NetCDF4 {
 
         public void SetChecksum(ChecksumMode checksumMode) {
             CheckNull();
+            CheckDefine();
             NcCheck.Check(NetCDF.nc_def_var_fletcher32(groupId, myId, (int) checksumMode));
         }
 
@@ -471,6 +511,7 @@ namespace ASA.NetCDF4 {
 
         public NcArray GetVar() {
             CheckNull();
+            CheckData();
             int spaceRequired = 1;
             List<int> shape = GetShape();
             foreach(int dimLen in shape) {
@@ -547,6 +588,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 BufferCheck(dataValues.Length);
             if(GetNcType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
@@ -560,6 +602,7 @@ namespace ASA.NetCDF4 {
         }
         public void GetVar(byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 BufferCheck(dataValues.Length);
             if(GetNcType().GetTypeClass() == NcTypeEnum.NC_ENUM) {
@@ -574,6 +617,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -586,6 +630,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -598,6 +643,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -610,6 +656,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -621,6 +668,7 @@ namespace ASA.NetCDF4 {
         }
         public void GetVar(Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -633,6 +681,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -645,6 +694,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
             }
@@ -653,6 +703,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 BufferCheck(dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_var_double(groupId, myId, dataValues));
@@ -660,6 +711,7 @@ namespace ASA.NetCDF4 {
 
         public int GetVar(Int32[] index, out string dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
             }
@@ -675,6 +727,7 @@ namespace ASA.NetCDF4 {
 
         public int GetVar(Int32[] index, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -692,6 +745,7 @@ namespace ASA.NetCDF4 {
 
         public int GetVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             NcType type = GetNcType();
             NcTypeEnum typeClass = type.GetTypeClass();
             if(strictChecking) {
@@ -718,6 +772,7 @@ namespace ASA.NetCDF4 {
 
         public int GetVar(Int32[] index, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -735,6 +790,7 @@ namespace ASA.NetCDF4 {
         
         public int GetVar(Int32[] index, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -752,6 +808,7 @@ namespace ASA.NetCDF4 {
 
         public int GetVar(Int32[] index, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -769,6 +826,7 @@ namespace ASA.NetCDF4 {
         
         public int GetVar(Int32[] index, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -786,6 +844,7 @@ namespace ASA.NetCDF4 {
         
         public int GetVar(Int32[] index, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -803,6 +862,7 @@ namespace ASA.NetCDF4 {
         
         public int GetVar(Int32[] index, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -820,6 +880,7 @@ namespace ASA.NetCDF4 {
 
         public int GetVar(Int32[] index, float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -836,6 +897,7 @@ namespace ASA.NetCDF4 {
         }
         public int GetVar(Int32[] index, double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1) 
@@ -853,6 +915,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             if(NcChar.Instance.Equals(GetNcType()))
@@ -863,6 +926,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             if(NcChar.Instance.Equals(GetNcType()))
@@ -873,6 +937,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_short(groupId, myId, index, count, dataValues));
@@ -880,6 +945,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_ushort(groupId, myId, index, count, dataValues));
@@ -887,6 +953,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_int(groupId, myId, index, count, dataValues));
@@ -894,6 +961,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_uint(groupId, myId, index, count, dataValues));
@@ -901,6 +969,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_longlong(groupId, myId, index, count, dataValues));
@@ -908,6 +977,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_ulonglong(groupId, myId, index, count, dataValues));
@@ -915,6 +985,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_float(groupId, myId, index, count, dataValues));
@@ -922,6 +993,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vara_double(groupId, myId, index, count, dataValues));
@@ -929,6 +1001,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             if(NcChar.Instance.Equals(GetNcType()))
@@ -939,6 +1012,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             if(NcChar.Instance.Equals(GetNcType()))
@@ -949,6 +1023,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_short(groupId, myId, index, count, stride, dataValues));
@@ -956,6 +1031,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_ushort(groupId, myId, index, count, stride, dataValues));
@@ -963,6 +1039,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_int(groupId, myId, index, count, stride, dataValues));
@@ -970,6 +1047,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_uint(groupId, myId, index, count, stride, dataValues));
@@ -977,6 +1055,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_longlong(groupId, myId, index, count, stride, dataValues));
@@ -984,6 +1063,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_ulonglong(groupId, myId, index, count, stride, dataValues));
@@ -991,6 +1071,7 @@ namespace ASA.NetCDF4 {
 
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_float(groupId, myId, index, count, stride, dataValues));
@@ -998,6 +1079,7 @@ namespace ASA.NetCDF4 {
         
         public void GetVar(Int32[] index, Int32[] count, Int32[] stride, double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_get_vars_double(groupId, myId, index, count, stride, dataValues));
@@ -1029,6 +1111,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(NcArray array, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(array.Length);
                 DimUnlimitedCheck();
@@ -1070,6 +1153,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1085,6 +1169,7 @@ namespace ASA.NetCDF4 {
         }
         public void PutVar(byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1101,6 +1186,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1114,6 +1200,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1127,6 +1214,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1140,6 +1228,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1153,6 +1242,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1166,6 +1256,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1179,6 +1270,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1188,6 +1280,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 BufferCheck(dataValues.Length);
                 DimUnlimitedCheck();
@@ -1195,10 +1288,9 @@ namespace ASA.NetCDF4 {
             NcCheck.Check(NetCDF.nc_put_var_double(groupId, myId, dataValues));
         }
 
-        public void PutVar(Int32[] index, NcArray array, bool strictChecking=true) {
-        }
         public void PutVar(Int32[] index, string dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) {
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1213,6 +1305,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1230,6 +1323,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1254,6 +1348,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1268,6 +1363,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1282,6 +1378,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1296,6 +1393,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1310,6 +1408,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1324,6 +1423,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1338,6 +1438,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1351,6 +1452,7 @@ namespace ASA.NetCDF4 {
         }
         public void PutVar(Int32[] index, double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking){
                 DimCheck(index.Length);
                 if(dataValues.Length < 1)
@@ -1365,6 +1467,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             
@@ -1376,6 +1479,7 @@ namespace ASA.NetCDF4 {
         }
         public void PutVar(Int32[] index, Int32[] count, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             
@@ -1388,6 +1492,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_short(groupId, myId, index, count, dataValues));
@@ -1395,6 +1500,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_ushort(groupId, myId, index, count, dataValues));
@@ -1402,12 +1508,14 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_int(groupId, myId, index, count, dataValues));
         }
         public void PutVar(Int32[] index, Int32[] count, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_uint(groupId, myId, index, count, dataValues));
@@ -1415,6 +1523,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_longlong(groupId, myId, index, count, dataValues));
@@ -1422,6 +1531,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_ulonglong(groupId, myId, index, count, dataValues));
@@ -1429,6 +1539,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_float(groupId, myId, index, count, dataValues));
@@ -1436,6 +1547,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking) 
                 NDimCheck(index.Length, count, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vara_double(groupId, myId, index, count, dataValues));
@@ -1443,6 +1555,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, sbyte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             if(NcChar.Instance.Equals(GetNcType()))
@@ -1453,6 +1566,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, byte[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             if(NcChar.Instance.Equals(GetNcType()))
@@ -1463,6 +1577,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, Int16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_short(groupId, myId, index, count, stride, dataValues));
@@ -1470,6 +1585,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, UInt16[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_ushort(groupId, myId, index, count, stride, dataValues));
@@ -1477,6 +1593,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, Int32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_int(groupId, myId, index, count, stride, dataValues));
@@ -1484,6 +1601,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, UInt32[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_uint(groupId, myId, index, count, stride, dataValues));
@@ -1491,6 +1609,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, Int64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_longlong(groupId, myId, index, count, stride, dataValues));
@@ -1498,6 +1617,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, UInt64[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_ulonglong(groupId, myId, index, count, stride, dataValues));
@@ -1505,6 +1625,7 @@ namespace ASA.NetCDF4 {
 
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, float[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_float(groupId, myId, index, count, stride, dataValues));
@@ -1512,6 +1633,7 @@ namespace ASA.NetCDF4 {
         
         public void PutVar(Int32[] index, Int32[] count, Int32[] stride, double[] dataValues, bool strictChecking=true) {
             CheckNull();
+            CheckData();
             if(strictChecking)
                 NDimStrideCheck(index.Length, count, stride, dataValues.Length);
             NcCheck.Check(NetCDF.nc_put_vars_double(groupId, myId, index, count, stride, dataValues));
