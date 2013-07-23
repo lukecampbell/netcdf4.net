@@ -620,6 +620,789 @@ namespace ASA.NetCDF4 {
             return mArray.GetValue(offset(index));
         }
 
+        public sbyte GetSbyteAt(params int[] index) {
+            sbyte retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (sbyte) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (sbyte) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (sbyte) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (sbyte) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (sbyte) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (sbyte) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (sbyte) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (sbyte) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (sbyte) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (sbyte) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public byte GetByteAt(params int[] index) {
+            byte retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (byte) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (byte) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (byte) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (byte) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (byte) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (byte) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (byte) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (byte) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (byte) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (byte) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public Int16 GetInt16At(params int[] index) {
+            Int16 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (Int16) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (Int16) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (Int16) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (Int16) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (Int16) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (Int16) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (Int16) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (Int16) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (Int16) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (Int16) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public UInt16 GetUInt16At(params int[] index) {
+            UInt16 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (UInt16) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (UInt16) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (UInt16) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (UInt16) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (UInt16) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (UInt16) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (UInt16) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (UInt16) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (UInt16) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (UInt16) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public Int32 GetInt32At(params int[] index) {
+            Int32 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (Int32) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (Int32) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (Int32) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (Int32) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (Int32) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (Int32) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (Int32) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (Int32) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (Int32) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (Int32) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public UInt32 GetUInt32At(params int[] index) {
+            UInt32 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (UInt32) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (UInt32) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (UInt32) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (UInt32) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (UInt32) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (UInt32) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (UInt32) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (UInt32) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (UInt32) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (UInt32) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public Int64 GetInt64At(params int[] index) {
+            Int64 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (Int64) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (Int64) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (Int64) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (Int64) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (Int64) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (Int64) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (Int64) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (Int64) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (Int64) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (Int64) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public UInt64 GetUInt64At(params int[] index) {
+            UInt64 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (UInt64) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (UInt64) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (UInt64) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (UInt64) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (UInt64) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (UInt64) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (UInt64) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (UInt64) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (UInt64) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (UInt64) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public float GetFloatAt(params int[] index) {
+            float retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (float) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (float) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (float) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (float) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (float) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (float) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (float) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (float) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (float) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (float) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public double GetDoubleAt(params int[] index) {
+            double retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (double) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (double) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (double) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (double) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (double) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (double) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (double) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (double) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (double) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (double) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public sbyte GetSbyte(int[] index) {
+            sbyte retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (sbyte) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (sbyte) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (sbyte) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (sbyte) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (sbyte) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (sbyte) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (sbyte) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (sbyte) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (sbyte) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (sbyte) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public byte GetByte(int[] index) {
+            byte retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (byte) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (byte) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (byte) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (byte) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (byte) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (byte) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (byte) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (byte) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (byte) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (byte) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public Int16 GetInt16(int[] index) {
+            Int16 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (Int16) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (Int16) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (Int16) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (Int16) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (Int16) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (Int16) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (Int16) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (Int16) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (Int16) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (Int16) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public UInt16 GetUInt16(int[] index) {
+            UInt16 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (UInt16) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (UInt16) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (UInt16) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (UInt16) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (UInt16) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (UInt16) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (UInt16) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (UInt16) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (UInt16) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (UInt16) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public Int32 GetInt32(int[] index) {
+            Int32 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (Int32) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (Int32) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (Int32) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (Int32) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (Int32) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (Int32) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (Int32) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (Int32) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (Int32) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (Int32) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public UInt32 GetUInt32(int[] index) {
+            UInt32 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (UInt32) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (UInt32) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (UInt32) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (UInt32) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (UInt32) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (UInt32) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (UInt32) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (UInt32) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (UInt32) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (UInt32) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public Int64 GetInt64(int[] index) {
+            Int64 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (Int64) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (Int64) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (Int64) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (Int64) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (Int64) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (Int64) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (Int64) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (Int64) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (Int64) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (Int64) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public UInt64 GetUInt64(int[] index) {
+            UInt64 retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (UInt64) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (UInt64) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (UInt64) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (UInt64) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (UInt64) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (UInt64) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (UInt64) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (UInt64) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (UInt64) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (UInt64) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public float GetFloat(int[] index) {
+            float retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (float) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (float) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (float) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (float) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (float) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (float) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (float) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (float) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (float) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (float) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+        public double GetDouble(int[] index) {
+            double retval;
+            switch(type.GetTypeClass()) {
+                case NcTypeEnum.NC_BYTE:
+                    retval = (double) ((sbyte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UBYTE:
+                    retval = (double) ((byte) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_SHORT:
+                    retval = (double) ((Int16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_USHORT:
+                    retval = (double) ((UInt16) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT:
+                    retval = (double) ((Int32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT:
+                    retval = (double) ((UInt32) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_INT64:
+                    retval = (double) ((Int64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_UINT64:
+                    retval = (double) ((UInt64) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_FLOAT:
+                    retval = (double) ((float) mArray.GetValue(offset(index)));
+                    break;
+                case NcTypeEnum.NC_DOUBLE:
+                    retval = (double) ((double) mArray.GetValue(offset(index)));
+                    break;
+                default:
+                    throw new exceptions.NcBadType("NcArray does not support type: " + type.GetTypeClassName());
+            }
+            return retval;
+        }
+
+
+
+
         public Array Array {
             get {
                 return mArray;

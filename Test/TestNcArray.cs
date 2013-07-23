@@ -17,6 +17,7 @@ namespace ASA.NetCDF4.Test {
             AddTest(TestMultDiv, "TestMultDiv");
             AddTest(TestGet, "TestGet");
             AddTest(TestPut, "TestPut");
+            AddTest(TestCasting,"TestCasting");
         }
 
         public bool TestSlicing() {
@@ -152,6 +153,13 @@ namespace ASA.NetCDF4.Test {
             CheckDelete(filePath);
             return true;
         }
+        public bool TestCasting() {
+            NcArray a = NcArray.Arange(NcInt.Instance, 2);
+            double b = a.GetDoubleAt(0);
+            Assert.Equals(b, 0.0);
+            return true;
+        }
+
     }
 }
 
