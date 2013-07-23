@@ -24,6 +24,7 @@ namespace ASA.NetCDF4.Test {
             AddTest(TestNestedGroups, "TestNestedGroups");
             AddTest(TestDimGeneric, "TestDimGeneric");
             AddTest(TestVarGeneric, "TestVarGeneric");
+            AddTest(TestGroupDefine, "TestGroupDefine");
         }
 
         public NcFile newFile(string filePath) {
@@ -590,6 +591,19 @@ namespace ASA.NetCDF4.Test {
             CheckDelete(filePath);
             return true;
         }
+
+        public bool TestGroupDefine() {
+            NcFile file = null;
+            try {
+                file = new NcFile(filePath, NcFileMode.replace, NcFileFormat.classic);
+            } finally {
+                file.Close();
+            }
+            CheckDelete(filePath);
+            return true;
+        }
+
+
     }
 }
 

@@ -25,8 +25,8 @@ namespace ASA.NetCDF4.Test {
             NcFile dataFile = null;
             NcFile file = null;
             try {
-                dataFile = new NcFile(dataFilePath, FileMode.read);
-                Assert.Equals(dataFile.Format, FileFormat.classic64);
+                dataFile = new NcFile(dataFilePath, NcFileMode.read);
+                Assert.Equals(dataFile.Format, NcFileFormat.classic64);
                 file = TestHelper.NewFile(filePath);
                 // Ensure there is only a flat group structure
                 Assert.False(true);

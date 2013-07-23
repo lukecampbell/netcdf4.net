@@ -5,13 +5,13 @@
  */
 using System;
 namespace ASA.NetCDF4 {
-    public enum FileMode {
+    public enum NcFileMode {
         read,
         write,
         replace,
         newFile
     }
-    public enum FileFormat {
+    public enum NcFileFormat {
         classic,
         classic64,
         nc4,
@@ -46,51 +46,51 @@ namespace ASA.NetCDF4 {
         public NcFile() : base() {
         }
 
-        public NcFile(string filePath, FileMode fMode) {
+        public NcFile(string filePath, NcFileMode fMode) {
             switch(fMode) {
-                case FileMode.write:
+                case NcFileMode.write:
                     NcCheck.Check(NetCDF.nc_open(filePath, NC_WRITE, ref myId));
                     break;
-                case FileMode.read:
+                case NcFileMode.read:
                     NcCheck.Check(NetCDF.nc_open(filePath, NC_NOWRITE, ref myId));
                     break;
-                case FileMode.newFile:
+                case NcFileMode.newFile:
                     NcCheck.Check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_NOCLOBBER, ref myId));
                     break;
-                case FileMode.replace:
+                case NcFileMode.replace:
                     NcCheck.Check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_CLOBBER, ref myId));
                     break;
             }
             nullObject = false;
         }
 
-        public NcFile(string filePath, FileMode fMode, FileFormat fFormat) {
+        public NcFile(string filePath, NcFileMode fMode, NcFileFormat fFormat) {
             Int32 format = 0;
             switch(fFormat) {
-                case FileFormat.classic:
+                case NcFileFormat.classic:
                     format = 0;
                     break;
-                case FileFormat.classic64:
+                case NcFileFormat.classic64:
                     format = NC_64BIT_OFFSET;
                     break;
-                case FileFormat.nc4:
+                case NcFileFormat.nc4:
                     format = NC_NETCDF4;
                     break;
-                case FileFormat.nc4classic:
+                case NcFileFormat.nc4classic:
                     format = NC_NETCDF4 | NC_CLASSIC_MODEL;
                     break;
             }
             switch(fMode) {
-                case FileMode.write:
+                case NcFileMode.write:
                     NcCheck.Check(NcCheck.NC_EINVAL);
                     break;
-                case FileMode.read:
+                case NcFileMode.read:
                     NcCheck.Check(NcCheck.NC_EINVAL);
                     break;
-                case FileMode.newFile:
+                case NcFileMode.newFile:
                     NcCheck.Check(NetCDF.nc_create(filePath, format | NC_NOCLOBBER, ref myId));
                     break;
-                case FileMode.replace:
+                case NcFileMode.replace:
                     NcCheck.Check(NetCDF.nc_create(filePath, format | NC_CLOBBER, ref myId));
                     break;
             }
@@ -102,18 +102,18 @@ namespace ASA.NetCDF4 {
             myId = 0;
         }
 
-        public FileFormat Format {
+        public NcFileFormat Format {
             get {
                 Int32 formatp=0;
                 NcCheck.Check(NetCDF.nc_inq_format(myId, ref formatp));
                 if(formatp == NC_FORMAT_CLASSIC)
-                    return FileFormat.classic;
+                    return NcFileFormat.classic;
                 if(formatp == NC_FORMAT_64BIT)
-                    return FileFormat.classic64;
+                    return NcFileFormat.classic64;
                 if(formatp == NC_FORMAT_NETCDF4)
-                    return FileFormat.nc4;
+                    return NcFileFormat.nc4;
                 if(formatp == NC_FORMAT_NETCDF4_CLASSIC)
-                    return FileFormat.nc4classic;
+                    return NcFileFormat.nc4classic;
 
                 throw new exceptions.NcInvalidArg("Unknown file format: " + formatp);
             }

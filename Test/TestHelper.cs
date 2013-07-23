@@ -12,7 +12,7 @@ namespace ASA.NetCDF4.Test {
         public static NcFile NewFile(string filePath) {
             NcFile file;
             CheckDelete(filePath);
-            file = new NcFile(filePath, FileMode.replace, FileFormat.nc4);
+            file = new NcFile(filePath, NcFileMode.replace, NcFileFormat.nc4);
             return file;
         }
         public static void CheckDelete(string filePath) {

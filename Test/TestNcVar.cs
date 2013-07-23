@@ -741,7 +741,7 @@ namespace ASA.NetCDF4.Test {
         public bool TestDefine() {
             NcFile file = null;
             try {
-                file = new NcFile(filePath, FileMode.replace, FileFormat.classic);
+                file = new NcFile(filePath, NcFileMode.replace, NcFileFormat.classic);
                 NcDim timeDim = file.AddDim("time", 20); 
                 NcVar timeVar = file.AddVar("time", NcDouble.Instance, timeDim);
                 timeVar.PutAtt("units", "minutes since 2000-01-01 00:00:00");

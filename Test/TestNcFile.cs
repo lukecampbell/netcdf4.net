@@ -16,7 +16,7 @@ namespace ASA.NetCDF4.Test {
             CheckDelete(filePath);
             NcFile file = null;
             try {
-                file = new NcFile(filePath, FileMode.replace, FileFormat.nc4);
+                file = new NcFile(filePath, NcFileMode.replace, NcFileFormat.nc4);
             } finally { 
                 file.Close();
             }
