@@ -19,6 +19,8 @@ namespace ASA.NetCDF4 {
     }
 
     public class NcFile : NcGroup {
+        private string filePath = "";
+
         public const int NC_NOWRITE       = 0x0000;
         public const int NC_WRITE         = 0x0001;
         public const int NC_CLOBBER       = 0x0000;
@@ -61,6 +63,7 @@ namespace ASA.NetCDF4 {
                     NcCheck.Check(NetCDF.nc_create(filePath, NC_NETCDF4 | NC_CLOBBER, ref myId));
                     break;
             }
+            this.filePath = filePath;
             nullObject = false;
         }
 
@@ -94,6 +97,7 @@ namespace ASA.NetCDF4 {
                     NcCheck.Check(NetCDF.nc_create(filePath, format | NC_CLOBBER, ref myId));
                     break;
             }
+            this.filePath = filePath;
             nullObject = false;
         }
         public void Close() {
@@ -101,6 +105,13 @@ namespace ASA.NetCDF4 {
             nullObject = true;
             myId = 0;
         }
+
+        public string FilePath { 
+            get {
+                return filePath;
+            }
+        }
+
 
         public NcFileFormat Format {
             get {

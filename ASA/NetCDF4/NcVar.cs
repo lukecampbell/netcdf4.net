@@ -157,6 +157,12 @@ namespace ASA.NetCDF4 {
             }
         }
 
+        public int Rank {
+            get {
+                return GetDimCount();
+            }
+        }
+
         public NcDim GetDim(Int32 i) {
             CheckNull();
             List<NcDim> ncDims = GetDims();

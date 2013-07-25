@@ -61,6 +61,13 @@ namespace ASA.NetCDF4.Test {
             Assert.True(ones.Equals(threes - twos));
             Assert.True(twos.Equals(fours - twos));
             Assert.False(ones.Equals(fours - ones));
+
+
+            double[] buf = new double[100];
+            for(int i=0;i<100;i++) buf[i] = (double)i;
+            NcArray wrapper = new NcArray(buf, NcDouble.Instance, new int[] { 100 });
+            wrapper.Add(20.0);
+            Assert.Equals(buf[0], 20.0);
             return true;
         }
 
