@@ -9,6 +9,12 @@ using System.Linq;
 using System.Collections.Generic;
 
 namespace ASA.NetCDF4 {
+    
+    // NcArray
+    ///<summary>
+    ///     A class that wraps in-memory buffers and treats them as n-dimensional arrays. 
+    ///     Also provides simple manipulation of the values using arithmetic operators
+    ///</summary>
     public class NcArray {
         private NcType type;
         private int ndim;
@@ -20,6 +26,14 @@ namespace ASA.NetCDF4 {
             isNull = true;
         }
 
+        //********************************************************************************
+        // NcArray(NcType, int[])
+        ///<summary>
+        ///  Constructs an empty array of the specified type and shape
+        ///</summary>
+        ///<param name="type">The data type for the array</param>
+        ///<param name="shape">The shape fo the array</param>
+        //********************************************************************************
         public NcArray(NcType type, int[] shape) {
             int spaceRequired = 1;
             this.shape = shape;
@@ -66,6 +80,15 @@ namespace ASA.NetCDF4 {
             this.type = type;
             isNull = false;
         }
+        
+        //********************************************************************************
+        // NcArray(NcType, List<Int32>)
+        ///<summary>
+        ///  Constructs an empty array of the specified type and shape
+        ///</summary>
+        ///<param name="type">The data type for the array</param>
+        ///<param name="shape">The shape fo the array</param>
+        //********************************************************************************
         public NcArray(NcType type, List<Int32> shape) {
             int spaceRequired = 1;
             this.shape = shape.ToArray();
@@ -113,6 +136,17 @@ namespace ASA.NetCDF4 {
             isNull = false;
         }
 
+        //********************************************************************************
+        // NcArray(Array, NcType, int[])
+        ///<summary>
+        ///  Generic Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        ///<param name="shape">The shape fo the array</param>
+        //********************************************************************************
         public NcArray(Array array, NcType type, int[] shape=null) {
             if(type == null || type.IsNull()) 
                 throw new exceptions.NcNullType("Can't make an array with null type");
@@ -129,6 +163,17 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
         
+        //********************************************************************************
+        // NcArray(Array, NcType, List<int>)
+        ///<summary>
+        ///  Generic Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        ///<param name="shape">The shape fo the array</param>
+        //********************************************************************************
         public NcArray(Array array, NcType type, List<int> shape=null) {
             if(type == null || type.IsNull()) 
                 throw new exceptions.NcNullType("Can't make an array with null type");
@@ -145,6 +190,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(sbyte[], List<int>)
+        ///<summary>
+        ///  sbyte[] wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="shape">The shape fo the array</param>
+        //********************************************************************************
         public NcArray(sbyte[] array, List<Int32> shape=null) {
             type = NcByte.Instance;
             mArray = array;
@@ -159,6 +214,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(byte[], List<int>)
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(byte[] array, List<Int32> shape=null) {
             type = NcUbyte.Instance;
             mArray = array;
@@ -173,6 +238,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(Int16[], List<int>)
+        ///<summary>
+        ///  Short Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(Int16[] array, List<Int32> shape=null) {
             type = NcShort.Instance;
             mArray = array;
@@ -187,6 +262,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(UInt16[], List<int>)
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(UInt16[] array, List<Int32> shape=null) {
             type = NcUshort.Instance;
             mArray = array;
@@ -201,6 +286,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(Int32[], List<int>)
+        ///<summary>
+        ///  Int32 Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(Int32[] array, List<Int32> shape=null) {
             type = NcInt.Instance;
             mArray = array;
@@ -215,6 +310,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(UInt32[], List<int>)
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(UInt32[] array, List<Int32> shape=null) {
             type = NcUint.Instance;
             mArray = array;
@@ -229,6 +334,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(Int64[], List<int>)
+        ///<summary>
+        ///  Int64 Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(Int64[] array, List<Int32> shape=null) {
             type = NcInt64.Instance;
             mArray = array;
@@ -243,6 +358,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(UInt64[], List<int>)
+        ///<summary>
+        ///  UInt64 Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(UInt64[] array, List<Int32> shape=null) {
             type = NcUint64.Instance;
             mArray = array;
@@ -257,6 +382,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(float[], List<int>)
+        ///<summary>
+        ///  Float Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(float[] array, List<Int32> shape=null) {
             type = NcFloat.Instance;
             mArray = array;
@@ -271,6 +406,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(double[], List<int>)
+        ///<summary>
+        ///  Double Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(double[] array, List<Int32> shape=null) {
             type = NcDouble.Instance;
             mArray = array;
@@ -286,6 +431,16 @@ namespace ASA.NetCDF4 {
         }
 
 
+        //********************************************************************************
+        // NcArray(sbyte[], int[])
+        ///<summary>
+        ///  Signed Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(sbyte[] array, int[] shape=null) {
             type = NcByte.Instance;
             mArray = array;
@@ -300,6 +455,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(byte[], int[])
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(byte[] array, int[] shape=null) {
             type = NcUbyte.Instance;
             mArray = array;
@@ -314,6 +479,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(byte[], int[])
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(Int16[] array, int[] shape=null) {
             type = NcShort.Instance;
             mArray = array;
@@ -328,6 +503,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(UInt16[], int[])
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(UInt16[] array, int[] shape=null) {
             type = NcUshort.Instance;
             mArray = array;
@@ -342,6 +527,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(Int32[], int[])
+        ///<summary>
+        ///  Int32 Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(Int32[] array, int[] shape=null) {
             type = NcInt.Instance;
             mArray = array;
@@ -356,6 +551,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(UInt32[], int[])
+        ///<summary>
+        ///  UInt32 Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(UInt32[] array, int[] shape=null) {
             type = NcUint.Instance;
             mArray = array;
@@ -370,6 +575,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(Int64[], int[])
+        ///<summary>
+        ///  Int64 Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(Int64[] array, int[] shape=null) {
             type = NcInt64.Instance;
             mArray = array;
@@ -384,6 +599,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(UInt64[], int[])
+        ///<summary>
+        ///  Byte Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(UInt64[] array, int[] shape=null) {
             type = NcUint64.Instance;
             mArray = array;
@@ -398,6 +623,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(float[], int[])
+        ///<summary>
+        ///  Float Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(float[] array, int[] shape=null) {
             type = NcFloat.Instance;
             mArray = array;
@@ -412,6 +647,16 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // NcArray(double[], int[])
+        ///<summary>
+        ///  Double Array wrapper constructor
+        ///  This creates an NcArray that wraps the source array, all manipulations on 
+        ///  this object will affect the source array instance.
+        ///</summary>
+        ///<param name="array">Source array</param>
+        ///<param name="type">The data type for the array</param>
+        //********************************************************************************
         public NcArray(double[] array, int[] shape=null) {
             type = NcDouble.Instance;
             mArray = array;
@@ -426,6 +671,13 @@ namespace ASA.NetCDF4 {
             CheckShape(shape);
         }
 
+        //********************************************************************************
+        // CheckIndex(int[])
+        ///<summary>
+        ///     Validates that the index input is valid and does not exceed any dimension.
+        ///</summary>
+        ///<param name="index">Index</param>
+        //********************************************************************************
         public void CheckIndex(int[] index) {
             if (index.Length != ndim) {
                 throw new exceptions.NcInvalidArg("Index must have the same number of elements as there are dimensions in the array.");
@@ -436,8 +688,6 @@ namespace ASA.NetCDF4 {
                 }
             }
         }
-
-
 
         private int offset(int[] index) {
             int a = 1;
@@ -468,6 +718,17 @@ namespace ASA.NetCDF4 {
             return 0;
         }
 
+        //********************************************************************************
+        // FillSlice(Object, int[], int[], int[])
+        ///<summary>
+        ///     Fills an array with the specified value
+        ///</summary>
+        ///<param name="fillValue">Fill Value</param>
+        ///<param name="start">Start index</param>
+        ///<param name="stop">Stop index</param>
+        ///<param name="stride">Stride</param>
+        ///<returns>The instance of the same array</returns>
+        //********************************************************************************
         public NcArray FillSlice(Object fillValue, int[] start=null, int[] stop=null, int[] stride=null) {
             CheckNull();
             if(start == null) {
@@ -504,6 +765,17 @@ namespace ASA.NetCDF4 {
             return this;
         }
 
+        //********************************************************************************
+        // Slice(int[], int[], int[])
+        ///<summary>
+        ///     Returns a copy of a slice of data in the array. This is a deep-copy
+        ///     operation.
+        ///</summary>
+        ///<param name="start">Start Index</param>
+        ///<param name="stop">Stop Index</param>
+        ///<param name="stride">Stride</param>
+        ///<returns>A deep-copy of a slice of the instance</returns>
+        //********************************************************************************
         public NcArray Slice(int[] start=null, int[] stop=null, int[] stride=null)  {
             CheckNull();
             if(start == null) {
@@ -594,32 +866,87 @@ namespace ASA.NetCDF4 {
         }
 
 
+        //********************************************************************************
+        // ValueAt<T>(param int[])
+        ///<summary>
+        ///     Retrieves a value at a specific index. Useful for known-types.  If the 
+        ///     type doesn't match the casted type use Get(Typename)At methods.
+        ///</summary>
+        ///<param name="index">Index</param>
+        ///<returns>Type-casted value at the specified index</returns>
+        //********************************************************************************
         public T ValueAt<T>(params int[] index) {
             T result = (T) mArray.GetValue( offset(index) );
             return result;
         }
 
+        //********************************************************************************
+        // Value<T>(param int[])
+        ///<summary>
+        ///     Retrieves a value at a specific index. Useful for known-types.  If the 
+        ///     type doesn't match the casted type use Get(Typename)At methods.
+        ///</summary>
+        ///<param name="index">Index</param>
+        ///<returns>Type-casted value at the specified index</returns>
+        //********************************************************************************
         public T Value<T>(int[] index) {
             T result = (T) mArray.GetValue( offset(index) );
             return result;
         }
 
+        //********************************************************************************
+        // SetValue(Object, index[])
+        ///<summary>
+        ///     Sets a value at the specified index.
+        ///</summary>
+        ///<param name="val"></param>
+        ///<param name="index"></param>
+        //********************************************************************************
         public void SetValue(Object val, int[] index) {
             mArray.SetValue(val, offset(index));
         }
 
+        //********************************************************************************
+        // GetValue(int[])
+        ///<summary>
+        ///     Retrieves a generic value at a sepcific index. (Not type-casted)
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Object GetValue(int[] index) {
             return mArray.GetValue(offset(index));
         }
 
+        //********************************************************************************
+        // SetValueAt(Object, params int[])
+        ///<summary>
+        ///     Sets a value at the specified index
+        ///</summary>
+        ///<param name="val">Value</param>
+        ///<param name="index"></param>
+        //********************************************************************************
         public void SetValueAt(Object val, params int[] index) {
             mArray.SetValue(val, offset(index));
         }
 
+        //********************************************************************************
+        // GetValueAt(params int[])
+        ///<summary>
+        ///     Retrieves a generic object value at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Object GetValueAt(params int[] index) {
             return mArray.GetValue(offset(index));
         }
 
+        //********************************************************************************
+        // GetSbyteAt(params int[])
+        ///<summary>
+        ///     Retrieves an sbyte at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public sbyte GetSbyteAt(params int[] index) {
             sbyte retval;
             switch(type.GetTypeClass()) {
@@ -660,6 +987,13 @@ namespace ASA.NetCDF4 {
         }
 
         public byte GetByteAt(params int[] index) {
+        //********************************************************************************
+        // GetByteAt(params int[])
+        ///<summary>
+        ///     Retrieves an byte at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
             byte retval;
             switch(type.GetTypeClass()) {
                 case NcTypeEnum.NC_BYTE:
@@ -698,6 +1032,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetInt16At(params int[])
+        ///<summary>
+        ///     Retrieves a short at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Int16 GetInt16At(params int[] index) {
             Int16 retval;
             switch(type.GetTypeClass()) {
@@ -737,6 +1078,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetUInt16At(params int[])
+        ///<summary>
+        ///     Retrieves an unsigned short at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public UInt16 GetUInt16At(params int[] index) {
             UInt16 retval;
             switch(type.GetTypeClass()) {
@@ -776,6 +1124,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetInt32At(params int[])
+        ///<summary>
+        ///     Retrieves an integer at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Int32 GetInt32At(params int[] index) {
             Int32 retval;
             switch(type.GetTypeClass()) {
@@ -815,6 +1170,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetUInt32At(params int[])
+        ///<summary>
+        ///     Retrieves an unsigned integer at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public UInt32 GetUInt32At(params int[] index) {
             UInt32 retval;
             switch(type.GetTypeClass()) {
@@ -854,6 +1216,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetInt64At(params int[])
+        ///<summary>
+        ///     Retrieves a int64 at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Int64 GetInt64At(params int[] index) {
             Int64 retval;
             switch(type.GetTypeClass()) {
@@ -893,6 +1262,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetUInt64At(params int[])
+        ///<summary>
+        ///     Retrieves an unsigned int64 at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public UInt64 GetUInt64At(params int[] index) {
             UInt64 retval;
             switch(type.GetTypeClass()) {
@@ -932,6 +1308,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetFloatAt(params int[])
+        ///<summary>
+        ///     Retrieves an sbyte at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public float GetFloatAt(params int[] index) {
             float retval;
             switch(type.GetTypeClass()) {
@@ -971,6 +1354,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetDoubleAt(params int[])
+        ///<summary>
+        ///     Retrieves a double at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public double GetDoubleAt(params int[] index) {
             double retval;
             switch(type.GetTypeClass()) {
@@ -1010,6 +1400,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetSbyteAt(int[])
+        ///<summary>
+        ///     Retrieves an sbyte at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public sbyte GetSbyte(int[] index) {
             sbyte retval;
             switch(type.GetTypeClass()) {
@@ -1049,6 +1446,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetByteAt(params int[])
+        ///<summary>
+        ///     Retrieves a byte at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public byte GetByte(int[] index) {
             byte retval;
             switch(type.GetTypeClass()) {
@@ -1088,6 +1492,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetInt16(params int[])
+        ///<summary>
+        ///     Retrieves a short at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Int16 GetInt16(int[] index) {
             Int16 retval;
             switch(type.GetTypeClass()) {
@@ -1127,6 +1538,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetUInt16(params int[])
+        ///<summary>
+        ///     Retrieves a UInt16 at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public UInt16 GetUInt16(int[] index) {
             UInt16 retval;
             switch(type.GetTypeClass()) {
@@ -1166,6 +1584,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetInt32(params int[])
+        ///<summary>
+        ///     Retrieves an int at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Int32 GetInt32(int[] index) {
             Int32 retval;
             switch(type.GetTypeClass()) {
@@ -1205,6 +1630,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetUInt32(params int[])
+        ///<summary>
+        ///     Retrieves an unsigned int at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public UInt32 GetUInt32(int[] index) {
             UInt32 retval;
             switch(type.GetTypeClass()) {
@@ -1244,6 +1676,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetInt64(params int[])
+        ///<summary>
+        ///     Retrieves an Int64 at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public Int64 GetInt64(int[] index) {
             Int64 retval;
             switch(type.GetTypeClass()) {
@@ -1283,6 +1722,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetUInt64(params int[])
+        ///<summary>
+        ///     Retrieves an unsigned Int64 at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public UInt64 GetUInt64(int[] index) {
             UInt64 retval;
             switch(type.GetTypeClass()) {
@@ -1322,6 +1768,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetFloat(params int[])
+        ///<summary>
+        ///     Retrieves a float at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public float GetFloat(int[] index) {
             float retval;
             switch(type.GetTypeClass()) {
@@ -1361,6 +1814,13 @@ namespace ASA.NetCDF4 {
             return retval;
         }
 
+        //********************************************************************************
+        // GetDouble(params int[])
+        ///<summary>
+        ///     Retrieves a double at the specified index.
+        ///</summary>
+        ///<param name="index"></param>
+        //********************************************************************************
         public double GetDouble(int[] index) {
             double retval;
             switch(type.GetTypeClass()) {
@@ -1403,12 +1863,24 @@ namespace ASA.NetCDF4 {
 
 
 
+        //********************************************************************************
+        // Array
+        ///<returns>The in-memory buffer</returns>
+        //********************************************************************************
         public Array Array {
             get {
                 return mArray;
             }
         }
 
+        //********************************************************************************
+        // Equals(NcArray)
+        ///<summary>
+        ///     Compares an array
+        ///</summary>
+        ///<param name="rhs">Array to compare with</param>
+        ///<returns>true if the arrays are equal</returns>
+        //********************************************************************************
         public bool Equals(NcArray rhs) {
             if(!CompatibleArray(rhs))
                 return false;
@@ -1500,6 +1972,14 @@ namespace ASA.NetCDF4 {
         }
 
 
+        //********************************************************************************
+        // Fill(Object)
+        ///<summary>
+        ///     Fills the entire array with the specified value
+        ///</summary>
+        ///<param name="val"></param>
+        ///<returns>this</returns>
+        //********************************************************************************
         public NcArray Fill(Object val) {
             for(int i=0;i<mArray.Length;i++) {
                 mArray.SetValue(val, i);
@@ -1524,16 +2004,31 @@ namespace ASA.NetCDF4 {
             }
         }
 
+        //********************************************************************************
+        // GetNcType()
+        ///<returns>The NcType for this Array instance</returns>
+        //********************************************************************************
         public NcType GetNcType() {
             return type;
         }
 
+        //********************************************************************************
+        // Shape
+        ///<returns>The shape of this instance<returns>
+        //********************************************************************************
         public int[] Shape {
             get { 
                 return shape;
             }
         }
 
+        //********************************************************************************
+        // Length
+        ///<summary>
+        ///     In-memory buffer length
+        ///</summary>
+        ///<returns>In-memory buffer 
+        //********************************************************************************
         public int Length {
             get {
                 int l=1;
@@ -1546,6 +2041,10 @@ namespace ASA.NetCDF4 {
 
         private bool isNull;
         
+        //********************************************************************************
+        // IsNull()
+        ///<returns>True if the object is a null instance</returns>
+        //********************************************************************************
         public bool IsNull() {
             return isNull;
         }
@@ -1578,6 +2077,14 @@ namespace ASA.NetCDF4 {
             }
         }
 
+        //********************************************************************************
+        // Reshape(int[])
+        ///<summary>
+        ///     Reshapes the array instance
+        ///</summary>
+        ///<param name="shape"></param>
+        ///<returns>this</returns>
+        //********************************************************************************
         public NcArray Reshape(int[] shape) {
             int spaceRequired = 1;
             for(int i=0;i<shape.Length;i++)
@@ -1595,6 +2102,19 @@ namespace ASA.NetCDF4 {
             return sb.ToString();
         }
 
+        //********************************************************************************
+        // Arange(NcType, int, int, int, int[])
+        ///<summary>
+        ///     Creates an NcArray with a preallocated buffer of elements that are set
+        ///     based on the specified type, starting value, ending value and stride.
+        ///</summary>
+        ///<param name="type"></param>
+        ///<param name="r1">Start Value</param>
+        ///<param name="r2">Stop Value</param>
+        ///<param name="r3">Stride Value</param>
+        ///<param name="shape">Shape of the output</param>
+        ///<returns>New instance of an NcArray</returns>
+        //********************************************************************************
         public static NcArray Arange(NcType type, int r1, int r2=0, int stride=1, int[] shape=null) {
             int start=0, stop=0;
             if(r2 != 0) {
@@ -1677,6 +2197,10 @@ namespace ASA.NetCDF4 {
             return new NcArray(array, type, shape);
         }
 
+        //********************************************************************************
+        // CompatibleType(NcType)
+        ///<returns>Returns true if the type is compatible</returns>
+        //********************************************************************************
         public bool CompatibleType(NcType type) {
             if(!type.Equals(type)) {
                 return false;
@@ -1685,6 +2209,10 @@ namespace ASA.NetCDF4 {
         }
 
 
+        //********************************************************************************
+        // CompatibleShape(int[])
+        ///<returns>Returns true if the shape matches the instance shape</returns>
+        //********************************************************************************
         public bool CompatibleShape(int[] shape) {
             if(this.shape.Length !=shape.Length) {
                 return false;
@@ -1697,6 +2225,13 @@ namespace ASA.NetCDF4 {
             return true;
         }
 
+        //********************************************************************************
+        // CompatibleArray(NcArray)
+        ///<summary>
+        ///     Determines compatibility with another array
+        ///</summary>
+        ///<returns>Returns true if the array is of similar type and shape</returns>
+        //********************************************************************************
         public bool CompatibleArray(NcArray array) {
             if(!CompatibleType(array.type))
                 return false;
@@ -1705,6 +2240,13 @@ namespace ASA.NetCDF4 {
             return true;
         }
 
+        //********************************************************************************
+        // Copy()
+        ///<summary>
+        ///     Deep Copy
+        ///</summary>
+        ///<returns>Deep-copy array</returns>
+        //********************************************************************************
         public NcArray Copy() {
             Array array=null;
             switch(type.GetTypeClass()) {
@@ -1744,10 +2286,25 @@ namespace ASA.NetCDF4 {
             Array.Copy(mArray, array, mArray.Length);
             return new NcArray(array, type, shape);
         }
+        
+        //********************************************************************************
+        // Copy(NcArray)
+        ///<summary>
+        ///     Deep Copy
+        ///</summary>
+        ///<param name="rhs">Source Array</param>
+        ///<returns>Instance of copied array</param>
+        //********************************************************************************
         public static NcArray Copy(NcArray rhs) {
             return rhs.Copy();
         }
 
+        //********************************************************************************
+        // Add(NcArray,NcArray)
+        ///<summary>
+        ///     Adds two arrays
+        ///</summary>
+        //********************************************************************************
         public static NcArray Add(NcArray a, NcArray b) {
             NcArray result = a.Copy();
             result.Add(b);
@@ -1758,6 +2315,12 @@ namespace ASA.NetCDF4 {
             return Add(a,b);
         }
 
+        //********************************************************************************
+        // Sub(NcArray,NcArray)
+        ///<summary>
+        ///     Subtracts two arrays
+        ///</summary>
+        //********************************************************************************
         public static NcArray Sub(NcArray a, NcArray b) {
             NcArray result = a.Copy();
             result.Sub(b);
@@ -1768,6 +2331,12 @@ namespace ASA.NetCDF4 {
             return Sub(a,b);
         }
 
+        //********************************************************************************
+        // Mult(NcArray,NcArray)
+        ///<summary>
+        ///     Multiplies two arrays
+        ///</summary>
+        //********************************************************************************
         public static NcArray Mult(NcArray a, NcArray b) {
             NcArray result = a.Copy();
             result.Mult(b);
@@ -1778,6 +2347,12 @@ namespace ASA.NetCDF4 {
             return Mult(a,b);
         }
 
+        //********************************************************************************
+        // Div(NcArray,NcArray)
+        ///<summary>
+        ///     Divides two arrays
+        ///</summary>
+        //********************************************************************************
         public static NcArray Div(NcArray a, NcArray b) {
             NcArray result = a.Copy();
             result.Div(b);
@@ -1788,6 +2363,12 @@ namespace ASA.NetCDF4 {
             return Div(a,b);
         }
 
+        //********************************************************************************
+        // Sub(NcArray)
+        ///<summary>
+        ///     In-place subtraction
+        ///</summary>
+        //********************************************************************************
         public NcArray Sub(NcArray array) {
             if(!CompatibleShape(array.shape)) {
                 throw new exceptions.NcInvalidArg("Array shape mismatch");
@@ -1838,6 +2419,13 @@ namespace ASA.NetCDF4 {
             }
             return this;
         }
+        
+        //********************************************************************************
+        // Add(NcArray)
+        ///<summary>
+        ///     In-place addition
+        ///</summary>
+        //********************************************************************************
         public NcArray Add(NcArray array) {
             if(!CompatibleShape(array.shape)) {
                 throw new exceptions.NcInvalidArg("Array shape mismatch");
@@ -1888,6 +2476,13 @@ namespace ASA.NetCDF4 {
             }
             return this;
         }
+        
+        //********************************************************************************
+        // Mult(NcArray)
+        ///<summary>
+        ///     In-place multiplication
+        ///</summary>
+        //********************************************************************************
         public NcArray Mult(NcArray array) {
             if(!CompatibleShape(array.shape)) {
                 throw new exceptions.NcInvalidArg("Array shape mismatch");
@@ -1938,6 +2533,13 @@ namespace ASA.NetCDF4 {
             }
             return this;
         }
+        
+        //********************************************************************************
+        // Div(NcArray)
+        ///<summary>
+        ///     In-place division
+        ///</summary>
+        //********************************************************************************
         public NcArray Div(NcArray array) {
             if(!CompatibleShape(array.shape)) {
                 throw new exceptions.NcInvalidArg("Array shape mismatch");
