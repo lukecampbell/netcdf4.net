@@ -1,14 +1,15 @@
 # NcArray
 
-Namespace: `ASA.NetCDF4`
+#### Namespace 
+`ASA.NetCDF4` 
 
-Class: `NcArray`
+### Class `NcArray`
 
-Description: 
+#### Description
 A class that wraps in-memory buffers and treats them as n-dimensional arrays. 
 Also provides simple manipulation of the values using arithmetic operators.
 
-### Fields
+#### Fields
 ```
  -isNull
  -mArray
@@ -17,7 +18,7 @@ Also provides simple manipulation of the values using arithmetic operators.
  -type
 ```
 
-### Methods
+#### Methods
 ```
  +Add(NcArray array)
  +Add(NcArray a, Object val)
@@ -117,7 +118,7 @@ Also provides simple manipulation of the values using arithmetic operators.
  -stringify(StringBuilder buf, int dim=0, List<int> index=null)
 ```
 
-### Properties
+#### Properties
 ```
  +Array
  +Length
